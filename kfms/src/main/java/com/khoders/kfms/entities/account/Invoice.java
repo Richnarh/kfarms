@@ -28,24 +28,28 @@ import javax.persistence.Table;
 public class Invoice extends FarmRecord implements Serializable{
     @Column(name = "invoice_no")
     private String invoice_no;
-    
+
     @Column(name = "issue_date")
     private LocalDate issueDate;
-    
+
     @JoinColumn(name = "customer", referencedColumnName = "id")
     @ManyToOne
     private Customer customer;
     
+    @JoinColumn(name = "chart_of_account", referencedColumnName = "id")
+    @ManyToOne
+    private ChartOfAccount chartOfAccount;
+
     @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
-    
-   @Column(name = "cheque_no")
-   private String chequeNo;
-   
-   @Column(name = "description")
-   @Lob
-   private String description;
+
+    @Column(name = "cheque_no")
+    private String chequeNo;
+
+    @Column(name = "description")
+    @Lob
+    private String description;
 
     public String getInvoice_no() {
         return invoice_no;
@@ -93,6 +97,14 @@ public class Invoice extends FarmRecord implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ChartOfAccount getChartOfAccount() {
+        return chartOfAccount;
+    }
+
+    public void setChartOfAccount(ChartOfAccount chartOfAccount) {
+        this.chartOfAccount = chartOfAccount;
     }
    
    

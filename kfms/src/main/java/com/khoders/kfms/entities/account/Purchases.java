@@ -5,8 +5,8 @@
  */
 package com.khoders.kfms.entities.account;
 
+import com.khoders.kfms.entities.FarmRecord;
 import com.khoders.kfms.entities.enums.Category;
-import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -20,8 +20,8 @@ import javax.persistence.Table;
  * @author khoders
  */
 @Entity
-@Table(name = "expense_account")
-public class ExpenseAccount extends BaseModel implements Serializable{
+@Table(name = "purchases")
+public class Purchases extends FarmRecord implements Serializable{
     @Column(name = "received_date")
     private LocalDate receivedDate;
 

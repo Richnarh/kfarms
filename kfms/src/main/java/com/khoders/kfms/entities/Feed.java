@@ -6,7 +6,6 @@
 package com.khoders.kfms.entities;
 
 import com.khoders.kfms.entities.settings.FeedType;
-import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "feed")
-public class Feed extends BaseModel implements Serializable{
+public class Feed extends ProductionRecord implements Serializable{
     @JoinColumn(name = "feed_type", referencedColumnName = "id")
     @ManyToOne
     private FeedType feedType;

@@ -19,15 +19,15 @@ import javax.persistence.Table;
  * @author khoders
  */
 @Entity
-@Table(name = "invoice_item")
-public class InvoiceItem extends BaseModel implements Serializable{
+@Table(name = "purchase_item")
+public class PurchaseItem extends BaseModel implements Serializable{
    @Column(name = "item_code")
    @ManyToOne
    private String itemCode;
    
    @JoinColumn(name = "invoice")
    @ManyToOne
-   private Invoice invoice;
+   private Purchases purchases;
    
    @Column(name = "quantity")
    private int quantity;
@@ -44,12 +44,12 @@ public class InvoiceItem extends BaseModel implements Serializable{
    @Column(name = "total_amount")
    private double totalAmount;
 
-    public Invoice getInvoice() {
-        return invoice;
+    public Purchases getPurchases() {
+        return purchases;
     }
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
+    public void setPurchases(Purchases purchases) {
+        this.purchases = purchases;
     }
 
     public int getQuantity() {

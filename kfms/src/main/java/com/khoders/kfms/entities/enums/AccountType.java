@@ -6,12 +6,6 @@
 package com.khoders.kfms.entities.enums;
 
 import com.khoders.resource.utilities.MsgResolver;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
 
 /**
  *

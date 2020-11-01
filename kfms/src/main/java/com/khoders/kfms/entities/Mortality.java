@@ -6,15 +6,13 @@
 package com.khoders.kfms.entities;
 
 import com.khoders.kfms.entities.enums.CullingMortality;
-import com.khoders.resource.jpa.BaseModel;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -23,10 +21,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "mortality")
-public class Mortality extends BaseModel implements Serializable{
+public class Mortality extends ProductionRecord implements Serializable{
     @Column(name = "culling_mortality")
     @Enumerated(EnumType.STRING)
     private CullingMortality cullingMortality;
+    
+    @Column(name = "mortality_code")
+    private String mortalityCode;
     
     @Column(name = "number")
     private int number;
@@ -34,11 +35,7 @@ public class Mortality extends BaseModel implements Serializable{
     @Column(name = "reason")
     @Lob
     private String reason;
-    
-    @JoinColumn(name = "production", referencedColumnName = "id")
-    @ManyToOne
-    private Production production;
-
+   
     public CullingMortality getCullingMortality() {
         return cullingMortality;
     }
@@ -63,13 +60,16 @@ public class Mortality extends BaseModel implements Serializable{
         this.reason = reason;
     }
 
-    public Production getProduction() {
-        return production;
+    public String getMortalityCode() {
+        return mortalityCode;
     }
 
-    public void setProduction(Production production) {
-        this.production = production;
+    public void setMortalityCode(String mortalityCode) {
+        this.mortalityCode = mortalityCode;
     }
     
-    
+    public void genCode()
+    {
+        setMortalityCode(SystemUtils.generateCode());
+    }
 }
