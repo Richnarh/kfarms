@@ -43,8 +43,7 @@ public class FarmAccount extends BaseModel implements Serializable{
     private Country country;
     
     public static final String _unitOfWeight = "unitOfWeight";
-    @JoinColumn(name = "unit_of_weight")
-    @ManyToOne
+    @Column(name = "unit_of_weight")
     private String unitOfWeight;
     
     public static final String _address = "address";

@@ -24,6 +24,7 @@ public class ChartOfAccount extends BaseModel implements Serializable{
     @Column(name = "account_code")
     private String accountCode;
     
+    public static final String _accountName = "accountName";
     @Column(name = "account_name")
     private String accountName;
     

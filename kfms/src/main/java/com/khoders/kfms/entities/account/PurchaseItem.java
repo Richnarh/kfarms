@@ -5,7 +5,7 @@
  */
 package com.khoders.kfms.entities.account;
 
-import com.khoders.resource.jpa.BaseModel;
+import com.khoders.kfms.entities.AccountRecord;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -20,12 +20,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "purchase_item")
-public class PurchaseItem extends BaseModel implements Serializable{
+public class PurchaseItem extends AccountRecord implements Serializable{
    @Column(name = "item_code")
-   @ManyToOne
    private String itemCode;
    
-   @JoinColumn(name = "invoice")
+   @JoinColumn(name = "purchases", referencedColumnName = "id")
    @ManyToOne
    private Purchases purchases;
    

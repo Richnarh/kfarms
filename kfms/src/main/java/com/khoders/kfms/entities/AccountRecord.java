@@ -17,25 +17,12 @@ import javax.persistence.MappedSuperclass;
  * @author khoders
  */
 @MappedSuperclass
-public class FarmRecord extends BaseModel implements Serializable{
-    private static final String _farmAccount = "farmAccount";
-    private static final String _farmName = FarmAccount._farmName;
-    @JoinColumn(name = "farm_account")
-    @ManyToOne
-    private FarmAccount farmAccount;
-    
+public class AccountRecord extends BaseModel implements Serializable{
+        
     private static final String _accountName = ChartOfAccount._accountName;
     @JoinColumn(name = "chart_of_account", referencedColumnName = "id")
     @ManyToOne
     private ChartOfAccount chartOfAccount;
-
-    public FarmAccount getFarmAccount() {
-        return farmAccount;
-    }
-
-    public void setFarmAccount(FarmAccount farmAccount) {
-        this.farmAccount = farmAccount;
-    }
 
     public ChartOfAccount getChartOfAccount() {
         return chartOfAccount;

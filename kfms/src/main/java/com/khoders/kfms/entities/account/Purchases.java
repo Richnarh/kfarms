@@ -7,6 +7,7 @@ package com.khoders.kfms.entities.account;
 
 import com.khoders.kfms.entities.FarmRecord;
 import com.khoders.kfms.entities.enums.Category;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -22,6 +23,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "purchases")
 public class Purchases extends FarmRecord implements Serializable{
+    @Column(name = "purchase_id")
+    private String purchaseId;
+    
     @Column(name = "received_date")
     private LocalDate receivedDate;
 
@@ -35,6 +39,15 @@ public class Purchases extends FarmRecord implements Serializable{
     @Column(name = "total_amount")
     private double totalAmount;
 
+    public String getPurchaseId() {
+        return purchaseId;
+    }
+
+    public void setPurchaseId(String purchaseId) {
+        this.purchaseId = purchaseId;
+    }
+
+    
     public LocalDate getReceivedDate() {
         return receivedDate;
     }
@@ -67,4 +80,8 @@ public class Purchases extends FarmRecord implements Serializable{
         this.totalAmount = totalAmount;
     }
     
+    public void genCode()
+    {
+        setPurchaseId(SystemUtils.generateCode());
+    }
 }
