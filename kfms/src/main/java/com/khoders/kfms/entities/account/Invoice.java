@@ -6,7 +6,7 @@
 package com.khoders.kfms.entities.account;
 
 import com.khoders.kfms.entities.Customer;
-import com.khoders.kfms.entities.FarmRecord;
+import com.khoders.kfms.entities.FarmChartRecord;
 import com.khoders.resource.enums.PaymentMethod;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -25,7 +25,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "invoice")
-public class Invoice extends FarmRecord implements Serializable{
+public class Invoice extends FarmChartRecord implements Serializable{
     @Column(name = "invoice_no")
     private String invoice_no;
 

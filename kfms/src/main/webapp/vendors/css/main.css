@@ -1,0 +1,103 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 1, 2020, 9:20:36 PM
+    Author     : khoders
+*/
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+.row-toggler{
+     width: 40px;
+}
+.khoders-card{
+    padding: 10px; 
+    box-shadow: 0 0 25px 0 lightgrey;
+    background: #F9F9F9;
+    border: 1px solid #607D8B;
+}
+
+.spaced-form td
+{
+    padding: .3em; 
+}
+
+.kbtn-light{
+    background: #f8f9fa !important;
+    color: #1f2d3d !important;
+    border-color: #1f2d3d !important;
+}
+
+.kbtn-primary{
+    background: #81D4FA !important;
+    color: #007bff !important;
+    border-color: #007bff !important;
+}
+
+.kbtn-primary:hover{
+    background: #0288D1 !important;
+    color: #f8f9fa !important;
+    border-color: #0288D1 !important;
+    transition: ease-in 0.3s;
+}
+
+.kbtn-success{
+    background: #28a745 !important;
+    border-color: #28a745 !important;
+}
+.kbtn-success:hover{
+    background: #A5D6A7 !important;
+    color: #28a745 !important;
+    border-color: #28a745 !important;
+    transition: ease-in 0.3s;
+}
+.kbtn-danger{
+    background: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+.kbtn-danger:hover{
+    background: transparent !important;
+    color: #dc3545 !important;
+    transition: ease-in 0.3s;
+}
+.kbtn-info{
+    background: #17a2b8 !important;
+    border-color: #17a2b8 !important;
+}
+
+.kbtn-cancel{
+    background: #d3d9df !important;
+    color: #dc3545 !important;
+    border-color: #d3d9df !important;
+}
+.kbtn-cancel:hover{
+    background: #d3d9df !important;
+    color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    transition: ease-in 0.3s;
+}
+
+.kbtn-info:hover{
+    background: transparent !important;
+    color: #17a2b8 !important;
+    transition: ease-in 0.3s;
+}
+
+.kbtn-link{
+    color: #17a2b8 !important;
+}
+.kbtn-link:hover{
+    color: #17a2b8 !important;
+    padding: 3px !important;
+    border: 1px solid #81D4FA !important;
+}
+
+.required_field{
+    color: #B94A48;
+    border-bottom: 0.5px dashed;
+}

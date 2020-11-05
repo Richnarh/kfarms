@@ -5,8 +5,7 @@
  */
 package com.khoders.kfms.entities;
 
-import com.khoders.kfms.entities.settings.BirdType;
-import com.khoders.resource.jpa.BaseModel;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -21,13 +20,19 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "production")
-public class Production extends BaseModel implements Serializable{
+public class Production extends FarmAccountRecord implements Serializable{
+    @Column(name = "production_code")
+    private String productionCode;
+    
     @Column(name = "production_date")
     private LocalDate productionDate;
     
     @JoinColumn(name = "bird")
     @ManyToOne
-    private BirdType birdType;
+    private Bird bird;
+    
+    @Column(name = "bird_batch_no")
+    private String birdBatchNumber;
 
     public LocalDate getProductionDate() {
         return productionDate;
@@ -37,13 +42,42 @@ public class Production extends BaseModel implements Serializable{
         this.productionDate = productionDate;
     }
 
-    public BirdType getBirdType() {
-        return birdType;
+    public Bird getBird() {
+        return bird;
     }
 
-    public void setBirdType(BirdType birdType) {
-        this.birdType = birdType;
+    public void setBird(Bird bird) {
+        this.bird = bird;
     }
     
+    public String getBirdBatchNumber() {
+        return birdBatchNumber;
+    }
+
+    public void setBirdBatchNumber(String birdBatchNumber) {
+        this.birdBatchNumber = birdBatchNumber;
+    }
+
+    public String getProductionCode() {
+        return productionCode;
+    }
+
+    public void setProductionCode(String productionCode) {
+        this.productionCode = productionCode;
+    }
+
+    public void genCode()
+    {
+        setProductionCode(SystemUtils.generateCode());
+    }
     
+    public void flockBatch()
+    {
+        setBirdBatchNumber(productionDate.toString() +"/"+ SystemUtils.generateShortCode());
+    }
+    
+    public void batchNo()
+    {
+        setBirdBatchNumber(SystemUtils.generateShortCode());
+    }
 }

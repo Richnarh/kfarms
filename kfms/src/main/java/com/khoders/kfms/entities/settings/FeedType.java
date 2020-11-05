@@ -5,7 +5,8 @@
  */
 package com.khoders.kfms.entities.settings;
 
-import com.khoders.resource.jpa.BaseModel;
+import com.khoders.kfms.entities.FarmAccountRecord;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "feed_type")
-public class FeedType  extends BaseModel implements Serializable{
+public class FeedType  extends FarmAccountRecord implements Serializable{
+    @Column(name = "feed_id")
+    private String feedId;
+              
     @Column(name = "feed_name")
     private String feedName;
     
@@ -26,6 +30,14 @@ public class FeedType  extends BaseModel implements Serializable{
     
     @Column(name = "brand")
     private double brand;
+
+    public String getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(String feedId) {
+        this.feedId = feedId;
+    }
 
     public String getFeedName() {
         return feedName;
@@ -51,5 +63,8 @@ public class FeedType  extends BaseModel implements Serializable{
         this.brand = brand;
     }
     
-    
+    public void genCode()
+    {
+        setId(SystemUtils.generateCode());
+    }
 }

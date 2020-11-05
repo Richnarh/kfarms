@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                #{msg.feed_type}
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-header">Add new feed type</div>
+                        <div class="card-body">
+                            <div class="col-md-6 mx-auto">
+                                <h:form id="feedTypeForm" class="spaced-form mb-3">
+                                    <h:panelGrid columns="2">
+                                        <span class="required_field">#{msg.feed_type} Name</span>
+                                        <p:inputText value="#{feedTypeController.feedType.feedName}" required="true"/>
+
+                                        <span class="required_field">Cost Per Kilogram</span>
+                                        <p:inputText value="#{feedTypeController.feedType.costPerKilogram}" required="true"/>
+
+                                        <span>#{msg.brand}</span>
+                                        <p:inputText value="#{feedTypeController.feedType.brand}"/>
+                                        
+                                    </h:panelGrid>
+
+                                    <div class="pt-3">
+                                        <p:commandButton styleClass="kbtn-success mx-5" value="#{feedTypeController.optionText}" action="#{feedTypeController.saveFeedType()}" update="@form, :feedTypeTable"/>
+                                        <p:commandButton styleClass="kbtn-cancel" value="#{msg.clear}" action="#{feedTypeController.clearFeedType()}" update="@form"/>
+                                    </div>
+
+                                </h:form>
+                            </div>
+
+                            <h:form id="feedTypeTable">
+                                <p:dataTable value="#{feedTypeController.feedTypeList}" var="feedType" paginator="true" paginatorPosition="bottom" rowDragSelector="10">
+                                    <p:column styleClass="row-toggler">
+                                        <p:rowToggler/>
+                                    </p:column>
+
+                                    <p:rowExpansion>
+                                        <h:panelGrid columns="2">
+                                            <span>Created Date</span>
+                                            <h:outputText value="#{feedType.createdDate}">
+                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                            </h:outputText>
+
+                                            <span>Feed Id/span>
+                                            <h:outputText value="#{feedType.feedId}"/>
+                                        </h:panelGrid>
+                                    </p:rowExpansion>
+
+                                    <p:column headerText="#{msg.bird_type} Name">
+                                        #{feedType.feedName}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.brand}">
+                                        #{feedType.brand}
+                                    </p:column>
+
+                                    <p:column headerText="Cost Per Kilogram" class="text-right"> 
+                                        #{feedType.costPerKilogram}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.action}">
+                                        <p:commandButton value="#{msg.edit}" styleClass="kbtn-info" action="#{feedTypeController.editFeedType(feedType)}" update="@form, :feedTypeForm"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.action}">
+                                        <p:commandButton value="#{msg.delete}" styleClass="kbtn-danger" action="#{feedTypeController.deleteFeedType(feedType)}" update="@form, :feedTypeForm"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

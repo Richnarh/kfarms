@@ -23,7 +23,7 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value="accountController")
+@Named(value="farmAccountController")
 @RequestScoped
 public class FarmAccountController implements Serializable{
     @Inject CrudApi crudApi;

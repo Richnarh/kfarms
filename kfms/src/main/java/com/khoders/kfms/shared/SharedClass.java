@@ -6,6 +6,7 @@
 package com.khoders.kfms.shared;
 
 import com.khoders.kfms.entities.enums.BirdCategory;
+import com.khoders.kfms.entities.enums.BirdSource;
 import com.khoders.kfms.entities.enums.Category;
 import com.khoders.kfms.entities.enums.CullingMortality;
 import com.khoders.kfms.entities.enums.EggColor;
@@ -22,42 +23,47 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "sharedModule")
+@Named(value = "sharedClass")
 @SessionScoped
-public class SharedModule implements Serializable
+public class SharedClass implements Serializable
 {
-    private List<BirdCategory> getBirdCategoryList()
+    public List<BirdCategory> getBirdCategoryList()
     {
         return Arrays.asList(BirdCategory.values());
     }
     
-    private List<Category> getCategoryList()
+    public List<Category> getCategoryList()
     {
         return Arrays.asList(Category.values());
     }
     
-    private List<CullingMortality> getCullingMortalityList()
+    public List<CullingMortality> getCullingMortalityList()
     {
         return Arrays.asList(CullingMortality.values());
     }
     
-    private List<EggColor> getEggColorList()
+    public List<EggColor> getEggColorList()
     {
         return Arrays.asList(EggColor.values());
     }
-    private List<EggSize> getEggSizeList()
+    public List<EggSize> getEggSizeList()
     {
         return Arrays.asList(EggSize.values());
     }
     
-    private List<FlockPurpose> getFlockPurposeList()
+    public List<FlockPurpose> getFlockPurposeList()
     {
         return Arrays.asList(FlockPurpose.values());
     }
     
-    private List<MedicationType> getMedicationTypeList()
+    public List<MedicationType> getMedicationTypeList()
     {
         return Arrays.asList(MedicationType.values());
+    }
+    
+    public List<BirdSource> getBirdSourceList()
+    {
+        return Arrays.asList(BirdSource.values());
     }
     
 }

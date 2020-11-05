@@ -16,24 +16,13 @@ import javax.persistence.MappedSuperclass;
  * @author khoders
  */
 @MappedSuperclass
-public class ProductionRecord extends BaseModel implements Serializable{
-    private static final String _production = "production";
-    @JoinColumn(name = "production", referencedColumnName = "id")
-    @ManyToOne
-    private Production production;
-    
+public class FarmAccountRecord extends BaseModel implements Serializable{
     private static final String _farmAccount = "farmAccount";
-    @JoinColumn(name = "farm_account", referencedColumnName = "id")
+    private static final String _farmName = FarmAccount._farmName;
+    private static final String _farmEmail = FarmAccount._businessEmail;
+    @JoinColumn(name = "farm_account")
     @ManyToOne
     private FarmAccount farmAccount;
-
-    public Production getProduction() {
-        return production;
-    }
-
-    public void setProduction(Production production) {
-        this.production = production;
-    }
 
     public FarmAccount getFarmAccount() {
         return farmAccount;
@@ -42,6 +31,5 @@ public class ProductionRecord extends BaseModel implements Serializable{
     public void setFarmAccount(FarmAccount farmAccount) {
         this.farmAccount = farmAccount;
     }
-    
-    
+
 }

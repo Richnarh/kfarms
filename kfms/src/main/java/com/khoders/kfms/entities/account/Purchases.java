@@ -5,7 +5,7 @@
  */
 package com.khoders.kfms.entities.account;
 
-import com.khoders.kfms.entities.FarmRecord;
+import com.khoders.kfms.entities.FarmChartRecord;
 import com.khoders.kfms.entities.enums.Category;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
@@ -22,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "purchases")
-public class Purchases extends FarmRecord implements Serializable{
+public class Purchases extends FarmChartRecord implements Serializable{
     @Column(name = "purchase_id")
     private String purchaseId;
     

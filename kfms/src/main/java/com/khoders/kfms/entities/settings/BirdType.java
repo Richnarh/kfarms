@@ -1,14 +1,13 @@
 package com.khoders.kfms.entities.settings;
 
+import com.khoders.kfms.entities.FarmAccountRecord;
 import com.khoders.kfms.entities.enums.FlockPurpose;
-import com.khoders.resource.jpa.BaseModel;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -17,14 +16,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "bird_type")
-public class BirdType extends BaseModel implements Serializable{
-    @Column(name = "bird_type")
-    private String flockType;
+public class BirdType extends FarmAccountRecord implements Serializable{
+    @Column(name = "flock_id")
+    private String flockId;
     
-    @JoinColumn(name = "bird_category")
-    @ManyToOne
-    private TypeOfBird typeOfBird;
-    
+    @Column(name = "bird_type_name")
+    private String flockTypeName; // e.g chicken, turkey, duck
+
     @Column(name = "breed")
     private String breed;
     
@@ -32,20 +30,20 @@ public class BirdType extends BaseModel implements Serializable{
     @Enumerated(EnumType.STRING)
     private FlockPurpose flockPurpose;
 
-    public TypeOfBird getTypeOfBird() {
-        return typeOfBird;
+    public String getFlockId() {
+        return flockId;
     }
 
-    public void setTypeOfBird(TypeOfBird typeOfBird) {
-        this.typeOfBird = typeOfBird;
+    public void setFlockId(String flockId) {
+        this.flockId = flockId;
     }
 
-    public String getFlockType() {
-        return flockType;
+    public String getFlockTypeName() {
+        return flockTypeName;
     }
 
-    public void setFlockType(String flockType) {
-        this.flockType = flockType;
+    public void setFlockTypeName(String flockTypeName) {
+        this.flockTypeName = flockTypeName;
     }
 
     public String getBreed() {
@@ -62,6 +60,16 @@ public class BirdType extends BaseModel implements Serializable{
 
     public void setFlockPurpose(FlockPurpose flockPurpose) {
         this.flockPurpose = flockPurpose;
+    }
+    
+    public void genCode()
+    {
+        setFlockId(SystemUtils.generateCode());
+    }
+
+    @Override
+    public String toString() {
+        return flockTypeName + " " +breed;
     }
     
     

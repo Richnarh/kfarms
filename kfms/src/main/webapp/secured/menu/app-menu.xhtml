@@ -8,76 +8,33 @@
     
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <!-- Brand Logo -->
-                <a href="index3.html" class="brand-link">
-                   <span class="brand-text font-weight-light">#{msg.appName} - ADMIN</span>
+                <a href="#{application.contextPath}/secured/index.xhtml" class="brand-link">
+                    <i class="fa fa-dashboard"></i> <span class="brand-text font-weight-light">#{msg.appName}</span>
                 </a>
 
                 <!-- Sidebar -->
                 <div class="sidebar">
                     <!-- Sidebar user panel (optional) -->
+                    
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                        <div class="info text-white">
-                            <span><i class="fa fa-circle text-success mr-3" title="Online"></i> Richard Narh </span>
+                        <div class="image">
+                            <img src="#{application.contextPath}/vendors/img/p.png" class="img-circle elevation-2" alt="User Image"/>
+                        </div>
+                        <div class="info">
+                            <span class="d-block text-light"><i class="fa fa-circle text-success mr-3" title="Online"></i> Richard Narh </span>
                         </div>
                     </div>
 
                     <!-- Sidebar Menu -->
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                            <li class="nav-item has-treeview menu-open">
-                                <a href="#" class="nav-link active">
-                                    <i class="nav-icon fa fa-tachometer-alt"></i>
-                                    <p>
-                                        Dashboard
-                                        <i class="right fa fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="./index2.html" class="nav-link active">
-                                            <i class="fa fa-check-circle nav-icon"></i>
-                                            <p>Dashboard v2</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
                             
                             <li class="nav-header">ACTIVITY</li>
-                            <li class="nav-item has-treeview">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fa fa-cube"></i>
-                                    <p>
-                                        Forms
-                                        <i class="fa fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="pages/forms/general.html" class="nav-link">
-                                            <i class="fa fa-check-circle nav-icon"></i>
-                                            <p>General Elements</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="pages/forms/advanced.html" class="nav-link">
-                                            <i class="fa fa-check-circle nav-icon"></i>
-                                            <p>Advanced Elements</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="pages/forms/editors.html" class="nav-link">
-                                            <i class="fa fa-check-circle nav-icon"></i>
-                                            <p>Editors</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="pages/forms/validation.html" class="nav-link">
-                                            <i class="fa fa-check-circle nav-icon"></i>
-                                            <p>Validation</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <h:panelGroup>
+                                <ui:include src="farm-menu.xhtml"/>
+                            </h:panelGroup>
+                            
+                            
                             
                             <li class="nav-header">SETTINGS</li>
                             <h:panelGroup>

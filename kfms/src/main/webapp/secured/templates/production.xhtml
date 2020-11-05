@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                #{msg.production}
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <h:panelGroup id="mainPanel">
+                    <div class="card mb-5">
+                        <div class="container-fluid mb-3">
+                            <div class="card-header">#{msg.production}</div>
+                            <h:panelGroup rendered="#{productionController.formView.listView}">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-lg-12">
+                                        <h:form class="float-right pt-3" style="margin-bottom: 5px;">
+
+                                            <p:commandButton value="#{msg.new} #{msg.production}" 
+                                                             class="kbtn-primary"  icon="fa fa-plus-circle" update=":mainPanel"
+                                                             action="#{productionController.initProduction()}"/>
+                                        </h:form>
+                                    </div>
+                                </div>
+
+                                <h:form class="mb-3 wow">
+                                    <p:dataTable id="productionTable" value="#{productionController.productionList}" var="production"
+                                                 paginator="true" paginatorPosition="bottom" rows="8">
+                                        <p:column exportable="false" styleClass="row-toggler">
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:rowExpansion>
+                                            <p:panelGrid columns="2">
+                                                <span>Created Date</span>
+                                                <h:outputText value="#{production.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+
+                                                <span>Production Code</span>
+                                                <h:outputText value="#{production.productionCode}"/>
+                                            </p:panelGrid>
+                                        </p:rowExpansion>
+
+                                        <p:column headerText="#{msg.date}">
+                                            <h:commandLink styleClass="kbtn-link" value="#{production.productionDate}" action="#{productionController.manage(production)}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.bird_batch_no}" filterBy="#{production.birdBatchNumber}" filterMatchMode="contains">
+                                            <h:outputText value="#{production.birdBatchNumber}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.location}">
+                                            <h:outputText value="#{production.bird.birdLocation}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.bird_type}">
+                                            <h:outputText value="#{production.bird.birdType.flockTypeName}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.bird_breed}">
+                                            <h:outputText value="#{production.bird.birdType.breed}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.purpose}">
+                                            <h:outputText value="#{production.bird.birdType.flockPurpose}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                            <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" update=":mainPanel"
+                                                             action="#{productionController.editProduction(production)}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                            <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{productionController.deleteProduction(production)}" 
+                                                             onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{productionController.formView.createView}" >
+                                <div class="col-md-6 mb-5 pt-3 mx-auto">
+                                    <h:form>
+                                        <h:panelGrid columns="2" styleClass="spaced-form">
+                                            <span>Date</span>
+                                            <p:datePicker value="#{productionController.production.productionDate}" yearNavigator="true" monthNavigator="true"/>
+
+                                            <span>Bird</span>
+                                            <p:selectOneMenu value="#{productionController.production.bird}">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{commonClass.birdList}"/>
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+
+                                        <center>
+                                            <p:commandButton styleClass="kbtn-success mx-3" value="#{productionController.optionText}" update=":mainPanel"
+                                                             action="#{productionController.saveProduction()}" />
+
+                                            <p:commandButton styleClass="kbtn-cancel" value="#{msg.close}"
+                                                             action="#{productionController.close()}" update="@form,:mainPanel"/>
+                                        </center>
+                                    </h:form>
+                                </div>
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{productionController.formView.detailView}" >
+                                <p class="required_field">
+                                    Paultry farm on #{productionController.production.productionDate} for flock batch no: #{productionController.production.birdBatchNumber}
+                                </p>
+
+                                <h:form>
+                                    <p:commandButton styleClass="kbtn-danger float-right" value="#{msg.close}" action="#{productionController.close()}" update=":mainPanel"/>
+                                </h:form>
+                                <div style="clear:both;"></div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <span class="font-weight-bold">Flock Batch No:</span>
+                                        <label class="text-info">#{productionController.production.birdBatchNumber}</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span class="font-weight-bold">Shed/Coop/House:</span>
+                                        <label class="text-info">#{productionController.production.bird.birdLocation}</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span class="font-weight-bold">#{msg.breed}:</span>
+                                        <label class="text-info">#{productionController.production.bird.birdType.breed}</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <span class="font-weight-bold">Initial Stock:</span>
+                                        <label class="text-info">#{productionController.production.bird.initialStock}</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span class="font-weight-bold">Current Stock:</span>
+                                        <label class="text-info">#{productionController.production.bird.currentStock}</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span class="font-weight-bold">Purpose:</span>
+                                        <label class="text-info">#{productionController.production.bird.birdType.flockPurpose}</label> 
+                                    </div>
+                                </div>
+
+                                <div class="mb-4 pt-3">
+                                    <h:form id="eggCollectionTable">
+                                        <p:dataTable value="#{eggCollectionController.eggCollectionList}" var="eggCollection">
+                                            <f:facet name="header">
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggCollectionController.clearEggCollection()}"
+                                                                 oncomplete="PF('eggCollectionForm').show()" update=":eggCollectionDialog"/>
+
+                                                <h5 class="float-left text-maroon">Egg Collections</h5>
+
+                                                <div style="clear:both;"></div>
+                                            </f:facet>
+
+                                            <p:column headerText="#{msg.egg_color}">
+                                                #{eggCollection.eggColor}
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.egg_size}">
+                                                #{eggCollection.eggSize}
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.healthy_eggs}" class="text-right">
+                                                #{eggCollection.healthyQty}
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.damaged_eggs}" class="text-right">
+                                                #{eggCollection.damagedQty}
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('eggCollectionForm').show()"
+                                                                 action="#{eggCollectionController.editEggCollection(eggCollection)}"
+                                                                 update=":eggCollectionForm, :eggCollectionDialog"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{eggCollectionController.deleteEggCollection(eggCollection)}" 
+                                                                 onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+
+                                    <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="eggCollectionForm" closeOnEscape="true" modal="true" id="eggCollectionDialog" height="330"  width="500">
+                                        <ui:include src="includes/egg-collection.xhtml"/>
+                                    </p:dialog>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h:form id="eggWeightTable">
+                                        <p:dataTable value="#{eggWeightController.eggWeightList}" var="eggWeight">
+                                            <f:facet name="header">
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggWeightController.clearEggWeight()}"
+                                                                 oncomplete="PF('eggWeightForm').show()" update=":eggWeightDialog"/>
+                                                <h5 class="float-left text-maroon">Egg Weight</h5>
+
+                                                <div style="clear:both;"></div>
+                                            </f:facet>
+
+                                            <p:column headerText="Number weighed" class="text-right">
+                                                #{eggWeight.numberWeighed}
+                                            </p:column>
+
+                                            <p:column headerText="Average weight" class="text-right">
+                                                #{eggWeight.averageWeight}
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('eggWeightForm').show()"
+                                                                 action="#{eggWeightController.editEggWeight(eggWeight)}"
+                                                                 update=":eggWeightForm, :eggWeightDialog"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{eggWeightController.deleteEggWeight(eggWeight)}" 
+                                                                 onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+
+                                    <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="eggWeightForm" closeOnEscape="true" modal="true" id="eggWeightDialog" height="250"  width="500">
+                                        <ui:include src="includes/egg-weight.xhtml"/>
+                                    </p:dialog>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h:form id="eggWeightTable">
+                                        <p:dataTable value="#{eggWeightController.eggWeightList}" var="eggWeight">
+                                            <f:facet name="header">
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggWeightController.clearEggWeight()}"
+                                                                 oncomplete="PF('eggWeightForm').show()" update=":eggWeightDialog"/>
+                                                <h5 class="float-left text-maroon">Egg Weight</h5>
+
+                                                <div style="clear:both;"></div>
+                                            </f:facet>
+
+                                            <p:column headerText="Number weighed" class="text-right">
+                                                #{eggWeight.numberWeighed}
+                                            </p:column>
+
+                                            <p:column headerText="Average weight" class="text-right">
+                                                #{eggWeight.averageWeight}
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('eggWeightForm').show()"
+                                                                 action="#{eggWeightController.editEggWeight(eggWeight)}"
+                                                                 update=":eggWeightForm, :eggWeightDialog"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{eggWeightController.deleteEggWeight(eggWeight)}" 
+                                                                 onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+
+                                    <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="eggWeightForm" closeOnEscape="true" modal="true" id="eggWeightDialog" height="250"  width="500">
+                                        <ui:include src="includes/egg-weight.xhtml"/>
+                                    </p:dialog>
+                                </div>
+
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
