@@ -5,7 +5,7 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
-import com.khoders.kfms.entities.settings.FeedType;
+import com.khoders.kfms.entities.Supplier;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -25,14 +25,14 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "feedTypeController")
+@Named(value = "supplierController")
 @SessionScoped
-public class FeedTypeController implements Serializable{
+public class SupplierController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
     
-    private FeedType feedType = new FeedType();
-    private List<FeedType> feedTypeList =  new LinkedList<>();
+    private Supplier supplier = new Supplier();
+    private List<Supplier> supplierList =  new LinkedList<>();
     
     private String optionText;
     
@@ -40,21 +40,21 @@ public class FeedTypeController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM FeedType e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM FeedType e";
-        feedTypeList = crudApi.getEm().createQuery(qryString, FeedType.class)
+//        String qryString = "SELECT e FROM Supplier e WHERE e.farmAccount = ?1";
+        String qryString = "SELECT e FROM Supplier e";
+        supplierList = crudApi.getEm().createQuery(qryString, Supplier.class)
 //                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
     }
     
-    public void saveFeedType()
+    public void saveSupplier()
     {
         try 
         {
-            feedType.genCode();
-          if(crudApi.save(feedType) != null)
+            supplier.genCode();
+          if(crudApi.save(supplier) != null)
           {
-              feedTypeList = CollectionList.washList(feedTypeList, feedType);
+              supplierList = CollectionList.washList(supplierList, supplier);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -64,20 +64,20 @@ public class FeedTypeController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearFeedType();
+          clearSupplier();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
     
-    public void deleteFeedType(FeedType feedType)
+    public void deleteSupplier(Supplier supplier)
     {
         try 
         {
-          if(crudApi.delete(feedType))
+          if(crudApi.delete(supplier))
           {
-              feedTypeList.remove(feedType);
+              supplierList.remove(supplier);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -93,29 +93,29 @@ public class FeedTypeController implements Serializable{
         }
     }
     
-    public void editFeedType(FeedType feedType)
+    public void editSupplier(Supplier supplier)
     {
-       this.feedType=feedType;
+       this.supplier=supplier;
     }
     
-    public void clearFeedType() 
+    public void clearSupplier() 
     {
-        feedType = new FeedType();
-        feedType.setFarmAccount(appSession.getCurrentUser());
+        supplier = new Supplier();
+        supplier.setFarmAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
-    public List<FeedType> getFeedTypeList() {
-        return feedTypeList;
+    public List<Supplier> getSupplierList() {
+        return supplierList;
     }
 
-    public FeedType getFeedType() {
-        return feedType;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public void setFeedType(FeedType bird) {
-        this.feedType = bird;
+    public void setSupplier(Supplier bird) {
+        this.supplier = bird;
     }
 
     public String getOptionText() {

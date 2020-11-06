@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="customer")
-public class Customer extends BaseModel implements Serializable{
+public class Customer extends FarmAccountRecord implements Serializable{
     @Column(name = "customer_code")
     private String customerCode;
     
@@ -27,9 +27,9 @@ public class Customer extends BaseModel implements Serializable{
     @Column(name = "customer_name")
     private String customerName;
     
-    public static final String _company = "company";
-    @Column(name = "company")
-    private String company;
+    public static final String _businessName = "businessName";
+    @Column(name = "business_name")
+    private String businessName;
     
     public static final String _streetName = "streetName";
     @Column(name = "street_name")
@@ -91,12 +91,12 @@ public class Customer extends BaseModel implements Serializable{
         this.note = note;
     }
 
-    public String getCompany() {
-        return company;
+    public String getBusinessName() {
+        return businessName;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
     public String getStreetName() {

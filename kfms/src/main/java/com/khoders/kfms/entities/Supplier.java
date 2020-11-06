@@ -18,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "supplier")
-public class Supplier extends BaseModel implements Serializable{
+public class Supplier extends FarmAccountRecord implements Serializable{
     @Column(name = "supplier_code")
     private String supplierCode;
     

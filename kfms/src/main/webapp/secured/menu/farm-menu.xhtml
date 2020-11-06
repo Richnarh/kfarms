@@ -20,9 +20,44 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#{application.contextPath}/secured/templates/birds.xhtml" class="nav-link">
+                <a href="#{application.contextPath}/#{msg.farm_menu_url}/birds.xhtml" class="nav-link">
                     <i class="fa fa-check-circle nav-icon"></i>
                     <p>Birds</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="pages/forms/editors.html" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>Editors</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="pages/forms/validation.html" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>Validation</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-cube"></i>
+            <p>
+                Client
+                <i class="fa fa-angle-left right"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#{application.contextPath}/#{msg.farm_menu_url}/customers.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>#{msg.customer}s</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#{application.contextPath}/#{msg.farm_menu_url}/suppliers.xhtml" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon"></i>
+                    <p>#{msg.supplier}s</p>
                 </a>
             </li>
             <li class="nav-item">

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.kfms.jbeans.controller;
+package com.khoders.kfms.jbeans.controller.settings;
 
 import com.khoders.kfms.entities.settings.BirdType;
 import com.khoders.kfms.jpa.AppSession;

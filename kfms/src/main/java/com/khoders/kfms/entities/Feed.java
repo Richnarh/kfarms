@@ -25,7 +25,7 @@ public class Feed extends ProductionRecord implements Serializable{
     private FeedType feedType;
     
     @Column(name = "feed_amount")
-    private int feedAmount;
+    private double feedAmount;
     
     @JoinColumn(name = "production", referencedColumnName = "id")
     @ManyToOne
@@ -39,14 +39,14 @@ public class Feed extends ProductionRecord implements Serializable{
         this.feedType = feedType;
     }
 
-    public int getFeedAmount() {
+    public double getFeedAmount() {
         return feedAmount;
     }
 
-    public void setFeedAmount(int feedAmount) {
+    public void setFeedAmount(double feedAmount) {
         this.feedAmount = feedAmount;
     }
-
+    
     public Production getProduction() {
         return production;
     }

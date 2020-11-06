@@ -25,11 +25,11 @@ public class FeedType  extends FarmAccountRecord implements Serializable{
     @Column(name = "feed_name")
     private String feedName;
     
-    @Column(name = "cost_per_kilogram")
-    private double costPerKilogram;
+    @Column(name = "cost_per_unit")
+    private double costPerUnit;
     
     @Column(name = "brand")
-    private double brand;
+    private String brand;
 
     public String getFeedId() {
         return feedId;
@@ -47,24 +47,32 @@ public class FeedType  extends FarmAccountRecord implements Serializable{
         this.feedName = feedName;
     }
 
-    public double getCostPerKilogram() {
-        return costPerKilogram;
+    public double getCostPerUnit() {
+        return costPerUnit;
     }
 
-    public void setCostPerKilogram(double costPerKilogram) {
-        this.costPerKilogram = costPerKilogram;
+    public void setCostPerUnit(double costPerUnit) {
+        this.costPerUnit = costPerUnit;
     }
 
-    public double getBrand() {
+    public String getBrand() {
         return brand;
     }
 
-    public void setBrand(double brand) {
+    public void setBrand(String brand) {
         this.brand = brand;
     }
+    
     
     public void genCode()
     {
         setId(SystemUtils.generateCode());
     }
+
+    @Override
+    public String toString() {
+        return feedName;
+    }
+    
+    
 }

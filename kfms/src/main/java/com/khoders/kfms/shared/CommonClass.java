@@ -7,6 +7,7 @@ package com.khoders.kfms.shared;
 
 import com.khoders.kfms.entities.Bird;
 import com.khoders.kfms.entities.settings.BirdType;
+import com.khoders.kfms.entities.settings.FeedType;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import java.io.Serializable;
@@ -29,6 +30,7 @@ public class CommonClass implements Serializable{
     
     private List<BirdType> birdTypeList = new LinkedList<>();
     private List<Bird> birdList = new LinkedList<>();
+    private List<FeedType> feedTypeList = new LinkedList<>();
     
     @PostConstruct
     public void init()
@@ -44,6 +46,12 @@ public class CommonClass implements Serializable{
         birdList = crudApi.getEm().createQuery(qryBird, Bird.class)
 //                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
+        
+//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
+        String qryFeedType = "SELECT e FROM FeedType e";
+        feedTypeList = crudApi.getEm().createQuery(qryFeedType, FeedType.class)
+//                .setParameter(1, appSession.getCurrentUser())
+                  .getResultList();
     }
 
     public List<BirdType> getBirdTypeList() {
@@ -52,6 +60,10 @@ public class CommonClass implements Serializable{
 
     public List<Bird> getBirdList() {
         return birdList;
+    }
+
+    public List<FeedType> getFeedTypeList() {
+        return feedTypeList;
     }
     
 }

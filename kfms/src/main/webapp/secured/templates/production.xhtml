@@ -233,39 +233,47 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <h:form id="eggWeightTable">
-                                        <p:dataTable value="#{eggWeightController.eggWeightList}" var="eggWeight">
+                                    <h:form id="feedTable">
+                                        <p:dataTable value="#{feedController.feedList}" var="feed">
                                             <f:facet name="header">
-                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggWeightController.clearEggWeight()}"
-                                                                 oncomplete="PF('eggWeightForm').show()" update=":eggWeightDialog"/>
-                                                <h5 class="float-left text-maroon">Egg Weight</h5>
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{feedController.clearFeed()}"
+                                                                 oncomplete="PF('feedForm').show()" update=":feedDialog"/>
+                                                <h5 class="float-left text-maroon">#{msg.feed}</h5>
 
                                                 <div style="clear:both;"></div>
                                             </f:facet>
 
-                                            <p:column headerText="Number weighed" class="text-right">
-                                                #{eggWeight.numberWeighed}
+                                            <p:column headerText="#{msg.feed_type}">
+                                                #{feed.feedType.feedName}
                                             </p:column>
-
-                                            <p:column headerText="Average weight" class="text-right">
-                                                #{eggWeight.averageWeight}
+                                            
+                                            <p:column headerText="#{msg.amount} Of Feed" class="text-right">
+                                                #{feed.feedAmount} #{feed.farmAccount.unitOfWeight}
+                                            </p:column>
+                                            
+                                            <p:column headerText="Cost Per #{feed.farmAccount.unitOfWeight}" class="text-right">
+                                                #{feed.feedType.costPerUnit}
+                                            </p:column>
+                                            
+                                            <p:column headerText="Total Cost" class="text-right">
+                                                #{feed.feedAmount * feed.feedType.costPerUnit} #{feed.farmAccount.unitOfWeight}
                                             </p:column>
 
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('eggWeightForm').show()"
-                                                                 action="#{eggWeightController.editEggWeight(eggWeight)}"
-                                                                 update=":eggWeightForm, :eggWeightDialog"/>
+                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('feedForm').show()"
+                                                                 action="#{feedController.editFeed(feed)}"
+                                                                 update=":feedForm, :feedDialog"/>
                                             </p:column>
 
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
-                                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{eggWeightController.deleteEggWeight(eggWeight)}" 
-                                                                 onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" 
+                                                        action="#{feedController.deleteFeed(feed)}" update="@form"/>
                                             </p:column>
                                         </p:dataTable>
                                     </h:form>
 
-                                    <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="eggWeightForm" closeOnEscape="true" modal="true" id="eggWeightDialog" height="250"  width="500">
-                                        <ui:include src="includes/egg-weight.xhtml"/>
+                                    <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="feedForm" closeOnEscape="true" modal="true" id="feedDialog" height="250"  width="500">
+                                        <ui:include src="includes/feed.xhtml"/>
                                     </p:dialog>
                                 </div>
 

@@ -11,31 +11,22 @@
                 <span>Add new eggs</span>
             </h5>
             <div class="card-body">
-                <h:form class="spaced-form" id="eggCollectionForm">
+                <h:form class="spaced-form" id="feedForm">
                     <h:panelGrid columns="2">
-                        <span class="required_field">#{msg.egg_color}</span>
-                        <p:selectOneMenu value="#{eggCollectionController.eggCollection.eggColor}" required="true">
+                        <span class="required_field">#{msg.feed}</span>
+                        <p:selectOneMenu value="#{feedController.feed.feedType}" required="true">
                             <f:selectItem itemLabel="#{msg.choose}"/>
-                            <f:selectItems value="#{sharedClass.eggColorList}"/>
+                            <f:selectItems value="#{commonClass.feedTypeList}"/>
                         </p:selectOneMenu>
                         
-                        <span class="required_field">#{msg.egg_size}</span>
-                        <p:selectOneMenu value="#{eggCollectionController.eggCollection.eggSize}" required="true">
-                            <f:selectItem itemLabel="#{msg.choose}"/>
-                            <f:selectItems value="#{sharedClass.eggSizeList}"/>
-                        </p:selectOneMenu>
-                        
-                        <span class="required_field">#{msg.healthy_eggs}</span>
-                        <p:inputText value="#{eggCollectionController.eggCollection.healthyQty}" required="true"/>
-                        
-                        <span>#{msg.damaged_eggs}</span>
-                        <p:inputText value="#{eggCollectionController.eggCollection.damagedQty}"/>
+                        <span class="required_field">#{msg.amount} of feed</span>
+                        <p:inputText value="#{feedController.feed.feedAmount}" required="true"/>
                         
                         <br/>
                         
                     </h:panelGrid>
-                        <p:commandButton styleClass="kbtn-success mx-3" value="#{eggCollectionController.optionText}" action="#{eggCollectionController.saveEggCollection()}" update=":eggCollectionTable"/>
-                        <p:commandButton styleClass="kbtn-cancel" value="#{msg.clear}" action="#{eggCollectionController.clearEggCollection()}" update="@form"/>
+                        <p:commandButton styleClass="kbtn-success mx-3" value="#{feedController.optionText}" action="#{feedController.saveFeed()}" update=":feedTable"/>
+                        <p:commandButton styleClass="kbtn-cancel" value="#{msg.clear}" immediate="true" action="#{feedController.clearFeed()}" update="@form"/>
                 </h:form>
             </div>
         </div>

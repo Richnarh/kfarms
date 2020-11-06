@@ -23,8 +23,8 @@
                                         <span class="required_field">#{msg.feed_type} Name</span>
                                         <p:inputText value="#{feedTypeController.feedType.feedName}" required="true"/>
 
-                                        <span class="required_field">Cost Per Kilogram</span>
-                                        <p:inputText value="#{feedTypeController.feedType.costPerKilogram}" required="true"/>
+                                        <span class="required_field">Cost Per #{productionController.production.farmAccount.unitOfWeight}</span>
+                                        <p:inputText value="#{feedTypeController.feedType.costPerUnit}" required="true"/>
 
                                         <span>#{msg.brand}</span>
                                         <p:inputText value="#{feedTypeController.feedType.brand}"/>
@@ -33,7 +33,7 @@
 
                                     <div class="pt-3">
                                         <p:commandButton styleClass="kbtn-success mx-5" value="#{feedTypeController.optionText}" action="#{feedTypeController.saveFeedType()}" update="@form, :feedTypeTable"/>
-                                        <p:commandButton styleClass="kbtn-cancel" value="#{msg.clear}" action="#{feedTypeController.clearFeedType()}" update="@form"/>
+                                        <p:commandButton styleClass="kbtn-cancel" value="#{msg.clear}" immediate="true" action="#{feedTypeController.clearFeedType()}" update="@form"/>
                                     </div>
 
                                 </h:form>
@@ -52,7 +52,7 @@
                                                 <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
                                             </h:outputText>
 
-                                            <span>Feed Id/span>
+                                            <span>Feed Id</span>
                                             <h:outputText value="#{feedType.feedId}"/>
                                         </h:panelGrid>
                                     </p:rowExpansion>
@@ -65,8 +65,8 @@
                                         #{feedType.brand}
                                     </p:column>
 
-                                    <p:column headerText="Cost Per Kilogram" class="text-right"> 
-                                        #{feedType.costPerKilogram}
+                                    <p:column headerText="Cost Per #{productionController.production.farmAccount.unitOfWeight}" class="text-right"> 
+                                        #{feedType.costPerUnit}
                                     </p:column>
 
                                     <p:column headerText="#{msg.action}">
