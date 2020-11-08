@@ -5,7 +5,7 @@
  */
 package com.khoders.kfms.entities.account;
 
-import com.khoders.kfms.entities.enums.Category;
+import com.khoders.kfms.entities.enums.PurchaseType;
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -27,7 +27,7 @@ public class IncomeAccount extends BaseModel implements Serializable{
 
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private PurchaseType category;
     
     @Column(name = "quantity")
     private int quantity;
@@ -43,11 +43,11 @@ public class IncomeAccount extends BaseModel implements Serializable{
         this.receivedDate = receivedDate;
     }
 
-    public Category getCategory() {
+    public PurchaseType getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(PurchaseType category) {
         this.category = category;
     }
 

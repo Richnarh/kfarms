@@ -5,7 +5,6 @@
  */
 package com.khoders.kfms.entities;
 
-import com.khoders.resource.jpa.BaseModel;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -119,5 +118,13 @@ public class Customer extends FarmAccountRecord implements Serializable{
     {
         setCustomerCode(SystemUtils.generateCode());
     }
+
+    @Override
+    public String toString() {
+        return customerName;
+    }
+
+    
+    
 }
     

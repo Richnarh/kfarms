@@ -6,11 +6,11 @@
 package com.khoders.kfms.entities;
 
 import com.khoders.kfms.entities.settings.Medication;
-import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -20,13 +20,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "vaccination")
-public class Vaccination extends BaseModel implements Serializable{
+public class Vaccination extends FarmAccountRecord implements Serializable{
     @JoinColumn(name = "medication", referencedColumnName = "id")
     @ManyToOne
     private Medication medication;
     
     @Column(name = "dosage")
-    private int dosage;
+    private String dosage;
+    
+    @Column(name = "note")
+    @Lob
+    private String note;
     
     @JoinColumn(name = "production", referencedColumnName = "id")
     @ManyToOne
@@ -40,20 +44,29 @@ public class Vaccination extends BaseModel implements Serializable{
         this.medication = medication;
     }
 
-    public int getDosage() {
+    public String getDosage() {
         return dosage;
     }
 
-    public void setDosage(int dosage) {
+    public void setDosage(String dosage) {
         this.dosage = dosage;
     }
 
+    
     public Production getProduction() {
         return production;
     }
 
     public void setProduction(Production production) {
         this.production = production;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
     
     

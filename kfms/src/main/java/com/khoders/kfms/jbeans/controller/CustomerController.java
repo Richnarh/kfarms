@@ -95,6 +95,7 @@ public class CustomerController implements Serializable{
     
     public void editCustomer(Customer customer)
     {
+       optionText = "Update";
        this.customer=customer;
     }
     

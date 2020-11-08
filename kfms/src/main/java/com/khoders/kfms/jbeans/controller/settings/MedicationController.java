@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.kfms.jbeans.controller;
+package com.khoders.kfms.jbeans.controller.settings;
 
-import com.khoders.kfms.entities.Supplier;
+import com.khoders.kfms.entities.settings.Medication;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -25,14 +25,14 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "supplierController")
+@Named(value = "medicationController")
 @SessionScoped
-public class SupplierController implements Serializable{
+public class MedicationController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
     
-    private Supplier supplier = new Supplier();
-    private List<Supplier> supplierList =  new LinkedList<>();
+    private Medication medication = new Medication();
+    private List<Medication> medicationList=  new LinkedList<>();
     
     private String optionText;
     
@@ -40,21 +40,45 @@ public class SupplierController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Supplier e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Supplier e";
-        supplierList = crudApi.getEm().createQuery(qryString, Supplier.class)
+//        String qryString = "SELECT e FROM Medication e WHERE e.farmAccount = ?1";
+        String qryString = "SELECT e FROM Medication e";
+        medicationList = crudApi.getEm().createQuery(qryString, Medication.class)
 //                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
     }
     
-    public void saveSupplier()
+    public void saveMedication()
     {
         try 
         {
-            supplier.genCode();
-          if(crudApi.save(supplier) != null)
+          medication.genCode();
+          if(crudApi.save(medication) != null)
           {
-              supplierList = CollectionList.washList(supplierList, supplier);
+              medicationList = CollectionList.washList(medicationList, medication);
+              
+              FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+              clearMedication();
+          }
+          else
+          {
+              FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+          }
+          clearMedication();
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void deleteMedication(Medication medication)
+    {
+        try 
+        {
+          if(crudApi.delete(medication))
+          {
+              medicationList.remove(medication);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -64,61 +88,38 @@ public class SupplierController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearSupplier();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
     
-    public void deleteSupplier(Supplier supplier)
+    public void editMedication(Medication medication)
     {
-        try 
-        {
-          if(crudApi.delete(supplier))
-          {
-              supplierList.remove(supplier);
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
-          }
-          else
-          {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
-          }
-        } catch (Exception e) 
-        {
-            e.printStackTrace();
-        }
+        optionText = "Update";
+       this.medication=medication;
     }
     
-    public void editSupplier(Supplier supplier)
+    public void clearMedication() 
     {
-       optionText = "Update";
-       this.supplier=supplier;
-    }
-    
-    public void clearSupplier() 
-    {
-        supplier = new Supplier();
-        supplier.setFarmAccount(appSession.getCurrentUser());
+        medication = new Medication();
+        medication.setFarmAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
-    public List<Supplier> getSupplierList() {
-        return supplierList;
+    public List<Medication> getMedicationList() {
+        return medicationList;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public Medication getMedication() {
+        return medication;
     }
 
-    public void setSupplier(Supplier bird) {
-        this.supplier = bird;
+    public void setMedication(Medication bird) {
+        this.medication = bird;
     }
-
+    
     public String getOptionText() {
         return optionText;
     }

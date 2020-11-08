@@ -5,10 +5,11 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
-import com.khoders.kfms.entities.Supplier;
+import com.khoders.kfms.entities.Treatment;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
+import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
@@ -25,14 +26,15 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "supplierController")
+@Named(value = "treatmentController")
 @SessionScoped
-public class SupplierController implements Serializable{
+public class TreatmentController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
     
-    private Supplier supplier = new Supplier();
-    private List<Supplier> supplierList =  new LinkedList<>();
+    private Treatment treatment = new Treatment();
+    private List<Treatment> treatmentList=  new LinkedList<>();
+    private FormView formView = FormView.listForm();
     
     private String optionText;
     
@@ -40,21 +42,21 @@ public class SupplierController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Supplier e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Supplier e";
-        supplierList = crudApi.getEm().createQuery(qryString, Supplier.class)
+//        String qryString = "SELECT e FROM Treatment e WHERE e.farmAccount = ?1";
+        String qryString = "SELECT e FROM Treatment e";
+        treatmentList = crudApi.getEm().createQuery(qryString, Treatment.class)
 //                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
     }
     
-    public void saveSupplier()
+    public void saveTreatment()
     {
         try 
         {
-            supplier.genCode();
-          if(crudApi.save(supplier) != null)
+            treatment.setProduction(treatment.getProduction());
+          if(crudApi.save(treatment) != null)
           {
-              supplierList = CollectionList.washList(supplierList, supplier);
+              treatmentList = CollectionList.washList(treatmentList, treatment);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -64,20 +66,20 @@ public class SupplierController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearSupplier();
+          clearTreatment();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
     
-    public void deleteSupplier(Supplier supplier)
+    public void deleteTreatment(Treatment treatment)
     {
         try 
         {
-          if(crudApi.delete(supplier))
+          if(crudApi.delete(treatment))
           {
-              supplierList.remove(supplier);
+              treatmentList.remove(treatment);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -93,30 +95,36 @@ public class SupplierController implements Serializable{
         }
     }
     
-    public void editSupplier(Supplier supplier)
+    public void editTreatment(Treatment treatment)
     {
        optionText = "Update";
-       this.supplier=supplier;
+       this.treatment=treatment;
     }
     
-    public void clearSupplier() 
+    public void clearTreatment() 
     {
-        supplier = new Supplier();
-        supplier.setFarmAccount(appSession.getCurrentUser());
+        treatment = new Treatment();
+        treatment.setFarmAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
-    public List<Supplier> getSupplierList() {
-        return supplierList;
+    public void close()
+    {
+      treatment = null;
+      formView.restToListView();
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public List<Treatment> getTreatmentList() {
+        return treatmentList;
     }
 
-    public void setSupplier(Supplier bird) {
-        this.supplier = bird;
+    public Treatment getTreatment() {
+        return treatment;
+    }
+
+    public void setTreatment(Treatment treatment) {
+        this.treatment = treatment;
     }
 
     public String getOptionText() {
@@ -125,6 +133,14 @@ public class SupplierController implements Serializable{
 
     public void setOptionText(String optionText) {
         this.optionText = optionText;
+    }
+
+    public FormView getFormView() {
+        return formView;
+    }
+
+    public void setFormView(FormView formView) {
+        this.formView = formView;
     }
 
 }

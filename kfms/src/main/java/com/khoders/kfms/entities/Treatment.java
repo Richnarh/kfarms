@@ -20,7 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "treatment")
-public class Treatment extends BaseModel implements Serializable{
+public class Treatment extends FarmAccountRecord implements Serializable{
     @Column(name = "treatment_given")
     private String treatmentGiven;
     

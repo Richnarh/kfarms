@@ -39,10 +39,11 @@ public class ChartOfAccountController implements Serializable{
     @PostConstruct
     private void init()
     {
-        optionText = "Save";
-        String qryString = "SELECT e FROM ChartOfAccount e WHERE e.account = ?1";
+        optionText = "Save Changes";
+//        String qryString = "SELECT e FROM ChartOfAccount e WHERE e.account = ?1";
+        String qryString = "SELECT e FROM ChartOfAccount e ";
         chartOfAccountList = crudApi.getEm().createQuery(qryString, ChartOfAccount.class)   
-                .setParameter(1, appSession.getCurrentUser())
+//                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
     }
     
@@ -90,14 +91,15 @@ public class ChartOfAccountController implements Serializable{
         }
     }
     
-    public void editChartOfAccount()
+    public void editChartOfAccount(ChartOfAccount chartOfAccount)
     {
         optionText = "Update";
+        this.chartOfAccount=chartOfAccount;
     }
 
     public void clearChartOfAccount() 
     {
-        optionText = "Save";
+        optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     public ChartOfAccount getChartOfAccount() {
@@ -112,5 +114,12 @@ public class ChartOfAccountController implements Serializable{
         return chartOfAccountList;
     }
 
+    public String getOptionText() {
+        return optionText;
+    }
+
+    public void setOptionText(String optionText) {
+        this.optionText = optionText;
+    }
 
 }

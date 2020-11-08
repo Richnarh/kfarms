@@ -5,10 +5,11 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
-import com.khoders.kfms.entities.Supplier;
+import com.khoders.kfms.entities.Vaccination;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
+import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
@@ -25,14 +26,15 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "supplierController")
+@Named(value = "vaccinationController")
 @SessionScoped
-public class SupplierController implements Serializable{
+public class VaccinationController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
     
-    private Supplier supplier = new Supplier();
-    private List<Supplier> supplierList =  new LinkedList<>();
+    private Vaccination vaccination = new Vaccination();
+    private List<Vaccination> vaccinationList=  new LinkedList<>();
+    private FormView formView = FormView.listForm();
     
     private String optionText;
     
@@ -40,21 +42,22 @@ public class SupplierController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Supplier e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Supplier e";
-        supplierList = crudApi.getEm().createQuery(qryString, Supplier.class)
+//        String qryString = "SELECT e FROM Vaccination e WHERE e.farmAccount = ?1";
+        String qryString = "SELECT e FROM Vaccination e";
+        vaccinationList = crudApi.getEm().createQuery(qryString, Vaccination.class)
 //                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
+        clearVaccination();
     }
     
-    public void saveSupplier()
+    public void saveVaccination()
     {
         try 
         {
-            supplier.genCode();
-          if(crudApi.save(supplier) != null)
+            vaccination.setProduction(vaccination.getProduction());
+          if(crudApi.save(vaccination) != null)
           {
-              supplierList = CollectionList.washList(supplierList, supplier);
+              vaccinationList = CollectionList.washList(vaccinationList, vaccination);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -64,20 +67,20 @@ public class SupplierController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearSupplier();
+          clearVaccination();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
     
-    public void deleteSupplier(Supplier supplier)
+    public void deleteVaccination(Vaccination vaccination)
     {
         try 
         {
-          if(crudApi.delete(supplier))
+          if(crudApi.delete(vaccination))
           {
-              supplierList.remove(supplier);
+              vaccinationList.remove(vaccination);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -93,30 +96,36 @@ public class SupplierController implements Serializable{
         }
     }
     
-    public void editSupplier(Supplier supplier)
+    public void editVaccination(Vaccination vaccination)
     {
        optionText = "Update";
-       this.supplier=supplier;
+       this.vaccination=vaccination;
     }
     
-    public void clearSupplier() 
+    public void clearVaccination() 
     {
-        supplier = new Supplier();
-        supplier.setFarmAccount(appSession.getCurrentUser());
+        vaccination = new Vaccination();
+        vaccination.setFarmAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
-    public List<Supplier> getSupplierList() {
-        return supplierList;
+    public void close()
+    {
+      vaccination = null;
+      formView.restToListView();
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public List<Vaccination> getVaccinationList() {
+        return vaccinationList;
     }
 
-    public void setSupplier(Supplier bird) {
-        this.supplier = bird;
+    public Vaccination getVaccination() {
+        return vaccination;
+    }
+
+    public void setVaccination(Vaccination vaccination) {
+        this.vaccination = vaccination;
     }
 
     public String getOptionText() {
@@ -125,6 +134,14 @@ public class SupplierController implements Serializable{
 
     public void setOptionText(String optionText) {
         this.optionText = optionText;
+    }
+
+    public FormView getFormView() {
+        return formView;
+    }
+
+    public void setFormView(FormView formView) {
+        this.formView = formView;
     }
 
 }

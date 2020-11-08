@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <div class="khoders-card">
+            <h5 class="card-header">
+                <span>#{msg.vaccination}</span>
+            </h5>
+            <div class="card-body">
+                <h:form class="spaced-form" id="vaccinationForm">
+                    <h:panelGrid columns="2">
+                        <span class="required_field">#{msg.medication}</span>
+                        <p:selectOneMenu value="#{vaccinationController.vaccination.medication}">
+                            <f:selectItem itemLabel="#{msg.choose}"/>
+                            <f:selectItems value="#{commonClass.medicationList}"/>
+                        </p:selectOneMenu>
+                        
+                        <span class="required_field">#{msg.dosage}</span>
+                        <p:inputText value="#{vaccinationController.vaccination.dosage}" required="true"/>
+                        
+                        <span>#{msg.note}</span>
+                        <p:inputTextarea value="#{vaccinationController.vaccination.note}"/>
+                        
+                        <br/>
+                        
+                    </h:panelGrid>
+                        <p:commandButton styleClass="kbtn-success mx-3" value="#{vaccinationController.optionText}" 
+                                         action="#{vaccinationController.saveVaccination()}" update=":vaccinationTable"/>
+                        <p:commandButton styleClass="kbtn-cancel" value="#{msg.clear}" immediate="true" 
+                                         action="#{vaccinationController.clearVaccination()}" update="@form"/>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>
+

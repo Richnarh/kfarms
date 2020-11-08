@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <div class="row">
+
+        <div class="col-lg-3">
+            <h:form id="orderItemForm" >
+                <h:panelGrid columns="2" styleClass="spaced-form" >                                                
+
+                    <span>#{msg.item_name}</span>
+                    <p:inputText value="#{purchaseController.purchaseItem.itemName}" />
+
+                    <span>#{msg.quantity}</span>
+                    <p:inputText value="#{purchaseController.purchaseItem.quantity}" />
+
+                    <span>#{msg.unit_price}</span>
+                    <p:inputText value="#{purchaseController.purchaseItem.unitPrice}" />
+
+                    <span>#{msg.charges}</span>
+                    <p:inputText value="#{purchaseController.purchaseItem.charges}" />
+
+                    <span>#{msg.note}</span>
+                    <p:inputTextarea value="#{purchaseController.purchaseItem.note}" />
+
+                </h:panelGrid> 
+
+                <center>
+                    <p:commandButton value="#{msg.add}" styleClass="kbtn-info"
+                                     action="#{purchaseController.addPurchaseItem()}" 
+                                     update=":purchaseItemTable, @form"/>
+
+                    <p:commandButton value="#{msg.clear}" styleClass="kbtn-cancel"
+                                     action="#{purchaseController.clearPurchaseItem()}" 
+                                     immediate="true" update="@form"/>
+                </center>
+            </h:form>
+        </div>
+        <div class="col-lg-9">
+
+            <h:form id="purchaseItemTable">
+                <p:dataTable value="#{purchaseController.purchaseItemList}" var="purchaseItem" 
+                             paginator="true" paginatorPosition="bottom" rows="5">
+
+                    <p:column headerText="#{msg.note}" >
+                        <h:outputText value="#{purchaseItem.note}" />                              
+                    </p:column>
+
+                    <p:column headerText="#{msg.quantity}" styleClass="text-right">
+                        <h:outputText value="#{purchaseItem.quantity}"/>                                 
+                    </p:column>
+
+                    <p:column headerText="#{msg.unit_price}" styleClass="text-right">
+                        <h:outputText value="#{purchaseItem.unitPrice}" rendered="#{purchaseItem.unitPrice != 0.0 }">
+                            <f:convertNumber pattern="#{msg.money_pattern}" />
+                        </h:outputText>                                 
+                    </p:column>
+
+                    <p:column headerText="#{msg.charges}" styleClass="text-right">
+                        <h:outputText value="#{purchaseItem.charges}" rendered="#{purchaseItem.charges != 0.0 }">
+                            <f:convertNumber pattern="#{msg.money_pattern}" />
+                        </h:outputText>                                 
+                    </p:column>
+
+                    <p:column headerText="#{msg.amount}" styleClass="text-right">
+                        <h:outputText value="#{purchaseItem.totalAmount}" 
+                                      rendered="#{purchaseItem.totalAmount != 0.0}">
+                            <f:convertNumber pattern="#{msg.money_pattern}" />
+                        </h:outputText>                                 
+                    </p:column>
+
+                    <p:column headerText="#{msg.action}" >
+                        <p:commandButton value="#{msg.edit}" immediate="true" update=":mainPanel" styleClass="kbtn-info"
+                                         action="#{purchaseController.editPurchaseItem(purchaseItem)}"/>                         
+                    </p:column>
+
+                    <p:column headerText="#{msg.action}" >
+                        <p:commandButton value="#{msg.remove}"  styleClass="kbtn-danger"
+                                         action="#{purchaseController.removePurchaseItem(purchaseItem)}" immediate="true" update="@form"/>
+                    </p:column>
+                </p:dataTable>
+
+
+                <center>
+                    <br/>
+                    <h:panelGrid columns="2">
+                        <span class="field-shade">#{msg.total_amount}</span>
+                        <h:outputText value="#{purchaseController.purchase.totalAmount}" styleClass="field-shade">
+                            <f:convertNumber pattern="#{msg.money_pattern}" />
+                        </h:outputText>
+                    </h:panelGrid>
+                </center>
+
+                <center>
+                    <br/>
+                    <p:commandButton value="#{msg.save} All" styleClass="kbtn-success mx-4" action="#{purchaseController.savePurchase()}" update=":mainPanel"/>
+                    <p:commandButton value="Close Page" styleClass="kbtn-danger" update=":mainPanel"
+                                     action="#{purchaseController.close()}"/>
+                </center>
+            </h:form>
+        </div>
+
+
+
+
+
+    </div>
+</html>
+

@@ -26,9 +26,9 @@ public class FarmChartRecord extends BaseModel implements Serializable{
     private FarmAccount farmAccount;
     
     private static final String _accountName = ChartOfAccount._accountName;
-    @JoinColumn(name = "chart_of_account", referencedColumnName = "id")
+    @JoinColumn(name = "account", referencedColumnName = "id")
     @ManyToOne
-    private ChartOfAccount chartOfAccount;
+    private ChartOfAccount account;
 
     public FarmAccount getFarmAccount() {
         return farmAccount;
@@ -38,12 +38,12 @@ public class FarmChartRecord extends BaseModel implements Serializable{
         this.farmAccount = farmAccount;
     }
 
-    public ChartOfAccount getChartOfAccount() {
-        return chartOfAccount;
+    public ChartOfAccount getAccount() {
+        return account;
     }
 
-    public void setChartOfAccount(ChartOfAccount chartOfAccount) {
-        this.chartOfAccount = chartOfAccount;
+    public void setAccount(ChartOfAccount account) {
+        this.account = account;
     }
     
     

@@ -9,7 +9,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <!-- Brand Logo -->
                 <a href="#{application.contextPath}/secured/index.xhtml" class="brand-link">
-                    <i class="fa fa-dashboard"></i> <span class="brand-text font-weight-light">#{msg.appName}</span>
+                    <i class="fa fa-dashboard"></i> <span class="brand-text">#{msg.appName}</span>
                 </a>
 
                 <!-- Sidebar -->
@@ -29,12 +29,17 @@
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                             
-                            <li class="nav-header">ACTIVITY</li>
+                            <li class="nav-header">OPERATIONS</li>
                             <h:panelGroup>
                                 <ui:include src="farm-menu.xhtml"/>
                             </h:panelGroup>
                             
                             
+                            
+                            <li class="nav-header">ACCOUNT</li>
+                            <h:panelGroup>
+                                <ui:include src="account-menu.xhtml"/>
+                            </h:panelGroup>
                             
                             <li class="nav-header">SETTINGS</li>
                             <h:panelGroup>

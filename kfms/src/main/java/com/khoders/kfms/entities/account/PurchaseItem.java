@@ -6,6 +6,7 @@
 package com.khoders.kfms.entities.account;
 
 import com.khoders.kfms.entities.AccountRecord;
+import com.khoders.kfms.entities.FarmChartRecord;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -20,13 +21,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "purchase_item")
-public class PurchaseItem extends AccountRecord implements Serializable{
+public class PurchaseItem extends FarmChartRecord implements Serializable{
    @Column(name = "item_code")
    private String itemCode;
    
-   @JoinColumn(name = "purchases", referencedColumnName = "id")
+   @JoinColumn(name = "purchase", referencedColumnName = "id")
    @ManyToOne
-   private Purchases purchases;
+   private Purchase purchase;
    
    @Column(name = "quantity")
    private int quantity;
@@ -40,15 +41,21 @@ public class PurchaseItem extends AccountRecord implements Serializable{
    @Column(name = "discount")
    private double discount;
    
+   @Column(name = "charges")
+   private double charges;
+   
    @Column(name = "total_amount")
    private double totalAmount;
+   
+   @Column(name = "note")
+   private String note;
 
-    public Purchases getPurchases() {
-        return purchases;
+    public Purchase getPurchase() {
+        return purchase;
     }
 
-    public void setPurchases(Purchases purchases) {
-        this.purchases = purchases;
+    public void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
     }
 
     public int getQuantity() {
@@ -97,6 +104,22 @@ public class PurchaseItem extends AccountRecord implements Serializable{
 
     public void setItemCode(String itemCode) {
         this.itemCode = itemCode;
+    }
+
+    public double getCharges() {
+        return charges;
+    }
+
+    public void setCharges(double charges) {
+        this.charges = charges;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
    
     public void genCode()

@@ -151,7 +151,7 @@
 
                                 <div class="mb-4 pt-3">
                                     <h:form id="eggCollectionTable">
-                                        <p:dataTable value="#{eggCollectionController.eggCollectionList}" var="eggCollection">
+                                        <p:dataTable value="#{eggCollectionController.eggCollectionList}" var="eggCollection" paginator="true" paginatorPosition="bottom" rows="5">
                                             <f:facet name="header">
                                                 <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggCollectionController.clearEggCollection()}"
                                                                  oncomplete="PF('eggCollectionForm').show()" update=":eggCollectionDialog"/>
@@ -197,7 +197,7 @@
 
                                 <div class="mb-4">
                                     <h:form id="eggWeightTable">
-                                        <p:dataTable value="#{eggWeightController.eggWeightList}" var="eggWeight">
+                                        <p:dataTable value="#{eggWeightController.eggWeightList}" var="eggWeight" paginator="true" paginatorPosition="bottom" rows="5">
                                             <f:facet name="header">
                                                 <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggWeightController.clearEggWeight()}"
                                                                  oncomplete="PF('eggWeightForm').show()" update=":eggWeightDialog"/>
@@ -234,7 +234,7 @@
 
                                 <div class="mb-4">
                                     <h:form id="feedTable">
-                                        <p:dataTable value="#{feedController.feedList}" var="feed">
+                                        <p:dataTable value="#{feedController.feedList}" var="feed" paginator="true" paginatorPosition="bottom" rows="5">
                                             <f:facet name="header">
                                                 <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{feedController.clearFeed()}"
                                                                  oncomplete="PF('feedForm').show()" update=":feedDialog"/>
@@ -256,7 +256,9 @@
                                             </p:column>
                                             
                                             <p:column headerText="Total Cost" class="text-right">
-                                                #{feed.feedAmount * feed.feedType.costPerUnit} #{feed.farmAccount.unitOfWeight}
+                                                <h:outputText value="#{feed.feedAmount * feed.feedType.costPerUnit} #{feed.farmAccount.country.currencyCode}">
+                                                    <f:convertNumber pattern="#{msg.money_pattern}"/>
+                                                </h:outputText>
                                             </p:column>
 
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
@@ -274,6 +276,162 @@
 
                                     <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="feedForm" closeOnEscape="true" modal="true" id="feedDialog" height="250"  width="500">
                                         <ui:include src="includes/feed.xhtml"/>
+                                    </p:dialog>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h:form id="vaccinationTable">
+                                        <p:dataTable value="#{vaccinationController.vaccinationList}" var="vaccination" paginator="true" paginatorPosition="bottom" rows="5">
+                                            <f:facet name="header">
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{vaccinationController.clearVaccination()}"
+                                                                 oncomplete="PF('vaccinationForm').show()" update=":vaccinationDialog"/>
+                                                <h5 class="float-left text-maroon">#{msg.vaccination}</h5>
+
+                                                <div style="clear:both;"></div>
+                                            </f:facet>
+
+                                            <p:column headerText="#{msg.medication}">
+                                                #{vaccination.medication}
+                                            </p:column>
+                                            
+                                            <p:column headerText="#{msg.dosage}">
+                                                #{vaccination.dosage}
+                                            </p:column>
+                                            
+                                            <p:column headerText="#{msg.note}">
+                                                #{vaccination.note}
+                                            </p:column>
+                                            
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('vaccinationForm').show()"
+                                                                 action="#{vaccinationController.editVaccination(vaccination)}"
+                                                                 update=":vaccinationForm, :vaccinationDialog"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" 
+                                                        action="#{vaccinationController.deleteVaccination(vaccination)}" update="@form"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+
+                                    <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="vaccinationForm" closeOnEscape="true" modal="true" id="vaccinationDialog" height="350"  width="500">
+                                        <ui:include src="includes/vaccination.xhtml"/>
+                                    </p:dialog>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h:form id="mortalityTable">
+                                        <p:dataTable value="#{mortalityController.mortalityList}" var="mortality" paginator="true" paginatorPosition="bottom" rows="5">
+                                            <f:facet name="header">
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{mortalityController.clearMortality()}"
+                                                                 oncomplete="PF('mortalityForm').show()" update=":mortalityDialog"/>
+                                                <h5 class="float-left text-maroon">#{msg.mortality}</h5>
+
+                                                <div style="clear:both;"></div>
+                                            </f:facet>
+
+                                            <p:column headerText="#{msg.number}" class="text-right">
+                                                #{mortality.number}
+                                            </p:column>
+                                            
+                                            <p:column headerText="#{msg.culling}/#{msg.mortality}">
+                                                #{mortality.cullingMortality}
+                                            </p:column>
+                                            
+                                            <p:column headerText="#{msg.reason}">
+                                                #{mortality.reason}
+                                            </p:column>
+                                            
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('mortalityForm').show()"
+                                                                 action="#{mortalityController.editMortality(mortality)}"
+                                                                 update=":mortalityForm, :vaccinationDialog"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" 
+                                                        action="#{mortalityController.deleteMortality(mortality)}" update="@form"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+
+                                    <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="mortalityForm" closeOnEscape="true" modal="true" id="mortalityDialog" height="350"  width="500">
+                                        <ui:include src="includes/mortality-culling.xhtml"/>
+                                    </p:dialog>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h:form id="treatmentTable">
+                                        <p:dataTable value="#{treatmentController.treatmentList}" var="treatment" paginator="true" paginatorPosition="bottom" rows="5">
+                                            <f:facet name="header">
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{treatmentController.clearTreatment()}"
+                                                                 oncomplete="PF('treatmentForm').show()" update=":treatmentDialog"/>
+                                                <h5 class="float-left text-maroon">#{msg.treatment_given}</h5>
+
+                                                <div style="clear:both;"></div>
+                                            </f:facet>
+
+                                            <p:column headerText="#{msg.treatment_given}">
+                                                #{treatment.treatmentGiven}
+                                            </p:column>
+                                            
+                                            <p:column headerText="#{msg.reason}">
+                                                #{treatment.reason}
+                                            </p:column>
+                                            
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('treatmentForm').show()"
+                                                                 action="#{treatmentController.editTreatment(treatment)}"
+                                                                 update=":treatmentForm, :treatmentDialog"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" 
+                                                        action="#{treatmentController.deleteTreatment(treatment)}" update="@form"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+
+                                    <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="treatmentForm" closeOnEscape="true" modal="true" id="treatmentDialog" height="300"  width="500">
+                                        <ui:include src="includes/treatment.xhtml"/>
+                                    </p:dialog>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h:form id="birdWeightTable">
+                                        <p:dataTable value="#{birdWeightController.birdWeightList}" var="birdWeight" paginator="true" paginatorPosition="bottom" rows="5">
+                                            <f:facet name="header">
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{treatmentController.clearBirdWeight()}"
+                                                                 oncomplete="PF('birdWeightForm').show()" update=":birdWeightDialog"/>
+                                                <h5 class="float-left text-maroon">#{msg.bird_weight}</h5>
+
+                                                <div style="clear:both;"></div>
+                                            </f:facet>
+
+                                            <p:column headerText="#{msg.number} Weighed" class="text-right">
+                                                #{birdWeight.numberWeighed}
+                                            </p:column>
+                                            
+                                            <p:column headerText="Average Weight" class="text-right">
+                                                #{birdWeight.averageWeight}
+                                            </p:column>
+                                            
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('birdWeightForm').show()"
+                                                                 action="#{birdWeightController.editBirdWeight(birdWeight)}"
+                                                                 update=":birdWeightForm, :birdWeightDialog"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" 
+                                                                 action="#{birdWeightController.deleteBirdWeight(birdWeight)}" update="@form"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+
+                                    <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="birdWeightForm" closeOnEscape="true" modal="true" id="birdWeightDialog" height="300"  width="500">
+                                        <ui:include src="includes/bird-weight.xhtml"/>
                                     </p:dialog>
                                 </div>
 

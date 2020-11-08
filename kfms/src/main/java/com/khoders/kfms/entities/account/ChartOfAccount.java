@@ -7,8 +7,10 @@ package com.khoders.kfms.entities.account;
 
 import com.khoders.kfms.entities.enums.AccountType;
 import com.khoders.resource.jpa.BaseModel;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,9 +30,13 @@ public class ChartOfAccount extends BaseModel implements Serializable{
     @Column(name = "account_name")
     private String accountName;
     
+    public static final String _accountType = "accountType";
     @Column(name = "account_type")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private AccountType accountType;
+    
+    @Column(name = "note")
+    private String note;
 
     public String getAccountCode() {
         return accountCode;
@@ -54,6 +60,24 @@ public class ChartOfAccount extends BaseModel implements Serializable{
 
     public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
+    }
+    
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+    
+    public void genCode()
+    {
+        setAccountCode(SystemUtils.generateCode());
+    }
+
+    @Override
+    public String toString() {
+        return accountName;
     }
     
     

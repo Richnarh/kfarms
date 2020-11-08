@@ -6,8 +6,11 @@
 package com.khoders.kfms.shared;
 
 import com.khoders.kfms.entities.Bird;
+import com.khoders.kfms.entities.Customer;
+import com.khoders.kfms.entities.account.ChartOfAccount;
 import com.khoders.kfms.entities.settings.BirdType;
 import com.khoders.kfms.entities.settings.FeedType;
+import com.khoders.kfms.entities.settings.Medication;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import java.io.Serializable;
@@ -31,6 +34,9 @@ public class CommonClass implements Serializable{
     private List<BirdType> birdTypeList = new LinkedList<>();
     private List<Bird> birdList = new LinkedList<>();
     private List<FeedType> feedTypeList = new LinkedList<>();
+    private List<Medication> medicationList = new LinkedList<>();
+    private List<Customer> customerList = new LinkedList<>();
+    private List<ChartOfAccount> accountList = new LinkedList<>();
     
     @PostConstruct
     public void init()
@@ -52,6 +58,24 @@ public class CommonClass implements Serializable{
         feedTypeList = crudApi.getEm().createQuery(qryFeedType, FeedType.class)
 //                .setParameter(1, appSession.getCurrentUser())
                   .getResultList();
+        
+//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
+        String qryMedication = "SELECT e FROM Medication e";
+        medicationList = crudApi.getEm().createQuery(qryMedication, Medication.class)
+//                .setParameter(1, appSession.getCurrentUser())
+                  .getResultList();
+        
+//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
+        String qryCustomer = "SELECT e FROM Customer e";
+        customerList = crudApi.getEm().createQuery(qryCustomer, Customer.class)
+//                .setParameter(1, appSession.getCurrentUser())
+                  .getResultList();
+        
+//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
+        String qryChartOfAccount = "SELECT e FROM ChartOfAccount e";
+        accountList = crudApi.getEm().createQuery(qryChartOfAccount, ChartOfAccount.class)
+//                .setParameter(1, appSession.getCurrentUser())
+                  .getResultList();
     }
 
     public List<BirdType> getBirdTypeList() {
@@ -64,6 +88,18 @@ public class CommonClass implements Serializable{
 
     public List<FeedType> getFeedTypeList() {
         return feedTypeList;
+    }
+
+    public List<Medication> getMedicationList() {
+        return medicationList;
+    }
+
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+
+    public List<ChartOfAccount> getAccountList() {
+        return accountList;
     }
     
 }

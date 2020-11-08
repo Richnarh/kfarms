@@ -5,10 +5,11 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
-import com.khoders.kfms.entities.Supplier;
+import com.khoders.kfms.entities.BirdWeight;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
+import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
@@ -25,14 +26,15 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "supplierController")
+@Named(value = "birdWeightController")
 @SessionScoped
-public class SupplierController implements Serializable{
+public class BirdWeightController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
     
-    private Supplier supplier = new Supplier();
-    private List<Supplier> supplierList =  new LinkedList<>();
+    private BirdWeight birdWeight = new BirdWeight();
+    private List<BirdWeight> birdWeightList=  new LinkedList<>();
+    private FormView formView = FormView.listForm();
     
     private String optionText;
     
@@ -40,21 +42,22 @@ public class SupplierController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Supplier e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Supplier e";
-        supplierList = crudApi.getEm().createQuery(qryString, Supplier.class)
+//        String qryString = "SELECT e FROM BirdWeight e WHERE e.farmAccount = ?1";
+        String qryString = "SELECT e FROM BirdWeight e";
+        birdWeightList = crudApi.getEm().createQuery(qryString, BirdWeight.class)
 //                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
+        clearBirdWeight();
     }
     
-    public void saveSupplier()
+    public void saveBirdWeight()
     {
         try 
         {
-            supplier.genCode();
-          if(crudApi.save(supplier) != null)
+            birdWeight.setProduction(birdWeight.getProduction());
+          if(crudApi.save(birdWeight) != null)
           {
-              supplierList = CollectionList.washList(supplierList, supplier);
+              birdWeightList = CollectionList.washList(birdWeightList, birdWeight);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -64,20 +67,20 @@ public class SupplierController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearSupplier();
+          clearBirdWeight();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
     
-    public void deleteSupplier(Supplier supplier)
+    public void deleteBirdWeight(BirdWeight birdWeight)
     {
         try 
         {
-          if(crudApi.delete(supplier))
+          if(crudApi.delete(birdWeight))
           {
-              supplierList.remove(supplier);
+              birdWeightList.remove(birdWeight);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -93,30 +96,36 @@ public class SupplierController implements Serializable{
         }
     }
     
-    public void editSupplier(Supplier supplier)
+    public void editBirdWeight(BirdWeight birdWeight)
     {
        optionText = "Update";
-       this.supplier=supplier;
+       this.birdWeight=birdWeight;
     }
     
-    public void clearSupplier() 
+    public void clearBirdWeight() 
     {
-        supplier = new Supplier();
-        supplier.setFarmAccount(appSession.getCurrentUser());
+        birdWeight = new BirdWeight();
+        birdWeight.setFarmAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
-    public List<Supplier> getSupplierList() {
-        return supplierList;
+    public void close()
+    {
+      birdWeight = null;
+      formView.restToListView();
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public List<BirdWeight> getBirdWeightList() {
+        return birdWeightList;
     }
 
-    public void setSupplier(Supplier bird) {
-        this.supplier = bird;
+    public BirdWeight getBirdWeight() {
+        return birdWeight;
+    }
+
+    public void setBirdWeight(BirdWeight birdWeight) {
+        this.birdWeight = birdWeight;
     }
 
     public String getOptionText() {
@@ -125,6 +134,14 @@ public class SupplierController implements Serializable{
 
     public void setOptionText(String optionText) {
         this.optionText = optionText;
+    }
+
+    public FormView getFormView() {
+        return formView;
+    }
+
+    public void setFormView(FormView formView) {
+        this.formView = formView;
     }
 
 }

@@ -36,10 +36,6 @@ public class Invoice extends FarmChartRecord implements Serializable{
     @ManyToOne
     private Customer customer;
     
-    @JoinColumn(name = "chart_of_account", referencedColumnName = "id")
-    @ManyToOne
-    private ChartOfAccount chartOfAccount;
-
     @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
@@ -99,13 +95,4 @@ public class Invoice extends FarmChartRecord implements Serializable{
         this.description = description;
     }
 
-    public ChartOfAccount getChartOfAccount() {
-        return chartOfAccount;
-    }
-
-    public void setChartOfAccount(ChartOfAccount chartOfAccount) {
-        this.chartOfAccount = chartOfAccount;
-    }
-   
-   
 }

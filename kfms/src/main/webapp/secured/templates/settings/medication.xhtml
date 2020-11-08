@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                #{msg.medication} Settings
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-header">Add new #{msg.medication}</div>
+                        <div class="card-body">
+                            <div class="col-md-6 mx-auto">
+                                <h:form class="spaced-form mb-4" id="medicationForm">
+                                    <h:panelGrid columns="2">
+                                        <span class="required_field">#{msg.medication}</span>
+                                        <p:inputText value="#{medicationController.medication.medicationName}" required="true"/>
+
+                                        <span class="required_field">Medication Type</span>
+                                        <p:selectOneMenu value="#{medicationController.medication.medicationType}" required="true">
+                                            <f:selectItem itemLabel="#{msg.choose}"/>
+                                            <f:selectItems value="#{sharedClass.medicationTypeList}"/>
+                                        </p:selectOneMenu>
+                                        
+                                        <span>#{msg.note}</span>
+                                        <p:inputTextarea value="#{medicationController.medication.note}"/>
+                                        <br/>
+
+                                    </h:panelGrid>
+                                    <p:commandButton styleClass="kbtn-success mx-3" value="#{medicationController.optionText}" action="#{medicationController.saveMedication()}" update=":medicationTable"/>
+                                    <p:commandButton styleClass="kbtn-cancel" value="#{msg.clear}" immediate="true" action="#{medicationController.clearMedication()}" update="@form"/>
+                                </h:form>
+                            </div>
+
+                            <h:form id="medicationTable">
+                                <p:dataTable value="#{medicationController.medicationList}" var="medication" paginator="true" paginatorPosition="bottom" rowDragSelector="5">
+                                    <p:column styleClass="row-toggler">
+                                        <p:rowToggler/>
+                                    </p:column>
+
+                                    <p:rowExpansion>
+                                        <h:panelGrid columns="2">
+                                            <span>Created Date</span>
+                                            <h:outputText value="#{medication.createdDate}">
+                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                            </h:outputText>
+
+                                            <span>#{msg.medication} Id</span>
+                                            <h:outputText value="#{medication.medicationId}"/>
+                                        </h:panelGrid>
+                                    </p:rowExpansion>
+
+                                    <p:column headerText="#{msg.medication} Name">
+                                        #{medication.medicationName}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.medication} Type">
+                                        #{medication.medicationType}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.note}"> 
+                                       #{medication.note}
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.action}">
+                                        <p:commandButton value="#{msg.edit}" styleClass="kbtn-info" action="#{medicationController.editMedication(medication)}" update="@form, :medicationForm"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.action}">
+                                        <p:commandButton value="#{msg.delete}" styleClass="kbtn-danger" action="#{medicationController.deleteMedication(medication)}" update="@form, :medicationForm"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

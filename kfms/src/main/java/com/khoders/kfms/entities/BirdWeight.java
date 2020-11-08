@@ -18,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "bird_weight")
-public class BirdWeight  extends ProductionRecord implements Serializable{
+public class BirdWeight  extends FarmAccountRecord implements Serializable{
     @Column(name = "number_weighed")
     private int numberWeighed;
     
