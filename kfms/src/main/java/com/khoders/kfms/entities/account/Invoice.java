@@ -7,7 +7,10 @@ package com.khoders.kfms.entities.account;
 
 import com.khoders.kfms.entities.Customer;
 import com.khoders.kfms.entities.FarmChartRecord;
+import com.khoders.kfms.entities.Product;
+import com.khoders.kfms.entities.enums.PaymentStatus;
 import com.khoders.resource.enums.PaymentMethod;
+import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -28,9 +31,12 @@ import javax.persistence.Table;
 public class Invoice extends FarmChartRecord implements Serializable{
     @Column(name = "invoice_no")
     private String invoice_no;
-
+    
     @Column(name = "issue_date")
     private LocalDate issueDate;
+
+    @Column(name = "due_date")
+    private LocalDate dueDate;
 
     @JoinColumn(name = "customer", referencedColumnName = "id")
     @ManyToOne
@@ -39,13 +45,24 @@ public class Invoice extends FarmChartRecord implements Serializable{
     @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
+    
+    @Column(name = "payment_status")
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
 
     @Column(name = "cheque_no")
     private String chequeNo;
 
-    @Column(name = "description")
+    @Column(name = "total_amount")
+    private String totalAmount;
+    
+    public static final String _amountRemaining = "amountRemaining";
+    @Column(name = "amount_remaining")
+    private double amountRemaining;
+
+    @Column(name = "note")
     @Lob
-    private String description;
+    private String note;
 
     public String getInvoice_no() {
         return invoice_no;
@@ -87,12 +104,48 @@ public class Invoice extends FarmChartRecord implements Serializable{
         this.chequeNo = chequeNo;
     }
 
-    public String getDescription() {
-        return description;
+    public String getNote() {
+        return note;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNote(String note) {
+        this.note = note;
     }
 
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+    
+    public double getAmountRemaining() {
+        return amountRemaining;
+    }
+
+    public void setAmountRemaining(double amountRemaining) {
+        this.amountRemaining = amountRemaining;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+    
+    public void genCode()
+    {
+        setInvoice_no(SystemUtils.generateReceiptCodes(getValueDate()));
+    }
 }

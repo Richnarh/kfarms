@@ -6,6 +6,8 @@
 package com.khoders.kfms.entities.account;
 
 import com.khoders.kfms.entities.AccountRecord;
+import com.khoders.kfms.entities.FarmAccountRecord;
+import com.khoders.kfms.entities.Product;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -20,9 +22,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "invoice_item")
-public class InvoiceItem extends AccountRecord implements Serializable{
+public class InvoiceItem extends FarmAccountRecord implements Serializable{
    @Column(name = "item_code")
    private String itemCode;
+   
+    @JoinColumn(name = "product", referencedColumnName = "id")
+    @ManyToOne
+    private Product product;
    
    @JoinColumn(name = "invoice")
    @ManyToOne
@@ -42,6 +48,12 @@ public class InvoiceItem extends AccountRecord implements Serializable{
    
    @Column(name = "total_amount")
    private double totalAmount;
+   
+   @Column(name = "charges")
+   private double charges;
+   
+   @Column(name = "note")
+   private String note;
 
     public Invoice getInvoice() {
         return invoice;
@@ -97,6 +109,30 @@ public class InvoiceItem extends AccountRecord implements Serializable{
 
     public void setItemCode(String itemCode) {
         this.itemCode = itemCode;
+    }
+
+    public double getCharges() {
+        return charges;
+    }
+
+    public void setCharges(double charges) {
+        this.charges = charges;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
    
     public void genCode()

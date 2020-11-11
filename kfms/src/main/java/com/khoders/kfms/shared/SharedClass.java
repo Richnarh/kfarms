@@ -14,6 +14,7 @@ import com.khoders.kfms.entities.enums.EggColor;
 import com.khoders.kfms.entities.enums.EggSize;
 import com.khoders.kfms.entities.enums.FlockPurpose;
 import com.khoders.kfms.entities.enums.MedicationType;
+import com.khoders.kfms.entities.enums.PaymentStatus;
 import com.khoders.resource.enums.PaymentMethod;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -76,6 +77,11 @@ public class SharedClass implements Serializable
     public List<AccountType> getAccountTypeList()
     {
         return Arrays.asList(AccountType.values());
+    }
+    
+    public List<PaymentStatus> getPaymentStatusList()
+    {
+        return Arrays.asList(PaymentStatus.values());
     }
     
 }

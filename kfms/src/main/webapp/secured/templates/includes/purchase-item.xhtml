@@ -12,19 +12,19 @@
                 <h:panelGrid columns="2" styleClass="spaced-form" >                                                
 
                     <span>#{msg.item_name}</span>
-                    <p:inputText value="#{purchaseController.purchaseItem.itemName}" />
+                    <p:inputText value="#{purchaseController.purchaseItem.itemName}"/>
 
                     <span>#{msg.quantity}</span>
-                    <p:inputText value="#{purchaseController.purchaseItem.quantity}" />
+                    <p:inputText value="#{purchaseController.purchaseItem.quantity}"/>
 
                     <span>#{msg.unit_price}</span>
-                    <p:inputText value="#{purchaseController.purchaseItem.unitPrice}" />
+                    <p:inputText value="#{purchaseController.purchaseItem.unitPrice}"/>
 
                     <span>#{msg.charges}</span>
-                    <p:inputText value="#{purchaseController.purchaseItem.charges}" />
+                    <p:inputText value="#{purchaseController.purchaseItem.charges}"/>
 
                     <span>#{msg.note}</span>
-                    <p:inputTextarea value="#{purchaseController.purchaseItem.note}" />
+                    <p:inputTextarea value="#{purchaseController.purchaseItem.note}"/>
 
                 </h:panelGrid> 
 
@@ -46,7 +46,7 @@
                              paginator="true" paginatorPosition="bottom" rows="5">
 
                     <p:column headerText="#{msg.note}" >
-                        <h:outputText value="#{purchaseItem.note}" />                              
+                        <h:outputText value="#{purchaseItem.note}"/>                              
                     </p:column>
 
                     <p:column headerText="#{msg.quantity}" styleClass="text-right">
@@ -55,20 +55,20 @@
 
                     <p:column headerText="#{msg.unit_price}" styleClass="text-right">
                         <h:outputText value="#{purchaseItem.unitPrice}" rendered="#{purchaseItem.unitPrice != 0.0 }">
-                            <f:convertNumber pattern="#{msg.money_pattern}" />
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>                                 
                     </p:column>
 
                     <p:column headerText="#{msg.charges}" styleClass="text-right">
                         <h:outputText value="#{purchaseItem.charges}" rendered="#{purchaseItem.charges != 0.0 }">
-                            <f:convertNumber pattern="#{msg.money_pattern}" />
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>                                 
                     </p:column>
 
                     <p:column headerText="#{msg.amount}" styleClass="text-right">
                         <h:outputText value="#{purchaseItem.totalAmount}" 
                                       rendered="#{purchaseItem.totalAmount != 0.0}">
-                            <f:convertNumber pattern="#{msg.money_pattern}" />
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>                                 
                     </p:column>
 
@@ -77,19 +77,23 @@
                                          action="#{purchaseController.editPurchaseItem(purchaseItem)}"/>                         
                     </p:column>
 
-                    <p:column headerText="#{msg.action}" >
-                        <p:commandButton value="#{msg.remove}"  styleClass="kbtn-danger"
+                    <p:column headerText="#{msg.action}">
+                        <p:menuButton value="#{msg.manage}">
+                            <p:menuitem icon="fa fa-remove" value="#{msg.remove}"  styleClass="kbtn-cancel"
                                          action="#{purchaseController.removePurchaseItem(purchaseItem)}" immediate="true" update="@form"/>
+                            <p:menuitem icon="fa fa-remove" value="Permanent Delete"  styleClass="kbtn-danger text-white"
+                                         action="#{purchaseController.deletePurchaseItem(purchaseItem)}" update="@form"/>
+                        </p:menuButton>
+                        
                     </p:column>
                 </p:dataTable>
-
 
                 <center>
                     <br/>
                     <h:panelGrid columns="2">
                         <span class="field-shade">#{msg.total_amount}</span>
-                        <h:outputText value="#{purchaseController.purchase.totalAmount}" styleClass="field-shade">
-                            <f:convertNumber pattern="#{msg.money_pattern}" />
+                        <h:outputText value="#{purchaseController.totalAmount}" styleClass="field-shade">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
                     </h:panelGrid>
                 </center>
@@ -102,11 +106,6 @@
                 </center>
             </h:form>
         </div>
-
-
-
-
-
     </div>
 </html>
 

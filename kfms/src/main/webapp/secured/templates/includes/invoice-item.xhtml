@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <div class="row">
+
+        <div class="col-lg-4">
+            <h:form id="orderItemForm" >
+                <h:panelGrid columns="2" class="spaced-table"> 
+                    <span class="required_field">#{msg.product}</span>
+                    <p:selectOneMenu class="fill-space" value="#{invoiceController.invoiceItem.product}" 
+                                     filter="true" filterMatchMode="contains" required="true">
+                        <f:selectItem itemLabel="#{msg.choose}"/>
+                        <f:selectItems value="#{commonClass.productList}" />
+                    </p:selectOneMenu>
+
+                    <span class="required_field">#{msg.quantity}</span>
+                    <p:inputText value="#{invoiceController.invoiceItem.quantity}" required="true"/>
+
+                    <span class="required_field">#{msg.unit_cost}</span>
+                    <p:inputText value="#{invoiceController.invoiceItem.unitPrice}" required="true"/>
+
+                    <span>#{msg.charges}</span>
+                    <p:inputText value="#{invoiceController.invoiceItem.charges}"/>
+
+                </h:panelGrid>
+
+                <div class="pt-3">
+                    <p:commandButton value="Add to list" 
+                                     action="#{invoiceController.addBillItemToTable()}" update=":invoiceItemTable, @form"/>
+
+                    <p:commandButton value="#{msg.clear}" 
+                                     action="#{invoiceController.clearBillItem()}" immediate="true" update="@form"/>
+                </div>
+            </h:form>
+        </div>
+        <div class="col-lg-8">
+            <h:form id="invoiceItemTable">
+                <p:dataTable value="#{invoiceController.invoiceItemList}" var="invoiceItem" 
+                             paginator="true" paginatorPosition="bottom" rows="6">
+                    <p:column>
+                        <p:rowToggler/>
+                    </p:column>
+
+                    <p:rowExpansion>
+                        <p:panelGrid columns="2">
+                            <span>Package Type</span>
+                            <!--<h:outputText value="{invoiceItem.product.packageType.packageTypeName}"/>-->
+                        </p:panelGrid>
+                    </p:rowExpansion>
+
+                    <p:column headerText="#{msg.product}">
+                        #{invoiceItem.product.productName}
+                    </p:column>
+                    
+                    <p:column headerText="#{msg.qty}" class="text-right">
+                        #{invoiceItem.quantity}
+                    </p:column>
+
+                    <p:column headerText="#{msg.unit_price} (GHS)" class="text-right">
+                        <h:outputText value="#{invoiceItem.unitPrice}">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="#{msg.total_amount} (GHS)" class="text-right">
+                        <h:outputText value="#{invoiceItem.totalAmount}">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="#{msg.action}">
+                        <p:commandLink  class="text-primary" action="#{invoiceController.editInvoiceItem(invoiceItem)}" 
+                                        value="#{msg.select}" update=":orderItemForm"/>
+                    </p:column>
+                    <p:column headerText="#{msg.action}">
+                        <p:commandLink value="#{msg.delete}" class="text-danger"
+                                       action="#{invoiceController.deleteInvoicetem(invoiceItem)}"
+                                       update="@form"/>
+                    </p:column>
+                </p:dataTable>
+                
+                <center>
+                    <h:panelGrid columns="2">
+                        <span>Total Amount</span>
+                        <h:outputText value="#{invoiceController.totalAmount}" class="field-value">
+                            <f:convertNumber pattern="GHS #{msg.money_pattern}"/>
+                        </h:outputText>
+                    </h:panelGrid>
+                </center>
+                
+            </h:form>
+            <center class="pt-5">
+                <h:form>
+                    <p:commandButton value="Save List" action="#{invoiceController.saveAll()}" update=":invoiceItemTable"/>
+                    <p:commandButton value="Close Page" ajax="false" update=":mainPanel" action="#{invoiceController.closePage()}"/>
+                </h:form>
+            </center>
+        </div>
+    </div>
+</html>
+

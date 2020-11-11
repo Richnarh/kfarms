@@ -30,11 +30,11 @@
                                         pattern="#{msg.formatted_date}" 
                                         monthNavigator="true" yearNavigator="true" />
 
-                                    <p:commandButton class="ml-2"  update=":mainPanel"
+                                    <p:commandButton styleClass="kbtn-primary ml-2" update=":mainPanel"
                                                      value="#{msg.load}"/>
 
                                     <div class="float-right">
-                                        <p:commandButton value="#{msg.add_new} #{msg.purchases}" 
+                                        <p:commandButton value="#{msg.add_new} #{msg.purchases}" styleClass="kbtn-primary"
                                                          icon="fa fa-plus-circle" update=":mainPanel"
                                                          action="#{purchaseController.initPurchase()}"/>
 
@@ -68,24 +68,7 @@
                                 <p:column headerText="#{msg.note}">
                                     #{purchase.note}
                                 </p:column>
-                                <p:column headerText="#{msg.amount}" class="text-right">
-                                    #{purchase.totalAmount}
-                                </p:column>
-
-                                <p:column headerText="#{msg.unit_price}" styleClass="text-right" 
-                                          rendered="false">
-                                    <h:outputText value="#{purchase.unitPrice}">
-                                        <f:convertNumber pattern="#{msg.money_pattern}" />
-                                    </h:outputText>
-                                </p:column>
-                                <p:column headerText="#{msg.quantity}" styleClass="text-right" rendered="false">
-                                    <h:outputText value="#{purchase.quantity}"/>
-                                </p:column>
-                                <p:column headerText="#{msg.charges}" styleClass="text-right" rendered="false">
-                                    <h:outputText value="#{purchase.charges}">
-                                        <f:convertNumber pattern="#{msg.money_pattern}" />
-                                    </h:outputText>
-                                </p:column>
+                                
                                 <p:column headerText="#{msg.total_amount}" styleClass="text-right">
                                     <h:outputText value="#{purchase.totalAmount}">
                                         <f:convertNumber pattern="#{msg.money_pattern}" />
@@ -93,10 +76,10 @@
                                 </p:column>
 
                                 <p:column headerText="#{msg.action}">
-                                    <p:menuButton value="#{msg.manage}">
-                                        <p:menuitem icon="fa fa-check" styleClass="kbtn-info" value="#{msg.edit}" immediate="true" action="#{purchaseController.editPurchase(purchase)}" update=":mainPanel"/>
-                                        <p:menuitem icon="fa fa-check" styleClass="kbtn-info" value="#{msg.payment} " immediate="true" action="#{purchaseController.purchasePayment(purchase)}" update=":mainPanel"/>
-                                        <p:menuitem icon="fa fa-remove" styleClass="kbtn-danger" value="#{msg.delete}" action="#{purchaseController.deletePurchase(purchase)}" onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                    <p:menuButton value="#{msg.manage}" styleClass="kbtn-primary">
+                                        <p:menuitem icon="fa fa-check" styleClass="kbtn-info text-white" value="#{msg.edit}" immediate="true" action="#{purchaseController.editPurchase(purchase)}" update=":mainPanel"/>
+                                        <p:menuitem icon="fa fa-check" styleClass="kbtn-info text-white" value="#{msg.payment} " immediate="true" action="#{purchaseController.purchasePayment(purchase)}" update=":mainPanel"/>
+                                        <p:menuitem icon="fa fa-remove" styleClass="kbtn-danger text-white" value="#{msg.delete}" action="#{purchaseController.deletePurchase(purchase)}"  update="@form"/>
                                     </p:menuButton>
                                 </p:column>
                             </p:dataTable>
@@ -116,22 +99,22 @@
                                     <span>#{msg.purchase_type}</span>
                                     <p:selectOneMenu value="#{purchaseController.purchase.purchaseType}">
                                         <f:selectItem itemLabel="#{msg.choose}" />
-                                        <f:selectItems value="#{sharedClass.purchaseTypeList}" />
+                                        <f:selectItems value="#{sharedClass.purchaseTypeList}"/>
                                     </p:selectOneMenu>
 
                                     <span>#{msg.customer}</span>
                                     <p:selectOneMenu value="#{purchaseController.purchase.customer}" 
                                                      filter="true" filterMatchMode="contains" required="true">
-                                        <f:selectItem itemLabel="#{msg.choose}" />
-                                        <f:selectItems value="#{commonClass.customerList}" />
+                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                        <f:selectItems value="#{commonClass.customerList}"/>
                                     </p:selectOneMenu>
 
                                     <span>#{msg.receipt_no}</span>
-                                    <p:inputText value="#{purchaseController.purchase.receiptNo}" />
+                                    <p:inputText value="#{purchaseController.purchase.receiptNo}"/>
 
-                                    <span>Payment #{msg.account}</span>
+                                    <span>#{msg.account}</span>
                                     <p:selectOneMenu value="#{purchaseController.purchase.account}">
-                                        <f:selectItem itemLabel="#{msg.choose}" />
+                                        <f:selectItem itemLabel="#{msg.choose}"/>
                                         <f:selectItems value="#{commonClass.accountList}" />
                                     </p:selectOneMenu>
 
@@ -140,6 +123,9 @@
                                         <f:selectItem itemLabel="#{msg.choose}"/>
                                         <f:selectItems value="#{sharedClass.paymentMethodList}" />
                                     </p:selectOneMenu>
+                                    
+                                    <span>#{msg.total_amount}</span>
+                                    <p:inputText value="#{purchaseController.purchase.totalAmount}"/>
                                 </h:panelGrid>
 
                             </h:form>

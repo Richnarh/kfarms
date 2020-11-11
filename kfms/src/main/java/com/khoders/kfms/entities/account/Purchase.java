@@ -25,7 +25,7 @@ import javax.persistence.Table;
  * @author khoders
  */
 @Entity
-@Table(name = "purchases")
+@Table(name = "purchase")
 public class Purchase extends FarmChartRecord implements Serializable{
     @Column(name = "purchase_id")
     private String purchaseId;
@@ -44,21 +44,12 @@ public class Purchase extends FarmChartRecord implements Serializable{
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
     
-    @Column(name = "quantity")
-    private int quantity;
-    
     @JoinColumn(name = "customer", referencedColumnName = "id")
     @ManyToOne
     private Customer customer;
     
     @Column(name = "total_amount")
     private double totalAmount;
-    
-    @Column(name = "payment_account")
-    private double paymentAccount;
-    
-    @Column(name = "charges")
-    private double charges;
     
     @Column(name = "note")
     private String note;
@@ -70,7 +61,6 @@ public class Purchase extends FarmChartRecord implements Serializable{
     public void setPurchaseId(String purchaseId) {
         this.purchaseId = purchaseId;
     }
-
     
     public LocalDate getReceivedDate() {
         return receivedDate;
@@ -86,14 +76,6 @@ public class Purchase extends FarmChartRecord implements Serializable{
 
     public void setPurchaseType(PurchaseType purchaseType) {
         this.purchaseType = purchaseType;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public double getTotalAmount() {
@@ -120,28 +102,12 @@ public class Purchase extends FarmChartRecord implements Serializable{
         this.note = note;
     }
 
-    public double getCharges() {
-        return charges;
-    }
-
-    public void setCharges(double charges) {
-        this.charges = charges;
-    }
-
     public String getReceiptNo() {
         return receiptNo;
     }
 
     public void setReceiptNo(String receiptNo) {
         this.receiptNo = receiptNo;
-    }
-
-    public double getPaymentAccount() {
-        return paymentAccount;
-    }
-
-    public void setPaymentAccount(double paymentAccount) {
-        this.paymentAccount = paymentAccount;
     }
 
     public PaymentMethod getPaymentMethod() {

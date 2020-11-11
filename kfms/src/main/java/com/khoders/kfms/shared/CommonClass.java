@@ -7,6 +7,7 @@ package com.khoders.kfms.shared;
 
 import com.khoders.kfms.entities.Bird;
 import com.khoders.kfms.entities.Customer;
+import com.khoders.kfms.entities.Supplier;
 import com.khoders.kfms.entities.account.ChartOfAccount;
 import com.khoders.kfms.entities.settings.BirdType;
 import com.khoders.kfms.entities.settings.FeedType;
@@ -37,6 +38,8 @@ public class CommonClass implements Serializable{
     private List<Medication> medicationList = new LinkedList<>();
     private List<Customer> customerList = new LinkedList<>();
     private List<ChartOfAccount> accountList = new LinkedList<>();
+    private List<Supplier> supplierList = new LinkedList<>();
+    private List<Product> productList = new LinkedList<>();
     
     @PostConstruct
     public void init()
@@ -72,8 +75,20 @@ public class CommonClass implements Serializable{
                   .getResultList();
         
 //        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
+        String qrySupplier = "SELECT e FROM Supplier e";
+        supplierList = crudApi.getEm().createQuery(qrySupplier, Supplier.class)
+//                .setParameter(1, appSession.getCurrentUser())
+                  .getResultList();
+        
+//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
         String qryChartOfAccount = "SELECT e FROM ChartOfAccount e";
         accountList = crudApi.getEm().createQuery(qryChartOfAccount, ChartOfAccount.class)
+//                .setParameter(1, appSession.getCurrentUser())
+                  .getResultList();
+        
+//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
+        String qryProduct = "SELECT e FROM Product e";
+        productList = crudApi.getEm().createQuery(qryProduct, Product.class)
 //                .setParameter(1, appSession.getCurrentUser())
                   .getResultList();
     }
@@ -100,6 +115,14 @@ public class CommonClass implements Serializable{
 
     public List<ChartOfAccount> getAccountList() {
         return accountList;
+    }
+
+    public List<Supplier> getSupplierList() {
+        return supplierList;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
     }
     
 }

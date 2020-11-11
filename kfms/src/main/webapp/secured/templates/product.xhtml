@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://java.sun.com/jsf/passthrough">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                <div class="top-title">
+                    <a class="text-info mb-5" href="#{application.contextPath}/#{msg.entry}/index.xhtml">Dashboard</a>/#{msg.product}
+                </div>
+            </ui:define>
+            <ui:define name="pageContent">
+                <h:panelGroup id="mainPanel">
+                    <div class="card mb-5">
+                    <div class="container-fluid">
+                        <div class="card-header">Add New #{msg.product}</div>
+                        <h:panelGroup rendered="#{productController.formView.listView}">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-lg-12">
+                                    <h:form class="float-right pt-3" style="margin-bottom: 5px;">
+                                        
+                                        <p:commandButton value="#{msg.add_new} #{msg.product}" 
+                                                         icon="fa fa-plus-circle" update=":mainPanel"
+                                                         action="#{productController.initProduct()}"/>
+                                    </h:form>
+                                </div>
+                            </div>
+
+                            <h:form class="mb-3">
+                                <p:commandButton value="Export as Excel" ajax="false">
+                                    <p:dataExporter target="productTable" type="xls" fileName="products"/>
+                                </p:commandButton>
+                                <p:dataTable id="productTable" value="#{productController.productList}" var="product"
+                                             paginator="true" paginatorPosition="bottom" rows="8">
+                                    <p:column exportable="false">
+                                        <p:rowToggler/>
+                                    </p:column>
+
+                                    <p:rowExpansion>
+                                        <p:panelGrid columns="2">
+                                            <span>Added Date</span>
+                                            <h:outputText value="#{product.valueDate}"/>
+
+                                            <span>#{msg.note}</span>
+                                            <h:outputText value="#{product.note}"/>
+
+                                            <span>Item Type</span>
+                                            <h:outputText value="#{product.itemType.itemTypeName}"/>
+
+                                            <span>#{msg.manufacturer}</span>
+                                            <h:outputText value="#{product.manufactuerer.manufacturerName}"/>
+
+                                        </p:panelGrid>
+                                    </p:rowExpansion>
+
+                                    <p:column headerText="#{msg.product_code}">
+                                        <h:outputText value="#{product.productCode}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.product_name}" filterBy="#{product.productName}" filterMatchMode="contains">
+                                        <h:outputText value="#{product.productName}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.dose}">
+                                        <h:outputText value="#{product.dose}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.frequency}">
+                                        <h:outputText value="#{product.frequency}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.route}">
+                                        <h:outputText value="#{product.route}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.action}" exportable="false">
+                                        <p:commandButton value="#{msg.select}" immediate="true" ajax="false" action="#{productController.editProduct(product)}" update=":mainPanel"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.action}" exportable="false">
+                                        <p:commandButton value="#{msg.delete}" update="@form" action="#{productController.deleteProduct(product)}" 
+                                                         onclick="return confirm('#{msg.delete_message}')"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                        </h:panelGroup>
+
+                        <h:panelGroup  rendered="#{productController.formView.createView}" >
+                            <h:form class="mb-3 thin-border">
+                                <h:panelGrid columns="6" styleClass="spaced-form">
+                                    <span class="required_field">#{msg.product} Name</span>
+                                    <p:inputText required="true" value="#{productController.product.productName}"/>
+
+                                    <span>#{msg.product} Location</span>
+                                    <p:inputText a:placeholder="e.g Shell A" value="#{productController.product.productLocation}"/>
+
+                                    <span>Item Type</span>
+                                    <p:selectOneMenu value="#{productController.product.itemType}" filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                        <f:selectItems value="#{commonModule.itemTypeList}"/>
+                                    </p:selectOneMenu>
+
+                                    <span class="required_field">#{msg.dose}</span>
+                                    <p:inputText  value="#{productController.product.dose}" required="true"/>
+
+                                    <span>Frequency</span>
+                                    <p:inputTextarea  value="#{productController.product.frequency}"/>
+
+                                    <span>Route</span>
+                                    <p:inputText  value="#{productController.product.route}"/>
+
+                                    <span>#{msg.manufacturer}</span>
+                                    <p:selectOneMenu value="#{productController.product.manufactuerer}" filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="#{msg.choose}"/>
+                                        <f:selectItems value="#{pCommonModule.manufacturerList}"/>
+                                    </p:selectOneMenu>
+
+                                    <span>Note</span>
+                                    <p:inputTextarea value="#{productController.product.note}"/>
+
+
+                                </h:panelGrid>
+
+                                <hr  class="py-3"/>
+                                <center>
+                                    <h:panelGrid columns="3">
+                                        <p:commandButton value="#{productController.optionText}" action="#{productController.saveProduct()}" update=":mainPanel"/>
+                                        <p:commandButton value="#{msg.clear}" immediate="true" action="#{productController.clearProduct()}" update=":mainPanel"/>
+                                        <p:commandButton value="#{msg.close}" immediate="true" action="#{productController.clearPage()}" update="@form,:mainPanel"/>
+                                    </h:panelGrid>
+                                </center>
+                            </h:form>
+                        </h:panelGroup>
+                        
+                    </div>
+                    </div>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

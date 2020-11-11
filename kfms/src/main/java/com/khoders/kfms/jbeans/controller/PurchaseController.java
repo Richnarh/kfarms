@@ -49,6 +49,8 @@ public class PurchaseController implements Serializable{
     
     private String optionText;
     
+    private double totalAmount = 0.0;
+    
     @PostConstruct
     private void init()
     {
@@ -98,6 +100,12 @@ public class PurchaseController implements Serializable{
         try 
         {
           purchase.genCode();
+            System.out.println("TotalAmount -- "+purchaseItem.getTotalAmount());
+            System.out.println("purchase TotalAmount -- "+purchase.getTotalAmount());
+            System.out.println("PurchaseType -- "+purchase.getPurchaseType());
+            System.out.println("getReceiptNo -- "+purchase.getReceiptNo());
+          purchase.setTotalAmount(purchaseItem.getTotalAmount());
+          
           if(crudApi.save(purchase) != null)
           {
               purchaseList = CollectionList.washList(purchaseList, purchase);
@@ -108,7 +116,13 @@ public class PurchaseController implements Serializable{
                   purchaseItem.setPurchase(purchase);
                   purchaseItem.setFarmAccount(appSession.getCurrentUser());
                   crudApi.save(purchaseItem);
+                  
+                  purchaseItemList = CollectionList.washList(purchaseItemList, purchaseItem);
               }
+              
+              purchaseItemList.forEach(item ->{
+                  totalAmount += item.getTotalAmount();
+              });
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -131,25 +145,40 @@ public class PurchaseController implements Serializable{
         {
             if(purchaseItem.getPurchase() != null)
             {
-                if(crudApi.delete(purchaseItem.getPurchase()))
+                System.out.println("purchase exist in purchase item");
+            }
+            else
+            {
+                System.out.println("purchase does not exist in purchase item");
+            }
+            
+            
+            if(purchase != null)
+            {
+                if(crudApi.delete(purchase))
                 {
-                     if (crudApi.delete(purchase)) 
+                    purchaseList.remove(purchase);
+                    
+                    FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Purchases record deleted successfully!"), null));
+                    
+                     if (crudApi.delete(this.purchaseItem)) 
                      {
-                        purchaseList.remove(purchase);
+                        purchaseItemList.remove(this.purchaseItem);
 
                         FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                                new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Purchase Item deleted successfully!"), null));
                     } 
-                     else 
-                     {
-                        FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
-                     }
+                    else 
+                    {
+                       FacesContext.getCurrentInstance().addMessage(null,
+                               new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to delete purchase Item"), null));
+                    }
                 }
                 else
                 {
                   FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));  
+                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to delete purchases"), null));  
                 }
             }
             else
@@ -158,6 +187,27 @@ public class PurchaseController implements Serializable{
                                 new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
             }
             
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void deletePurchaseItem(PurchaseItem purchaseItem)
+    {
+        try 
+        {
+            if(crudApi.delete(purchaseItem))
+            {
+                purchaseItemList.remove(purchaseItem);
+                 FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                 FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+            }
         } catch (Exception e) 
         {
             e.printStackTrace();
@@ -181,6 +231,7 @@ public class PurchaseController implements Serializable{
                                 new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null)); 
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
@@ -209,6 +260,11 @@ public class PurchaseController implements Serializable{
     {
         this.purchase=purchase;
         purchaseItemList = accountService.getPurchaseItemList(purchase);
+        
+        purchaseItemList.forEach(item -> {
+            totalAmount += item.getTotalAmount();
+        });
+        
         formView.restToCreateView();
     }
     
@@ -248,6 +304,7 @@ public class PurchaseController implements Serializable{
       purchaseItemList = new LinkedList<>();
       purchasePayment = new PurchasePayment();
       purchasePaymentList = new LinkedList<>();
+      totalAmount = 0.0;
       formView.restToListView();  
     }
     
@@ -309,6 +366,10 @@ public class PurchaseController implements Serializable{
 
     public List<PurchasePayment> getPurchasePaymentList() {
         return purchasePaymentList;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
     }
 
 }
