@@ -7,10 +7,8 @@ package com.khoders.kfms.entities.account;
 
 import com.khoders.kfms.entities.Customer;
 import com.khoders.kfms.entities.FarmChartRecord;
-import com.khoders.kfms.entities.Product;
 import com.khoders.kfms.entities.enums.PaymentStatus;
 import com.khoders.resource.enums.PaymentMethod;
-import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -146,6 +144,6 @@ public class Invoice extends FarmChartRecord implements Serializable{
     
     public void genCode()
     {
-        setInvoice_no(SystemUtils.generateReceiptCodes(getValueDate()));
+//        setInvoice_no(SystemUtils.generateReceiptCodes(getValueDate()));
     }
 }

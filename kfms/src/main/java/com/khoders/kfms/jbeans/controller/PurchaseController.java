@@ -5,17 +5,19 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
-import com.khoders.kfms.entities.PurchasePayment;
+import com.khoders.kfms.entities.account.PurchasePayment;
 import com.khoders.kfms.entities.account.Purchase;
 import com.khoders.kfms.entities.account.PurchaseItem;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.kfms.services.AccountService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
+import com.khoders.resource.utilities.DateRangeUtil;
 import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -32,60 +34,186 @@ import javax.inject.Named;
 @Named(value = "purchaseController")
 @SessionScoped
 public class PurchaseController implements Serializable{
-    @Inject CrudApi crudApi;
-    @Inject AppSession appSession;
-    @Inject AccountService accountService;
+     @Inject private CrudApi crudApi;
+    @Inject private AppSession appSession;
+    @Inject private AccountService accountService;
     
     private Purchase purchase = new Purchase();
-    private List<Purchase> purchaseList = new LinkedList<>();
-    
     private PurchaseItem purchaseItem = new PurchaseItem();
+    private PurchasePayment purchasePayment = new PurchasePayment();
+    private List<Purchase> purchaseList;
+    private List<PurchasePayment> purchasePaymentList;
+    
     private List<PurchaseItem> purchaseItemList = new LinkedList<>();
     
-    private PurchasePayment purchasePayment = new PurchasePayment();
-    private List<PurchasePayment> purchasePaymentList = new LinkedList<>();
+    private DateRangeUtil dateRange = new DateRangeUtil();
     
     private FormView formView = FormView.listForm();
     
     private String optionText;
     
-    private double totalAmount = 0.0;
+    private double totalAmount=0;
     
     @PostConstruct
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Purchase e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Purchase e";
-        purchaseList = crudApi.getEm().createQuery(qryString, Purchase.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        purchasePaymentList = accountService.getPurchasePayment();
+        
+        clearPurchase();
+    }
+    
+    public void fetchFullyPaid()
+    {
+        purchasePaymentList = accountService.getFullPurchasePayment();
     }
     
     public void initPurchase()
     {
-        purchase = new Purchase();
-        formView.restToCreateView();
-        optionText = "Save Changes";
         clearPurchase();
+        formView.restToCreateView();
     }
     
-    public void addPurchaseItem()
+    public void filterByDate()
     {
-        if(purchaseItem.getQuantity() <= 0 && purchaseItem.getUnitPrice() <= 0.0)
-        {
-             FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please quantity and unit price are required!"), null)); 
-             return;
-        }
+        purchaseList = accountService.getPurchaseListData(dateRange, purchase);
+    }
+    
+    public void reset()
+    {
+        purchaseList = new LinkedList<>();
+    }
+    
+
+    public void savePurchase()
+    {
         try 
         {
-            double amount = (purchaseItem.getQuantity() * purchaseItem.getUnitPrice()) + purchaseItem.getCharges();
-            purchaseItem.setPurchase(purchase);
-            purchaseItem.setTotalAmount(amount);
+            purchase.genCode();
+            if(crudApi.save(purchase) != null)
+            {
+                purchaseList = CollectionList.washList(purchaseList, purchase);
+                
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+               FacesContext.getCurrentInstance().addMessage(null, 
+                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+            }
+            clearPurchase();
+        }
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void editPurchase(Purchase purchase)
+    {
+        this.purchase = purchase;
+        optionText = "Update";
+        formView.restToCreateView();
+    }
+    
+    public void deletePurchase(Purchase purchase)
+    {
+        try 
+        {
+          if(crudApi.delete(purchase))
+          {
+              purchaseList.remove(purchase);
+              FacesContext.getCurrentInstance().addMessage(null, 
+                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.deleteResponse(), null));
+          }
+          else
+          {
+              FacesContext.getCurrentInstance().addMessage(null, 
+                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.failedResponse(), null));
+          }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void clearPurchase()
+    {
+        purchase = new Purchase();
+        purchase.setValueDate(LocalDate.now());
+        purchase.setFarmAccount(appSession.getCurrentUser());
+        optionText = "Save Changes";
+        SystemUtils.resetJsfUI();
+    }
+    
+    public void closePage()
+    {
+       purchase = new Purchase();
+       purchaseItemList = new LinkedList<>();
+       totalAmount = 0;
+       optionText = "Save Changes";
+       formView.restToListView();
+    }
+    
+
+    
+    public void managePurchaseItem(Purchase purchase)
+    {
+       this.purchase = purchase;
+        formView.restToDetailView();
+        
+        clearPurchaseItem();
+
+        purchaseItemList = accountService.getPurchaseList(purchase);
+        
+        for (PurchaseItem items : purchaseItemList) 
+        {
+            totalAmount += items.getTotalAmount();
+            setTotalAmount(totalAmount);
+        }
+    }
+   
+
+    public void addPurchaseItem()
+    {
+        try 
+        {
+            if(purchaseItem.getQuantity() <= 0)
+            {
+              FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter quantity"), null));
+              return;
+            }
             
-            purchaseItemList = CollectionList.washList(purchaseItemList, purchaseItem);
+            if(purchaseItem.getUnitPrice() <= 0)
+            {
+              FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter purchase cost"), null));
+              return;
+            }
             
+              if(purchaseItem != null)
+              {
+                
+                totalAmount= purchaseItem.getQuantity() * purchaseItem.getUnitPrice();
+                  
+                purchaseItem.setTotalAmount(totalAmount);
+                purchaseItemList.add(purchaseItem);
+                purchaseItemList = CollectionList.washList(purchaseItemList, purchaseItem);
+                
+                FacesContext
+                        .getCurrentInstance()
+                        .addMessage(null, 
+                            new FacesMessage(
+                                    FacesMessage.SEVERITY_INFO, Msg.setMsg("Purchase item added"), null));
+              }
+              else
+                {
+                   FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Purchase item removed!"), null));
+                }
             clearPurchaseItem();
         } 
         catch (Exception e) 
@@ -94,103 +222,42 @@ public class PurchaseController implements Serializable{
         }
     }
     
-    
-    public void savePurchase()
+    public void saveAll()
     {
         try 
         {
-          purchase.genCode();
-            System.out.println("TotalAmount -- "+purchaseItem.getTotalAmount());
-            System.out.println("purchase TotalAmount -- "+purchase.getTotalAmount());
-            System.out.println("PurchaseType -- "+purchase.getPurchaseType());
-            System.out.println("getReceiptNo -- "+purchase.getReceiptNo());
-          purchase.setTotalAmount(purchaseItem.getTotalAmount());
-          
-          if(crudApi.save(purchase) != null)
-          {
-              purchaseList = CollectionList.washList(purchaseList, purchase);
-              
-              for (PurchaseItem purchaseItem : purchaseItemList)
-              {
-                  purchaseItem.genCode();
-                  purchaseItem.setPurchase(purchase);
-                  purchaseItem.setFarmAccount(appSession.getCurrentUser());
-                  crudApi.save(purchaseItem);
-                  
-                  purchaseItemList = CollectionList.washList(purchaseItemList, purchaseItem);
-              }
-              
-              purchaseItemList.forEach(item ->{
-                  totalAmount += item.getTotalAmount();
-              });
-              
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
-          }
-          else
-          {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
-          }
-          clearPurchase();
+            if(purchaseItemList != null)
+            {
+                for (PurchaseItem items : purchaseItemList) 
+                {
+                    items.genCode();
+                    items.setFarmAccount(appSession.getCurrentUser());
+                    crudApi.save(items);
+                    
+                    totalAmount += items.getTotalAmount();
+                    
+                    setTotalAmount(totalAmount);
+                    
+                }
+                
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Purchase item list saved!"), null));
+            }
+            else
+            {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_WARN, Msg.setMsg("The list is empty!"), null));
+            }
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
-    
-    public void deletePurchase(Purchase purchase)
+     
+    public void editPurchaseItem(PurchaseItem purchaseItem)
     {
-        try 
-        {
-            if(purchaseItem.getPurchase() != null)
-            {
-                System.out.println("purchase exist in purchase item");
-            }
-            else
-            {
-                System.out.println("purchase does not exist in purchase item");
-            }
-            
-            
-            if(purchase != null)
-            {
-                if(crudApi.delete(purchase))
-                {
-                    purchaseList.remove(purchase);
-                    
-                    FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Purchases record deleted successfully!"), null));
-                    
-                     if (crudApi.delete(this.purchaseItem)) 
-                     {
-                        purchaseItemList.remove(this.purchaseItem);
-
-                        FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Purchase Item deleted successfully!"), null));
-                    } 
-                    else 
-                    {
-                       FacesContext.getCurrentInstance().addMessage(null,
-                               new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to delete purchase Item"), null));
-                    }
-                }
-                else
-                {
-                  FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! failed to delete purchases"), null));  
-                }
-            }
-            else
-            {
-                FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
-            }
-            
-        } catch (Exception e) 
-        {
-            e.printStackTrace();
-        }
+        this.purchaseItem = purchaseItem;
+        optionText = "Update";
     }
     
     public void deletePurchaseItem(PurchaseItem purchaseItem)
@@ -200,36 +267,72 @@ public class PurchaseController implements Serializable{
             if(crudApi.delete(purchaseItem))
             {
                 purchaseItemList.remove(purchaseItem);
-                 FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
             }
             else
             {
-                 FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.DELETE_MESSAGE, null));
             }
-        } catch (Exception e) 
+        } 
+        catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
     
+    public void clearPurchaseItem()
+    {
+        purchaseItem = new PurchaseItem();
+        optionText = "Save Changes";
+        purchaseItem.setPurchase(purchase);
+        SystemUtils.resetJsfUI();
+    }
+    
+    public void addPyament(Purchase purchase)
+    {
+       this.purchase = purchase;
+        
+        clearPurchasePayment();
+
+        purchasePaymentList = accountService.getPurchasePayment(purchase);
+    }
+        
     public void savePurchasePayment()
     {
+        if(purchasePayment.getAmountPaid() > purchase.getAmountRemaining())
+        {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                   new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please you're paying more than the remaining amount", null));
+           return;
+        }
         try 
         {
-            purchasePayment.setPurchase(purchase);
-            if(crudApi.save(purchasePayment) != null)
+            if(purchasePayment.getPaymentCode() != null)
             {
-                purchasePaymentList = CollectionList.washList(purchasePaymentList, purchasePayment);
-                 FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                purchasePayment.setPaymentCode(purchasePayment.getPaymentCode());
             }
             else
             {
-               FacesContext.getCurrentInstance().addMessage(null,
-                                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null)); 
+                purchasePayment.genCode();
             }
+            if(crudApi.save(purchasePayment) != null)
+            {
+                purchase.setAmountRemaining(purchase.getAmountRemaining() - purchasePayment.getAmountPaid());
+                crudApi.save(purchase);
+                
+               purchasePaymentList = CollectionList.washList(purchasePaymentList, purchasePayment);
+               
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            }
+            else
+            {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+            }
+            clearPurchasePayment();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -237,87 +340,46 @@ public class PurchaseController implements Serializable{
     
     public void editPurchasePayment(PurchasePayment purchasePayment)
     {
-        this.purchasePayment=purchasePayment;
+        this.purchasePayment = purchasePayment;
+        optionText = "Update";
     }
     
     public void deletePurchasePayment(PurchasePayment purchasePayment)
     {
-        try {
-            if(crudApi.delete(purchasePayment))
-            {
-                purchasePaymentList.remove(purchasePayment);
-            }
-        } catch (Exception e) {
+        try 
+        {
+          if(crudApi.delete(purchasePayment))
+          {
+              purchasePaymentList.remove(purchasePayment);
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
+          }
+          else
+          {
+              FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
+          }
+        } 
+        catch (Exception e) 
+        {
+           e.printStackTrace();
         }
-    }
-    
-    public void removePurchaseItem(PurchaseItem purchaseItem)
-    {
-        purchaseItemList.remove(purchaseItem);
-    }
-    
-    public void editPurchase(Purchase purchase)
-    {
-        this.purchase=purchase;
-        purchaseItemList = accountService.getPurchaseItemList(purchase);
-        
-        purchaseItemList.forEach(item -> {
-            totalAmount += item.getTotalAmount();
-        });
-        
-        formView.restToCreateView();
-    }
-    
-    public void editPurchaseItem(PurchaseItem purchaseItem)
-    {
-        this.purchaseItem=purchaseItem;
-    }
-    
-    public void clearPurchase() 
-    {
-        purchase = new Purchase();
-        purchaseItem = new PurchaseItem();
-        purchase.setFarmAccount(appSession.getCurrentUser());
-        purchaseItem.setFarmAccount(appSession.getCurrentUser());
-        optionText = "Save Changes";
-        SystemUtils.resetJsfUI();
     }
     
     public void clearPurchasePayment()
     {
         purchasePayment = new PurchasePayment();
-        purchasePayment.setFarmAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
+        purchasePayment.setPurchase(purchase);
         SystemUtils.resetJsfUI();
     }
-    public void clearPurchaseItem()
-    {
-        purchaseItem = new PurchaseItem();
-        purchaseItem.setFarmAccount(appSession.getCurrentUser());
-        SystemUtils.resetJsfUI();
+    
+    public FormView getFormView() {
+        return formView;
     }
 
-    public void close()
-    {
-      purchase = new Purchase();
-      purchaseItem = new PurchaseItem();
-      purchaseItemList = new LinkedList<>();
-      purchasePayment = new PurchasePayment();
-      purchasePaymentList = new LinkedList<>();
-      totalAmount = 0.0;
-      formView.restToListView();  
-    }
-    
-    public void purchasePayment(Purchase purchase)
-    {
-        this.purchase = purchase;
-        purchasePaymentList = accountService.getPurchasePaymentList(purchase);
-        formView.restToDetailView();
-        
-    }
-    
-    public List<Purchase> getPurchaseList() {
-        return purchaseList;
+    public void setFormView(FormView formView) {
+        this.formView = formView;
     }
 
     public Purchase getPurchase() {
@@ -328,14 +390,18 @@ public class PurchaseController implements Serializable{
         this.purchase = purchase;
     }
 
-    public FormView getFormView() {
-        return formView;
+    public List<Purchase> getPurchaseList() {
+        return purchaseList;
     }
 
-    public void setFormView(FormView formView) {
-        this.formView = formView;
+    public DateRangeUtil getDateRange() {
+        return dateRange;
     }
 
+    public void setDateRange(DateRangeUtil dateRange) {
+        this.dateRange = dateRange;
+    }
+    
     public String getOptionText() {
         return optionText;
     }
@@ -356,6 +422,10 @@ public class PurchaseController implements Serializable{
         return purchaseItemList;
     }
 
+    public void setPurchaseItemList(List<PurchaseItem> purchaseItemList) {
+        this.purchaseItemList = purchaseItemList;
+    }
+
     public PurchasePayment getPurchasePayment() {
         return purchasePayment;
     }
@@ -371,5 +441,10 @@ public class PurchaseController implements Serializable{
     public double getTotalAmount() {
         return totalAmount;
     }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+  
 
 }

@@ -116,7 +116,14 @@ public class Customer extends FarmAccountRecord implements Serializable{
     
     public void genCode()
     {
-        setCustomerCode(SystemUtils.generateCode());
+        if(getCustomerCode() != null)
+        {
+            setCustomerCode(getCustomerCode());
+        }
+        else
+        {
+            setCustomerCode(SystemUtils.generateCode());
+        }
     }
 
     @Override

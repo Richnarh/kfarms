@@ -40,18 +40,19 @@ public class CustomerController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Customer e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Customer e";
+        String qryString = "SELECT e FROM Customer e WHERE e.farmAccount = ?1";
         customerList = crudApi.getEm().createQuery(qryString, Customer.class)
-//                .setParameter(1, appSession.getCurrentUser())
+                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
+        
+        clearCustomer();
     }
     
     public void saveCustomer()
     {
         try 
         {
-            customer.genCode();
+           customer.genCode();
           if(crudApi.save(customer) != null)
           {
               customerList = CollectionList.washList(customerList, customer);

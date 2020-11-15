@@ -78,6 +78,14 @@ public class Production extends FarmAccountRecord implements Serializable{
     
     public void batchNo()
     {
-        setBirdBatchNumber(SystemUtils.generateShortCode());
+        if(getBirdBatchNumber() != null)
+        {
+           setBirdBatchNumber(getBirdBatchNumber());
+        }
+        else
+        {
+           setBirdBatchNumber(SystemUtils.generateShortCode());
+        }
+       
     }
 }

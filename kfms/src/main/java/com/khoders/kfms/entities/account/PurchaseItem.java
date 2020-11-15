@@ -46,7 +46,7 @@ public class PurchaseItem extends FarmChartRecord implements Serializable{
    
    @Column(name = "total_amount")
    private double totalAmount;
-   
+
    @Column(name = "note")
    private String note;
 
@@ -124,7 +124,16 @@ public class PurchaseItem extends FarmChartRecord implements Serializable{
    
     public void genCode()
     {
-        setItemCode(SystemUtils.generateCode());
+        if(getItemCode() != null)
+        {
+           setItemCode(getItemCode());
+        }
+        else
+        {
+          setItemCode(SystemUtils.generateCode());
+        }
+        
+        
     }
    
 }

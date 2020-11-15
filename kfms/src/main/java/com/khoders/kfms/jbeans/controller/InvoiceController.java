@@ -45,7 +45,6 @@ public class InvoiceController implements Serializable
     private InvoicePayment invoicePayment = new InvoicePayment();
     private List<Invoice> invoiceList;
     private List<InvoicePayment> invoicePaymentList;
-    private List<InvoicePayment> invoicePaymentSnapshotList = new LinkedList<>();
     
     private List<InvoiceItem> invoiceItemList = new LinkedList<>();
     
@@ -62,32 +61,14 @@ public class InvoiceController implements Serializable
     private void init()
     {
         optionText = "Save Changes";
-        String query = "SELECT e FROM InvoicePayment e WHERE e.account=?1 AND e.paymentStatus=?2 AND e.paymentStatus=?3";
-        invoicePaymentList = crudApi
-                            .getEm()
-                            .createQuery(query, InvoicePayment.class)
-                            .setParameter(1, appSession.getCurrentUser())
-                            .setParameter(2, PaymentStatus.PARTIALLY_PAID)
-                            .setParameter(3, PaymentStatus.PENDING)
-                            .getResultList();
-                
+        invoicePaymentList = accountService.getInvoicePayment();
+        
+        clearInvoice();
     }
     
     public void fetchFullyPaid()
     {
-        String query = "SELECT e FROM InvoicePayment e WHERE e.account=?1 AND e.paymentStatus=?2";
-        invoicePaymentList = crudApi
-                            .getEm()
-                            .createQuery(query, InvoicePayment.class)
-                            .setParameter(1, appSession.getCurrentUser())
-                            .setParameter(2, PaymentStatus.FULLY_PAID)
-                            .getResultList();
-    }
-    
-
-    public void clearSnapshotList()
-    {
-        invoicePaymentSnapshotList = new LinkedList<>();
+        invoicePaymentList = accountService.getFullInvoicePayment();
     }
     
     public void initInvoice()
@@ -111,6 +92,7 @@ public class InvoiceController implements Serializable
     {
         try 
         {
+            
             if(crudApi.save(invoice) != null)
             {
                 invoiceList = CollectionList.washList(invoiceList, invoice);
@@ -129,6 +111,11 @@ public class InvoiceController implements Serializable
         {
             e.printStackTrace();
         }
+    }
+    
+    public void saveInvoiceAddItem()
+    {
+        
     }
     
     public void editInvoice(Invoice invoice)
@@ -164,6 +151,8 @@ public class InvoiceController implements Serializable
     {
         invoice = new Invoice();
         invoice.setValueDate(LocalDate.now());
+        invoice.setFarmAccount(appSession.getCurrentUser());
+        optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
@@ -178,7 +167,7 @@ public class InvoiceController implements Serializable
     
 
     
-    public void manageBillItem(Invoice invoice)
+    public void manageInvoiceItem(Invoice invoice)
     {
        this.invoice = invoice;
         formView.restToDetailView();
@@ -259,7 +248,7 @@ public class InvoiceController implements Serializable
                 }
                 
                 FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Bill item list saved!"), null));
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Invoice item list saved!"), null));
             }
             else
             {
@@ -327,7 +316,14 @@ public class InvoiceController implements Serializable
         }
         try 
         {
-            invoicePayment.genCode();
+            if(invoicePayment.getPaymentCode() != null)
+            {
+                invoicePayment.setPaymentCode(invoicePayment.getPaymentCode());
+            }
+            else
+            {
+                invoicePayment.genCode();
+            }
             if(crudApi.save(invoicePayment) != null)
             {
                 invoice.setAmountRemaining(invoice.getAmountRemaining() - invoicePayment.getAmountPaid());
@@ -349,9 +345,9 @@ public class InvoiceController implements Serializable
         }
     }
     
-    public void editInvoicePayment(InvoicePayment billPayment)
+    public void editInvoicePayment(InvoicePayment invoicePayment)
     {
-        this.invoicePayment = billPayment;
+        this.invoicePayment = invoicePayment;
         optionText = "Update";
     }
     
@@ -447,10 +443,6 @@ public class InvoiceController implements Serializable
 
     public List<InvoicePayment> getInvoicePaymentList() {
         return invoicePaymentList;
-    }
-
-    public List<InvoicePayment> getInvoicePaymentSnapshotList() {
-        return invoicePaymentSnapshotList;
     }
 
     public double getTotalAmount() {

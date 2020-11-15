@@ -70,6 +70,14 @@ public class Mortality extends ProductionRecord implements Serializable{
     
     public void genCode()
     {
-        setMortalityCode(SystemUtils.generateCode());
+        if(getMortalityCode() != null)
+        {
+           setMortalityCode(getMortalityCode());
+        }
+        else
+        {
+            setMortalityCode(SystemUtils.generateCode());
+        }
+        
     }
 }

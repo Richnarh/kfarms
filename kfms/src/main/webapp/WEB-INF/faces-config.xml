@@ -35,9 +35,9 @@
         </resource-bundle>
     </application>
     
-<!--     <lifecycle>
+     <lifecycle>
         <phase-listener>com.khoders.kfms.listener.SessionListener</phase-listener>
-    </lifecycle>-->
+    </lifecycle>
     
     <converter>
       <converter-for-class>java.lang.Enum</converter-for-class>

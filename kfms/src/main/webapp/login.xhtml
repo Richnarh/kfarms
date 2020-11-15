@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
     <h:head>
         <title>#{msg.appName} | Login</title>
         <link rel="stylesheet" href="#{application.contextPath}/vendors/font-awesome/font-awesome.min.css" /> 
@@ -15,11 +17,12 @@
       <span><b>#{msg.appName} Login</b></span>
   </div>
   <!-- /.login-logo -->
+  <p:messages/>
   <div class="card">
     <div class="card-body login-card-body">
       <h:form>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email"/>
+            <input type="email" class="form-control" jsf:value="#{loginController.email}" placeholder="Email"/>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -27,7 +30,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password"/>
+          <input type="password" class="form-control" jsf:value="#{loginController.password}" placeholder="Password"/>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -35,7 +38,7 @@
           </div>
         </div>
           <div class="col-md-12">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" jsf:action="#{loginController.doLogin()}" class="btn btn-primary btn-block">Sign In</button>
           <!-- /.col -->
         </div>
       </h:form>

@@ -137,7 +137,15 @@ public class InvoiceItem extends FarmAccountRecord implements Serializable{
    
     public void genCode()
     {
-        setItemCode(SystemUtils.generateCode());
+        if(getItemCode() != null)
+        {
+            setItemCode(getItemCode());
+        }
+        else
+        {
+            setItemCode(SystemUtils.generateCode());
+        }
+        
     }
    
 }

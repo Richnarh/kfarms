@@ -7,9 +7,11 @@ package com.khoders.kfms.shared;
 
 import com.khoders.kfms.entities.Bird;
 import com.khoders.kfms.entities.Customer;
+import com.khoders.kfms.entities.Product;
 import com.khoders.kfms.entities.Supplier;
 import com.khoders.kfms.entities.account.ChartOfAccount;
 import com.khoders.kfms.entities.settings.BirdType;
+import com.khoders.kfms.entities.settings.Country;
 import com.khoders.kfms.entities.settings.FeedType;
 import com.khoders.kfms.entities.settings.Medication;
 import com.khoders.kfms.jpa.AppSession;
@@ -40,57 +42,54 @@ public class CommonClass implements Serializable{
     private List<ChartOfAccount> accountList = new LinkedList<>();
     private List<Supplier> supplierList = new LinkedList<>();
     private List<Product> productList = new LinkedList<>();
+    private List<Country> countryList = new LinkedList<>();
     
     @PostConstruct
     public void init()
     {
-//        String qryBirdType = "SELECT e FROM BirdType e WHERE e.farmAccount = ?1";
-        String qryBirdType = "SELECT e FROM BirdType e ";
+        String qryBirdType = "SELECT e FROM BirdType e WHERE e.farmAccount = ?1";
         birdTypeList = crudApi.getEm().createQuery(qryBirdType, BirdType.class)
-//                .setParameter(1, appSession.getCurrentUser())
+                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
     
-//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
-        String qryBird = "SELECT e FROM Bird e ";
+        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
         birdList = crudApi.getEm().createQuery(qryBird, Bird.class)
-//                .setParameter(1, appSession.getCurrentUser())
+                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
         
-//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
-        String qryFeedType = "SELECT e FROM FeedType e";
+        String qryFeedType = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
         feedTypeList = crudApi.getEm().createQuery(qryFeedType, FeedType.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                  .getResultList();
+                .setParameter(1, appSession.getCurrentUser())
+                .getResultList();
         
-//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
-        String qryMedication = "SELECT e FROM Medication e";
+        String qryMedication = "SELECT e FROM Medication e WHERE e.farmAccount = ?1";
         medicationList = crudApi.getEm().createQuery(qryMedication, Medication.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                  .getResultList();
+                .setParameter(1, appSession.getCurrentUser())
+                .getResultList();
         
-//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
-        String qryCustomer = "SELECT e FROM Customer e";
+        String qryCustomer = "SELECT e FROM Customer e WHERE e.farmAccount = ?1";
         customerList = crudApi.getEm().createQuery(qryCustomer, Customer.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                  .getResultList();
+                .setParameter(1, appSession.getCurrentUser())
+                .getResultList();
         
-//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
-        String qrySupplier = "SELECT e FROM Supplier e";
+        String qrySupplier = "SELECT e FROM Supplier e WHERE e.farmAccount = ?1";
         supplierList = crudApi.getEm().createQuery(qrySupplier, Supplier.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                  .getResultList();
+                .setParameter(1, appSession.getCurrentUser())
+                .getResultList();
         
-//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
-        String qryChartOfAccount = "SELECT e FROM ChartOfAccount e";
+        String qryChartOfAccount = "SELECT e FROM ChartOfAccount e WHERE e.farmAccount = ?1";
         accountList = crudApi.getEm().createQuery(qryChartOfAccount, ChartOfAccount.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                  .getResultList();
+                .setParameter(1, appSession.getCurrentUser())
+                .getResultList();
         
-//        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
-        String qryProduct = "SELECT e FROM Product e";
+        String qryProduct = "SELECT e FROM Product e WHERE e.farmAccount = ?1";
         productList = crudApi.getEm().createQuery(qryProduct, Product.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                  .getResultList();
+                .setParameter(1, appSession.getCurrentUser())
+                .getResultList();
+        
+        String qryCountry = "SELECT e FROM Country e ";
+        countryList = crudApi.getEm().createQuery(qryCountry, Country.class)
+                .getResultList();
     }
 
     public List<BirdType> getBirdTypeList() {
@@ -123,6 +122,10 @@ public class CommonClass implements Serializable{
 
     public List<Product> getProductList() {
         return productList;
+    }
+
+    public List<Country> getCountryList() {
+        return countryList;
     }
     
 }

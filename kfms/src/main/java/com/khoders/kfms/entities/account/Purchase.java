@@ -7,7 +7,7 @@ package com.khoders.kfms.entities.account;
 
 import com.khoders.kfms.entities.Customer;
 import com.khoders.kfms.entities.FarmChartRecord;
-import com.khoders.kfms.entities.enums.PurchaseType;
+import com.khoders.kfms.entities.enums.PaymentStatus;
 import com.khoders.resource.enums.PaymentMethod;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
@@ -33,13 +33,16 @@ public class Purchase extends FarmChartRecord implements Serializable{
     @Column(name = "received_date")
     private LocalDate receivedDate;
     
+    @Column(name = "dueDate")
+    private LocalDate dueDate;
+    
     @Column(name = "receipt_number")
     private String receiptNo;
-
-    @Column(name = "purchase_type")
-    @Enumerated(EnumType.STRING)
-    private PurchaseType purchaseType;
     
+    @Column(name = "payment_status")
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
     @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
@@ -51,6 +54,9 @@ public class Purchase extends FarmChartRecord implements Serializable{
     @Column(name = "total_amount")
     private double totalAmount;
     
+    @Column(name = "amount_remaining")
+    private double AmountRemaining;
+
     @Column(name = "note")
     private String note;
 
@@ -68,14 +74,6 @@ public class Purchase extends FarmChartRecord implements Serializable{
 
     public void setReceivedDate(LocalDate receivedDate) {
         this.receivedDate = receivedDate;
-    }
-
-    public PurchaseType getPurchaseType() {
-        return purchaseType;
-    }
-
-    public void setPurchaseType(PurchaseType purchaseType) {
-        this.purchaseType = purchaseType;
     }
 
     public double getTotalAmount() {
@@ -117,9 +115,42 @@ public class Purchase extends FarmChartRecord implements Serializable{
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public double getAmountRemaining() {
+        return AmountRemaining;
+    }
+
+    public void setAmountRemaining(double AmountRemaining) {
+        this.AmountRemaining = AmountRemaining;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+    
     
     public void genCode()
     {
-        setPurchaseId(SystemUtils.generateCode());
+       if(getPurchaseId() != null)
+        {
+           setPurchaseId(getPurchaseId());
+        }
+        else
+        {
+          setPurchaseId(SystemUtils.generateCode());
+        }
+        
     }
 }

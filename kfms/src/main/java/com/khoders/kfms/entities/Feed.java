@@ -27,10 +27,6 @@ public class Feed extends ProductionRecord implements Serializable{
     @Column(name = "feed_amount")
     private double feedAmount;
     
-    @JoinColumn(name = "production", referencedColumnName = "id")
-    @ManyToOne
-    private Production production;
-
     public FeedType getFeedType() {
         return feedType;
     }
@@ -46,14 +42,6 @@ public class Feed extends ProductionRecord implements Serializable{
     public void setFeedAmount(double feedAmount) {
         this.feedAmount = feedAmount;
     }
-    
-    public Production getProduction() {
-        return production;
-    }
 
-    public void setProduction(Production production) {
-        this.production = production;
-    }
-    
     
 }

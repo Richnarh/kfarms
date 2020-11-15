@@ -5,7 +5,6 @@
  */
 package com.khoders.kfms.entities;
 
-import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;

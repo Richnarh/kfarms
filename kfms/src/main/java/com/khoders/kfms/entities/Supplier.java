@@ -91,7 +91,15 @@ public class Supplier extends FarmAccountRecord implements Serializable{
 
     public void genCode()
     {
-        setSupplierCode(SystemUtils.generateCode());
+        if(getSupplierCode() != null)
+        {
+           setSupplierCode(getSupplierCode());
+        }
+        else
+        {
+           setSupplierCode(SystemUtils.generateCode());
+        }
+        
     }
 
     @Override

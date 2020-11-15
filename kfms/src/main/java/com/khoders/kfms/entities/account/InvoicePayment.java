@@ -105,6 +105,13 @@ public class InvoicePayment extends FarmChartRecord implements Serializable{
         
     public void genCode()
     {
-        setPaymentCode(SystemUtils.generateCode());
+        if(getPaymentCode() != null)
+        {
+           setPaymentCode(getPaymentCode());
+        }
+        else
+        {
+          setPaymentCode(SystemUtils.generateCode());
+        }
     }
 }

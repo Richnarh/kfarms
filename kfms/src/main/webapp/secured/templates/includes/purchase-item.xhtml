@@ -6,7 +6,6 @@
       xmlns:p="http://primefaces.org/ui">  
 
     <div class="row">
-
         <div class="col-lg-3">
             <h:form id="orderItemForm" >
                 <h:panelGrid columns="2" styleClass="spaced-form" >                                                
@@ -53,35 +52,30 @@
                         <h:outputText value="#{purchaseItem.quantity}"/>                                 
                     </p:column>
 
-                    <p:column headerText="#{msg.unit_price}" styleClass="text-right">
+                    <p:column headerText="#{msg.unit_price} (#{appSession.currentUser.country.currencyCode})" styleClass="text-right">
                         <h:outputText value="#{purchaseItem.unitPrice}" rendered="#{purchaseItem.unitPrice != 0.0 }">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>                                 
                     </p:column>
 
-                    <p:column headerText="#{msg.charges}" styleClass="text-right">
+                    <p:column headerText="#{msg.charges} (#{appSession.currentUser.country.currencyCode})" styleClass="text-right">
                         <h:outputText value="#{purchaseItem.charges}" rendered="#{purchaseItem.charges != 0.0 }">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>                                 
                     </p:column>
 
-                    <p:column headerText="#{msg.amount}" styleClass="text-right">
+                    <p:column headerText="#{msg.amount} (#{appSession.currentUser.country.currencyCode})" styleClass="text-right">
                         <h:outputText value="#{purchaseItem.totalAmount}" 
                                       rendered="#{purchaseItem.totalAmount != 0.0}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>                                 
                     </p:column>
 
-                    <p:column headerText="#{msg.action}" >
-                        <p:commandButton value="#{msg.edit}" immediate="true" update=":mainPanel" styleClass="kbtn-info"
-                                         action="#{purchaseController.editPurchaseItem(purchaseItem)}"/>                         
-                    </p:column>
-
                     <p:column headerText="#{msg.action}">
                         <p:menuButton value="#{msg.manage}">
-                            <p:menuitem icon="fa fa-remove" value="#{msg.remove}"  styleClass="kbtn-cancel"
-                                         action="#{purchaseController.removePurchaseItem(purchaseItem)}" immediate="true" update="@form"/>
-                            <p:menuitem icon="fa fa-remove" value="Permanent Delete"  styleClass="kbtn-danger text-white"
+                            <p:menuitem icon="fa fa-check" value="#{msg.edit}"  class="kbtn-info text-white"
+                                         action="#{purchaseController.editPurchaseItem(purchaseItem)}" immediate="true" update=":mainPanel"/>
+                            <p:menuitem icon="fa fa-remove" value="Permanent Delete"  class="kbtn-danger text-white"
                                          action="#{purchaseController.deletePurchaseItem(purchaseItem)}" update="@form"/>
                         </p:menuButton>
                         
@@ -93,16 +87,16 @@
                     <h:panelGrid columns="2">
                         <span class="field-shade">#{msg.total_amount}</span>
                         <h:outputText value="#{purchaseController.totalAmount}" styleClass="field-shade">
-                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                            <f:convertNumber pattern="#{appSession.currentUser.country.currencyCode} #{msg.money_pattern}"/>
                         </h:outputText>
                     </h:panelGrid>
                 </center>
 
                 <center>
                     <br/>
-                    <p:commandButton value="#{msg.save} All" styleClass="kbtn-success mx-4" action="#{purchaseController.savePurchase()}" update=":mainPanel"/>
+                    <p:commandButton value="#{msg.save} All" styleClass="kbtn-success mx-4" action="#{purchaseController.saveAll()}" update=":mainPanel"/>
                     <p:commandButton value="Close Page" styleClass="kbtn-danger" update=":mainPanel"
-                                     action="#{purchaseController.close()}"/>
+                                     action="#{purchaseController.closePage()}"/>
                 </center>
             </h:form>
         </div>

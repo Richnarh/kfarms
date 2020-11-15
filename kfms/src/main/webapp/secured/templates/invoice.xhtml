@@ -11,7 +11,7 @@
             <ui:define name="pageTitle">
                 #{msg.invoice}s
             </ui:define>
-            
+
             <ui:define name="pageContent">
                 <h:panelGroup id="mainPanel">
                     <h:panelGroup rendered="#{invoiceController.formView.listView}">
@@ -30,15 +30,15 @@
                                                   pattern="#{msg.formatted_date}" 
                                                   monthNavigator="true" yearNavigator="true" />
 
-                                    <p:commandButton class="ml-2"  update=":mainPanel"
+                                    <p:commandButton class="ml-2 kbtn-primary" update=":mainPanel"
                                                      action="#{invoiceController.filterByDate()}"
                                                      value="#{msg.load} Data"/>
 
-                                    <p:commandButton action="#{invoiceController.reset()}" value="#{msg.reset}" update=":invoiceTable:invoiceTbl"/>
+                                    <p:commandButton action="#{invoiceController.reset()}" class="kbtn-cancel" value="#{msg.reset}" update=":invoiceTable:invoiceTbl"/>
 
                                     <div class="float-right">
-                                        <p:commandButton value="#{msg.add_new} #{msg.invoice}" 
-                                                         icon="fa fa-add" update=":mainPanel"
+                                        <p:commandButton value="#{msg.new} #{msg.invoice}" class="kbtn-primary"
+                                                         icon="fa fa-plus-circle" update=":mainPanel"
                                                          action="#{invoiceController.initInvoice()}"/>
                                     </div>
                                 </h:form>      
@@ -49,12 +49,7 @@
                             <p:dataTable id="invoiceTbl" value="#{invoiceController.invoiceList}" var="invoice"
                                          paginator="true" paginatorPosition="bottom" rows="15">
 
-                                <f:facet name="header">
-                                    <p:commandButton id="toggler" type="button" value="Filter" style="float:right" icon="pi pi-align-justify" />
-                                    <p:columnToggler datasource="invoiceTbl" trigger="toggler" />
-                                    <div style="clear:both;"></div>
-                                </f:facet>
-                                <p:column>
+                                <p:column styleClass="row-toggler">
                                     <p:rowToggler/>
                                 </p:column>
 
@@ -62,6 +57,9 @@
                                     <p:panelGrid columns="2">
                                         <span>#{msg.payment} #{msg.method}</span>
                                         <h:outputText value="#{invoice.paymentMethod}"/>
+
+                                        <span>#{msg.account}</span>
+                                        <h:outputText value="#{invoice.account.accountName}"/>
 
                                         <span>#{msg.payment} #{msg.status}</span>
                                         <h:outputText value="#{invoice.paymentStatus}"/>
@@ -72,7 +70,13 @@
                                 </p:rowExpansion>
 
                                 <p:column headerText="#{msg.invoice_no}">
-                                    #{invoice.receiptNo}
+                                    #{invoice.invoice_no}
+                                </p:column>
+                                
+                                <p:column headerText="#{msg.received} #{msg.date}">
+                                    <h:outputText value="#{invoice.valueDate}">
+                                        <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                    </h:outputText>
                                 </p:column>
 
                                 <p:column headerText="#{msg.due_date}">
@@ -80,33 +84,31 @@
                                         <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="#{msg.received} #{msg.date}">
-                                    <h:outputText value="#{invoice.valueDate}">
-                                        <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
-                                    </h:outputText>
+                                
+                                <p:column headerText="#{msg.customer}">
+                                    #{invoice.customer}
                                 </p:column>
 
-                                <p:column headerText="#{msg.supplier}">
-                                    #{invoice.supplier}
-                                </p:column>
-
-                                <p:column headerText="#{msg.invoice_amount}" class="text-right bg-blue-sky">
-                                    <h:outputText value="#{invoice.invoiceAmount}">
+                                <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.country.currencyCode})" class="text-right bg-gradient-info">
+                                    <h:outputText value="#{invoice.totalAmount}">
                                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                                     </h:outputText>
                                 </p:column>
-                                <p:column headerText="#{msg.remaining}" class="text-right bg-red">
+                                <p:column headerText="#{msg.remaining} (#{appSession.currentUser.country.currencyCode})" class="text-right bg-red">
                                     <h:outputText value="#{invoice.amountRemaining}">
                                         <f:convertNumber pattern="#{msg.money_pattern}"/>
                                     </h:outputText>
                                 </p:column>
 
-                                <p:column headerText="#{msg.action}" >
-                                    <p:menuButton value="#{msg.choose}">
-                                        <p:menuitem icon="fa fa-edit" class="text-info" value="#{msg.edit}" action="#{invoiceController.editInvoice(invoice)}" immediate="true" update=":mainPanel"/>
-                                        <p:menuitem icon="fa fa-check" class="text-info" value="#{msg.manage}" action="#{invoiceController.manageBillItem(invoice)}" immediate="true" update=":mainPanel"/>
-                                        <p:menuitem icon="fa fa-check" class="text-info" value="#{msg.payment}" action="#{invoiceController.addPyament(invoice)}" oncomplete="PF('paymentForm').show()" update=":paymentDialog, :billPaymentPanel"/>
-                                        <p:menuitem icon="fa fa-remove" class="text-danger" value="#{msg.delete}" action="#{invoiceController.deleteInvoice(invoice)}" immediate="true" update=":mainPanel" onclick="return confirm('#{msg.delete_message}')"/>
+                                <p:column headerText="#{msg.action}" style="width: 120px;">
+                                    <p:menuButton value="#{msg.manage}">
+                                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.edit}" action="#{invoiceController.editInvoice(invoice)}" immediate="true" update=":mainPanel"/>
+                                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Item" action="#{invoiceController.manageInvoiceItem(invoice)}" immediate="true" update=":mainPanel"/>
+                                        <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.payment}" action="#{invoiceController.addPyament(invoice)}" oncomplete="PF('paymentForm').show()" update=":paymentDialog"/>
+                                        <p:menuitem icon="fa fa-remove" 
+                                                    class="kbtn-danger text-white" value="#{msg.delete}" 
+                                                    action="#{invoiceController.deleteInvoice(invoice)}" 
+                                                    immediate="true" update=":mainPanel" onclick="return confirm('#{msg.delete_message}')"/>
                                     </p:menuButton>
                                 </p:column>
                             </p:dataTable>
@@ -116,58 +118,66 @@
                     <h:panelGroup rendered="#{invoiceController.formView.createView}">
                         <div class="row">
                             <div class="col-md-10 mx-auto">
-                            <div class="card">
-                                <h6 class="card-header">Invoice Processing</h6>
-                                <div class="card-body">
-                                    <h:form>
-                                        <h:panelGrid columns="4" styleClass="spaced-form">
-                                            <span class="required_field">#{msg.receipt_no}</span>
-                                            <p:inputText value="#{invoiceController.invoice.invoice_no}" required="true"/>
+                                <div class="card">
+                                    <h6 class="card-header">Invoice Processing</h6>
+                                    <div class="card-body">
+                                        <h:form>
+                                            <h:panelGrid columns="4" styleClass="spaced-form">
+                                                <span class="required_field">#{msg.invoice_no}</span>
+                                                <p:inputText value="#{invoiceController.invoice.invoice_no}" required="true"/>
 
-                                            <span>#{msg.issue_date}</span>
-                                            <p:inputText readonly="true" value="#{invoiceController.invoice.issueDate}" class="field-value"/>
+                                                <span>#{msg.issue_date}</span>
+                                                <p:datePicker value="#{invoiceController.invoice.issueDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
 
-                                            <span class="required_field">#{msg.due_date}</span>
-                                            <p:datePicker required="true" value="#{invoiceController.invoice.dueDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
+                                                <span class="required_field">#{msg.due_date}</span>
+                                                <p:datePicker required="true" value="#{invoiceController.invoice.dueDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
+                                                
+                                                <span>#{msg.account}</span>
+                                                <p:selectOneMenu value="#{invoiceController.invoice.account}">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{commonClass.accountList}" />
+                                                </p:selectOneMenu>
+                                                
+                                                <span class="required_field">#{msg.payment_status}</span>
+                                                <p:selectOneMenu value="#{invoiceController.invoice.paymentStatus}" required="true">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{sharedClass.paymentStatusList}"/>
+                                                </p:selectOneMenu>
 
-                                            <span class="required_field">#{msg.payment_staus}</span>
-                                            <p:selectOneMenu value="#{invoiceController.invoice.paymentStatus}" required="true">
-                                                <f:selectItem itemLabel="#{msg.choose}"/>
-                                                <f:selectItems value="#{sharedClass.paymentStatusList}"/>
-                                            </p:selectOneMenu>
+                                                <span class="required_field">#{msg.payment_method}</span>
+                                                <p:selectOneMenu value="#{invoiceController.invoice.paymentMethod}" required="true">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{sharedClass.paymentMethodList}"/>
+                                                </p:selectOneMenu>
 
-                                            <span class="required_field">#{msg.payment_method}</span>
-                                            <p:selectOneMenu value="#{invoiceController.invoice.paymentMethod}" required="true">
-                                                <f:selectItem itemLabel="#{msg.choose}"/>
-                                                <f:selectItems value="#{sharedClass.paymentMethodList}"/>
-                                            </p:selectOneMenu>
+                                                <span>#{msg.customer}</span>
+                                                <p:selectOneMenu value="#{invoiceController.invoice.customer}" filter="true" filterMatchMode="contains">
+                                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                                    <f:selectItems value="#{commonClass.customerList}"/>
+                                                </p:selectOneMenu>
 
-                                            <span class="required_field">#{msg.customer}</span>
-                                            <p:selectOneMenu value="#{invoiceController.invoice.customer}" filter="true" filterMatchMode="contains" required="true">
-                                                <f:selectItem itemLabel="#{msg.choose}"/>
-                                                <f:selectItems value="#{commonClass.customerList}"/>
-                                            </p:selectOneMenu>
+                                                <span class="required_field">#{msg.total_amount}</span>
+                                                <p:inputText value="#{invoiceController.invoice.totalAmount}" required="true"/>
 
-                                            <span class="required_field">#{msg.total_amount}</span>
-                                            <p:inputText value="#{invoiceController.invoice.totalAmount}" required="true"/>
+                                                <span>#{msg.note}</span>
+                                                <p:inputTextarea value="#{invoiceController.invoice.note}"/>
 
-                                            <span>#{msg.note}</span>
-                                            <p:inputTextarea value="#{invoiceController.invoice.note}"/>
+                                            </h:panelGrid>
 
-                                        </h:panelGrid>
-
-                                        <div class="col-md-6 mx-auto pt-5">
-                                            <center>
-                                                <h:panelGrid columns="3">
-                                                    <p:commandButton value="#{invoiceController.optionText}" action="#{invoiceController.saveInvoice()}" update=":mainPanel, :invoiceTable"/>
-                                                    <p:commandButton value="#{msg.clear}" immediate="true" action="#{invoiceController.clearInvoice()}" update=":mainPanel"/>
-                                                    <p:commandButton value="#{msg.close}" immediate="true" action="#{invoiceController.closePage()}" update=":mainPanel"/>
-                                                </h:panelGrid>
-                                            </center>
-                                        </div>
-                                    </h:form>
+                                            <div class="col-md-6 mx-auto pt-5">
+                                                <center>
+                                                    <h:panelGrid columns="3">
+                                                        <p:commandButton  value="#{invoiceController.optionText}" class="kbtn-success"
+                                                                        action="#{invoiceController.saveInvoice()}"  update=":mainPanel, :invoiceTable"/>
+                                                        
+                                                        <p:commandButton value="#{msg.clear}" class="ml-5 kbtn-cancel" immediate="true" action="#{invoiceController.clearInvoice()}" update=":mainPanel"/>
+                                                        <p:commandButton value="#{msg.close}" class="kbtn-danger" immediate="true" action="#{invoiceController.closePage()}" update=":mainPanel"/>
+                                                    </h:panelGrid>
+                                                </center>
+                                            </div>
+                                        </h:form>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
 
                         </div>
@@ -176,23 +186,23 @@
 
                     <h:panelGroup  rendered="#{invoiceController.formView.detailView}">
 
-                        <div class="row">
+                        <div class="row mb-5">
                             <div class="col-md-10 mx-auto">
                                 <div class="display-box">
                                     <h:panelGrid columns="8" styleClass="spaced-table">
                                         <span class="field-label">#{msg.supplier}</span>
-                                        <h:outputText value="#{invoiceController.invoice.customer.customerName}" styleClass="field-value"/>
+                                        <h:outputText value="#{invoiceController.invoice.customer.customerName}" styleClass="shade-value"/>
 
                                         <span class="field-label">#{msg.due_date}</span>
-                                        <h:outputText value="#{invoiceController.invoice.dueDate}" styleClass="field-value">
+                                        <h:outputText value="#{invoiceController.invoice.dueDate}" styleClass="shade-value">
                                             <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
                                         </h:outputText>
 
                                         <span class="field-label">#{msg.invoice_no}</span>
-                                        <h:outputText value="#{invoiceController.invoice.invoice_no}" styleClass="field-value"/>
+                                        <h:outputText value="#{invoiceController.invoice.invoice_no}" styleClass="shade-value"/>
 
                                         <span class="field-label">#{msg.total_amount}</span>
-                                        <h:outputText value="#{invoiceController.invoice.totalAmount}" styleClass="field-value">
+                                        <h:outputText value="#{appSession.currentUser.country.currencyCode} #{invoiceController.invoice.totalAmount}" styleClass="shade-value">
                                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                                         </h:outputText>
 

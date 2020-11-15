@@ -42,10 +42,9 @@ public class ProductController implements Serializable{
     @PostConstruct
     private void init()
     {
-//        String qrString = "SELECT e FROM Product e WHERE e.account=?1 ORDER BY e.productName ASC";
-        String qrString = "SELECT e FROM Product e";
+        String qrString = "SELECT e FROM Product e WHERE e.farmAccount=?1 ORDER BY e.productName ASC";
         productList = crudApi.getEm().createQuery(qrString, Product.class)
-//                .setParameter(1, appSession.getCurrentUser())
+                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
     }
     
@@ -53,7 +52,7 @@ public class ProductController implements Serializable{
     {
         product = new Product();
         formView.restToCreateView();
-        optionText = "Save";
+        optionText = "Save Changes";
         clearProduct();
     }
     
@@ -67,7 +66,7 @@ public class ProductController implements Serializable{
     {
         try 
         {
-            product.genCode();
+            product.genCode(); 
             if(crudApi.save(product) != null)
             {
                 productList = CollectionList.washList(productList, product);
@@ -118,7 +117,7 @@ public class ProductController implements Serializable{
     {
         product = new Product();
         product.setFarmAccount(appSession.getCurrentUser());
-        optionText = "Save";
+        optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
 

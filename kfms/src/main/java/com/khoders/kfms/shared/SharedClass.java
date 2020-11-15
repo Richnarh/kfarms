@@ -5,10 +5,8 @@
  */
 package com.khoders.kfms.shared;
 
-import com.khoders.kfms.entities.enums.AccountType;
 import com.khoders.kfms.entities.enums.BirdCategory;
 import com.khoders.kfms.entities.enums.BirdSource;
-import com.khoders.kfms.entities.enums.PurchaseType;
 import com.khoders.kfms.entities.enums.CullingMortality;
 import com.khoders.kfms.entities.enums.EggColor;
 import com.khoders.kfms.entities.enums.EggSize;
@@ -33,11 +31,6 @@ public class SharedClass implements Serializable
     public List<BirdCategory> getBirdCategoryList()
     {
         return Arrays.asList(BirdCategory.values());
-    }
-    
-    public List<PurchaseType> getPurchaseTypeList()
-    {
-        return Arrays.asList(PurchaseType.values());
     }
     
     public List<CullingMortality> getCullingMortalityList()
@@ -74,10 +67,10 @@ public class SharedClass implements Serializable
         return Arrays.asList(PaymentMethod.values());
     }
     
-    public List<AccountType> getAccountTypeList()
-    {
-        return Arrays.asList(AccountType.values());
-    }
+//    public List<AccountType> getAccountTypeList()
+//    {
+//        return Arrays.asList(AccountType.values());
+//    }
     
     public List<PaymentStatus> getPaymentStatusList()
     {

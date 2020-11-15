@@ -20,10 +20,10 @@
                                 <span class="required_field">Account Name</span>
                                 <p:inputText value="#{chartOfAccountController.chartOfAccount.accountName}" required="true"/>
 
-                                <span>Account Type</span>
-                                <p:selectOneMenu>
+                                <span class="required_field">Account Type</span>
+                                <p:selectOneMenu value="#{chartOfAccountController.chartOfAccount.accountType}" required="true">
                                     <f:selectItem itemLabel="#{msg.choose}"/>
-                                    <!--<f:selectItems value="{accountClass.accountTypeList}"/>-->
+                                    <f:selectItems value="#{selectItemAccount.categorySelectItems}"/>
                                 </p:selectOneMenu>
 
                                 <span>#{msg.note}</span>
@@ -48,7 +48,7 @@
                             <p:rowExpansion>
                                 <p:panelGrid columns="2">
                                     
-                                    <span>#{msg.chart_of_account}</span>
+                                    <span>#{msg.chart_of_account} code</span>
                                     <h:outputText value="#{chartOfAccount.accountCode}"/>
                                     
                                     <span>Created Date</span>
@@ -64,7 +64,7 @@
                             </p:column>
 
                             <p:column headerText="Account Type">
-                                #{chartOfAccount.accountType.label}
+                                #{chartOfAccount.accountType}
                             </p:column>
                             
                             <p:column headerText="#{msg.note}">

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                <div class="top-title">
+                    <a class="text-info mb-5" href="#{application.contextPath}/#{msg.entry}/index.xhtml">Dashboard</a>/#{msg.country}
+                </div>
+            </ui:define>
+            <ui:define name="pageContent">
+                <div class="col-md-12 col-sm-12">
+                    <div class="row card-border">
+                        <p:panel header="Upload Countries List" class="mb-3">
+                            <h:form enctype="multipart/form-data">
+                                <p:fileUpload value="#{countryController.file}" mode="simple" skinSimple="true" required="true"/>
+                                <p:commandButton action="#{countryController.uploadCountry()}" ajax="false" value="Upload"/>
+
+                                <p:commandButton value="#{msg.load}" action="#{countryController.loadCountryList()}" update=":countryTable"/>
+                            </h:form>
+                        </p:panel>
+                        
+                        <h:form id="countryTable">
+                            <p:dataTable value="#{countryController.countryList}" var="country"
+                                         paginator="true" paginatorPosition="bottom" rows="10">
+
+                                <p:column headerText="Country Code" filterBy="#{country.countryCode}">
+                                    #{country.countryCode}
+                                </p:column>
+
+                                <p:column headerText="Country" filterBy="#{country.countryName}">
+                                    #{country.countryName}
+                                </p:column>
+
+                                <p:column headerText="Currency" filterBy="#{country.currency}">
+                                    #{country.currency}
+                                </p:column>
+
+                                <p:column headerText="Currency Code" filterBy="#{country.currencyCode}">
+                                    #{country.currencyCode}
+                                </p:column>
+                            </p:dataTable>
+                            <br/>
+                            <p:commandButton value="#{msg.save} List" action="#{countryController.saveCountry()}" update="@form"/>   
+                            <p:commandButton value="#{msg.clear} List" action="#{countryController.clearCountry()}" update="@form"/>   
+                        </h:form>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

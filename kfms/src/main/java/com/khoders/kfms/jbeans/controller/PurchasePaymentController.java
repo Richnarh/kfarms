@@ -5,7 +5,7 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
-import com.khoders.kfms.entities.PurchasePayment;
+import com.khoders.kfms.entities.account.PurchasePayment;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import java.io.Serializable;

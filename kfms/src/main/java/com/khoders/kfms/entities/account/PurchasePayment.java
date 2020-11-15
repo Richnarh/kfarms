@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.kfms.entities;
+package com.khoders.kfms.entities.account;
 
+import com.khoders.kfms.entities.FarmChartRecord;
 import com.khoders.kfms.entities.account.ChartOfAccount;
 import com.khoders.kfms.entities.account.Purchase;
 import com.khoders.kfms.entities.enums.PaymentStatus;
+import com.khoders.resource.utilities.SystemUtils;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +33,9 @@ public class PurchasePayment extends FarmChartRecord{
     @Column(name = "payment_date")
     private LocalDate paymentDate;
     
+    @Column(name = "payment_code")
+    private String paymentCode;
+    
     @Column(name = "amount")
     private double totalAmount;
     
@@ -40,6 +45,11 @@ public class PurchasePayment extends FarmChartRecord{
     @Column(name = "payment_status")
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
+    
+   @Column(name = "amount_paid")
+   private double AmountPaid;
+    
+    
 
     public Purchase getPurchase() {
         return purchase;
@@ -80,6 +90,34 @@ public class PurchasePayment extends FarmChartRecord{
     public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
+
+    public String getPaymentCode() {
+        return paymentCode;
+    }
+
+    public void setPaymentCode(String paymentCode) {
+        this.paymentCode = paymentCode;
+    }
+
+    public double getAmountPaid() {
+        return AmountPaid;
+    }
+
+    public void setAmountPaid(double AmountPaid) {
+        this.AmountPaid = AmountPaid;
+    }
     
+    public void genCode()
+    {
+        if(getPaymentCode() != null)
+        {
+           setPaymentCode(getPaymentCode());
+        }
+        else
+        {
+           setPaymentCode(SystemUtils.generateShortCode());
+        }
+       
+    }
     
 }

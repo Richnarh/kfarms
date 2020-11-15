@@ -27,7 +27,7 @@ public class FarmAccountService
         
         try
         {
-            String qryString = "SELECT e FROM Account e WHERE e.email=?1 AND e.password=?2";
+            String qryString = "SELECT e FROM FarmAccount e WHERE e.businessEmail=?1 AND e.password=?2";
             TypedQuery<FarmAccount> typedQuery = crudApi.getEm().createQuery(qryString, FarmAccount.class)
                     .setParameter(1, credential.getEmail())
                     .setParameter(2, hashText(credential.getPassword()));
@@ -47,7 +47,7 @@ public class FarmAccountService
     
     public boolean isTaken(String email)
     {
-        String qryString = "SELECT e FROM Account e WHERE e.churchEmail=?1";
+        String qryString = "SELECT e FROM FarmAccount e WHERE e.businessEmail=?1";
         try {
             FarmAccount account = crudApi.getEm().createQuery(qryString, FarmAccount.class)
                     .setParameter(1, email)

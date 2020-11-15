@@ -8,7 +8,6 @@ package com.khoders.kfms.entities;
 import com.khoders.kfms.entities.enums.ProductStatus;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
-import static java.util.Collections.frequency;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -96,7 +95,14 @@ public class Product extends FarmAccountRecord implements Serializable
     
     public void genCode()
     {
-        setProductCode(SystemUtils.generateCode());
+        if(getProductCode() != null)
+        {
+           setProductCode(getProductCode());
+        }
+        else
+        {
+           setProductCode(SystemUtils.generateCode());
+        }
     }
 
     @Override

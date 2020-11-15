@@ -5,14 +5,11 @@
  */
 package com.khoders.kfms.entities.account;
 
-import com.khoders.kfms.entities.enums.PurchaseType;
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 /**
@@ -25,10 +22,6 @@ public class IncomeAccount extends BaseModel implements Serializable{
     @Column(name = "received_date")
     private LocalDate receivedDate;
 
-    @Column(name = "category")
-    @Enumerated(EnumType.STRING)
-    private PurchaseType category;
-    
     @Column(name = "quantity")
     private int quantity;
     
@@ -41,14 +34,6 @@ public class IncomeAccount extends BaseModel implements Serializable{
 
     public void setReceivedDate(LocalDate receivedDate) {
         this.receivedDate = receivedDate;
-    }
-
-    public PurchaseType getCategory() {
-        return category;
-    }
-
-    public void setCategory(PurchaseType category) {
-        this.category = category;
     }
 
     public int getQuantity() {

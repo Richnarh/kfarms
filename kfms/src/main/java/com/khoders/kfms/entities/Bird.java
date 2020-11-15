@@ -143,7 +143,14 @@ public class Bird extends FarmAccountRecord implements Serializable{
     
     public void genCode()
     {
-        setBirdId(SystemUtils.generateCode());
+        if(getBirdId() != null)
+        {
+           setBirdId(getBirdId());
+        }
+        else
+        {
+            setBirdId(SystemUtils.generateCode());
+        }
     }
 
     @Override
