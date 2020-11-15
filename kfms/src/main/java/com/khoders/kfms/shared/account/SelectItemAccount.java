@@ -6,8 +6,6 @@
 package com.khoders.kfms.shared.account;
 
 import com.khoders.kfms.entities.enums.AccountCategory;
-import com.khoders.kfms.shared.account.AccountType;
-import com.khoders.resource.jpa.CrudApi;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
