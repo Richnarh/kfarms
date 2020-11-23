@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.khoders:khoders-resource:1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/khoders/khoders-resource/1/khoders-resource-1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/khoders/khoders-resource/1/khoders-resource-1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/khoders/khoders-resource/1/khoders-resource-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -60,7 +60,6 @@ public class InvoiceController implements Serializable
     @PostConstruct
     private void init()
     {
-        optionText = "Save Changes";
         invoicePaymentList = accountService.getInvoicePayment();
         
         clearInvoice();
@@ -92,7 +91,14 @@ public class InvoiceController implements Serializable
     {
         try 
         {
-            
+            if(invoice.getAmountRemaining() == 0.0)
+            {
+                invoice.setAmountRemaining(invoice.getTotalAmount());
+            }
+            else
+            {
+                invoice.setAmountRemaining(invoice.getAmountRemaining());
+            }
             if(crudApi.save(invoice) != null)
             {
                 invoiceList = CollectionList.washList(invoiceList, invoice);
@@ -316,14 +322,7 @@ public class InvoiceController implements Serializable
         }
         try 
         {
-            if(invoicePayment.getPaymentCode() != null)
-            {
-                invoicePayment.setPaymentCode(invoicePayment.getPaymentCode());
-            }
-            else
-            {
-                invoicePayment.genCode();
-            }
+            invoicePayment.genCode();
             if(crudApi.save(invoicePayment) != null)
             {
                 invoice.setAmountRemaining(invoice.getAmountRemaining() - invoicePayment.getAmountPaid());

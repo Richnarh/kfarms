@@ -129,9 +129,6 @@ public class Customer extends FarmAccountRecord implements Serializable{
     @Override
     public String toString() {
         return customerName;
-    }
-
-    
-    
+    } 
 }
     

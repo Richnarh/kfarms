@@ -90,7 +90,8 @@
                                     <h:form>
                                         <h:panelGrid columns="2" styleClass="spaced-form">
                                             <span>Date</span>
-                                            <p:datePicker value="#{productionController.production.productionDate}" yearNavigator="true" monthNavigator="true"/>
+                                            <p:datePicker value="#{productionController.production.productionDate}" pattern="#{msg.formatted_date}"
+                                                          yearNavigator="true" monthNavigator="true"/>
 
                                             <span>Bird</span>
                                             <p:selectOneMenu value="#{productionController.production.bird}">
@@ -99,7 +100,7 @@
                                             </p:selectOneMenu>
                                         </h:panelGrid>
 
-                                        <center>
+                                        <center class="pt-4">
                                             <p:commandButton styleClass="kbtn-success mx-3" value="#{productionController.optionText}" update=":mainPanel"
                                                              action="#{productionController.saveProduction()}" />
 
@@ -110,7 +111,7 @@
                                 </div>
                             </h:panelGroup>
 
-                            <h:panelGroup rendered="#{productionController.formView.detailView}" >
+                            <h:panelGroup rendered="#{productionController.formView.detailView}">
                                 <p class="required_field">
                                     Paultry farm on #{productionController.production.productionDate} for flock batch no: #{productionController.production.birdBatchNumber}
                                 </p>

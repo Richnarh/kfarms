@@ -64,12 +64,20 @@ public class BirdType extends FarmAccountRecord implements Serializable{
     
     public void genCode()
     {
-        setFlockId(SystemUtils.generateCode());
+        if(getFlockId() != null)
+        {
+           setFlockId(getFlockId());
+        }
+        else
+        {
+            setFlockId(SystemUtils.generateCode());
+        }
+        
     }
 
     @Override
     public String toString() {
-        return flockTypeName + " " +breed;
+        return flockTypeName + " ("+ breed +")";
     }
     
     

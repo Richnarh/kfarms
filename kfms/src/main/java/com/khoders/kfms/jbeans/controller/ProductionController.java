@@ -45,10 +45,9 @@ public class ProductionController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Production e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Production e";
+        String qryString = "SELECT e FROM Production e WHERE e.farmAccount = ?1";
         productionList = crudApi.getEm().createQuery(qryString, Production.class)
-//                .setParameter(1, appSession.getCurrentUser())
+                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
     }
     
@@ -133,7 +132,6 @@ public class ProductionController implements Serializable{
         this.production = production;
         
         formView.restToDetailView();
-        
     }
 
     public List<Production> getProductionList() {

@@ -6,8 +6,6 @@
 package com.khoders.kfms.entities.account;
 
 import com.khoders.kfms.entities.FarmChartRecord;
-import com.khoders.kfms.entities.account.ChartOfAccount;
-import com.khoders.kfms.entities.account.Purchase;
 import com.khoders.kfms.entities.enums.PaymentStatus;
 import com.khoders.resource.utilities.SystemUtils;
 import java.time.LocalDate;
@@ -16,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -48,6 +47,18 @@ public class PurchasePayment extends FarmChartRecord{
     
    @Column(name = "amount_paid")
    private double AmountPaid;
+    
+   @Column(name = "note")
+   @Lob
+   private String note;
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
     
     
 

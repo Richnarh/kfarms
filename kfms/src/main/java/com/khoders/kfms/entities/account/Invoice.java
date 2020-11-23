@@ -27,8 +27,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "invoice")
 public class Invoice extends FarmChartRecord implements Serializable{
-    @Column(name = "invoice_no")
-    private String invoice_no;
+    @Column(name = "ref_no")
+    private String refNo;
     
     @Column(name = "issue_date")
     private LocalDate issueDate;
@@ -52,7 +52,7 @@ public class Invoice extends FarmChartRecord implements Serializable{
     private String chequeNo;
 
     @Column(name = "total_amount")
-    private String totalAmount;
+    private double totalAmount;
     
     public static final String _amountRemaining = "amountRemaining";
     @Column(name = "amount_remaining")
@@ -62,14 +62,14 @@ public class Invoice extends FarmChartRecord implements Serializable{
     @Lob
     private String note;
 
-    public String getInvoice_no() {
-        return invoice_no;
+    public String getRefNo() {
+        return refNo;
     }
 
-    public void setInvoice_no(String invoice_no) {
-        this.invoice_no = invoice_no;
+    public void setRefNo(String refNo) {
+        this.refNo = refNo;
     }
-
+    
     public LocalDate getIssueDate() {
         return issueDate;
     }
@@ -110,11 +110,11 @@ public class Invoice extends FarmChartRecord implements Serializable{
         this.note = note;
     }
 
-    public String getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(String totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
     
@@ -142,8 +142,8 @@ public class Invoice extends FarmChartRecord implements Serializable{
         this.paymentStatus = paymentStatus;
     }
     
-    public void genCode()
-    {
-//        setInvoice_no(SystemUtils.generateReceiptCodes(getValueDate()));
+    @Override
+    public String toString() {
+        return refNo +"-"+customer;
     }
 }

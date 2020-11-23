@@ -68,7 +68,14 @@ public class Production extends FarmAccountRecord implements Serializable{
 
     public void genCode()
     {
-        setProductionCode(SystemUtils.generateCode());
+        if(getProductionCode() != null)
+        {
+            setProductionCode(getProductionCode());
+        }
+        else
+        {
+            setProductionCode(SystemUtils.generateCode());
+        }
     }
     
     public void flockBatch()
@@ -88,4 +95,5 @@ public class Production extends FarmAccountRecord implements Serializable{
         }
        
     }
+    
 }

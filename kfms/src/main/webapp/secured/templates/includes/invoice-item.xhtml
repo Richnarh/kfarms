@@ -29,7 +29,7 @@
                 </h:panelGrid>
 
                 <div class="pt-3">
-                    <p:commandButton value="Add" 
+                    <p:commandButton value="Add to list" 
                                      action="#{invoiceController.addBillItemToTable()}" class="kbtn-primary" update=":invoiceItemTable, @form"/>
 
                     <p:commandButton value="#{msg.clear}" 
@@ -84,16 +84,16 @@
                     </p:column>
                 </p:dataTable>
                 
-                <center>
+                <center class="py-3">
                     <h:panelGrid columns="2">
-                        <span class="shade-value">Total Amount</span>
+                        <span>Total Amount</span>
                         <h:outputText value="#{invoiceController.totalAmount}" class="shade-value">
                             <f:convertNumber pattern="#{appSession.currentUser.country.currencyCode} #{msg.money_pattern}"/>
                         </h:outputText>
                     </h:panelGrid>
                 </center>
             </h:form>
-            <center class="pt-5">
+            <center>
                 <h:form>
                     <p:commandButton value="Save All" action="#{invoiceController.saveAll()}" class="kbtn-success mr-5" update=":invoiceItemTable"/>
                     <p:commandButton value="Close Page" class="kbtn-danger" ajax="false" update=":mainPanel" action="#{invoiceController.closePage()}"/>

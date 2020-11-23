@@ -42,10 +42,10 @@ public class TreatmentController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Treatment e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Treatment e";
+        String qryString = "SELECT e FROM Treatment e WHERE e.farmAccount = ?1 AND e.production=?2";
         treatmentList = crudApi.getEm().createQuery(qryString, Treatment.class)
-//                .setParameter(1, appSession.getCurrentUser())
+                .setParameter(1, appSession.getCurrentUser())
+                .setParameter(2, treatment.getProduction())
                 .getResultList();
     }
     

@@ -72,7 +72,15 @@ public class Medication extends FarmAccountRecord implements Serializable{
     
     public void genCode()
     {
-        setMedicationId(SystemUtils.generateCode());
+        if(getMedicationId() != null)
+        {
+           setMedicationId(getMedicationId());
+        }
+        else
+        {
+            setMedicationId(SystemUtils.generateCode());
+        }
+        
     }
 
     @Override

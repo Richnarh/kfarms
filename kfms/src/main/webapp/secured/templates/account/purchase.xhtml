@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">  
 
     <h:body>
-        <ui:composition template="../templatesUI.xhtml">
+        <ui:composition template="../../templatesUI.xhtml">
             <ui:define name="pageTitle">
                 #{msg.purchases}
             </ui:define>
@@ -205,13 +205,13 @@
 
                         <fieldset>
                             <legend class="text-info">Please Add Items On Purchase</legend>
-                            <ui:include src="includes/purchase-item.xhtml"/>
+                            <ui:include src="../includes/purchase-item.xhtml"/>
                         </fieldset>
 
                     </h:panelGroup>
 
-                    <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="paymentDialog" height="540"  width="960">
-                        <!--<ui:include src="includes/purchase-payment.xhtml"/>-->
+                    <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="paymentDialog" height="450"  width="860">
+                        <ui:include src="../includes/purchase-payment.xhtml"/>
                     </p:dialog>
 
                 </h:panelGroup>

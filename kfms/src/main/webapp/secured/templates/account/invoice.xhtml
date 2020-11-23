@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">  
 
     <h:body>
-        <ui:composition template="../templatesUI.xhtml">
+        <ui:composition template="../../templatesUI.xhtml">
             <ui:define name="pageTitle">
                 #{msg.invoice}s
             </ui:define>
@@ -69,8 +69,8 @@
                                     </p:panelGrid>
                                 </p:rowExpansion>
 
-                                <p:column headerText="#{msg.invoice_no}">
-                                    #{invoice.invoice_no}
+                                <p:column headerText="#{msg.ref_no}">
+                                    #{invoice.refNo}
                                 </p:column>
                                 
                                 <p:column headerText="#{msg.received} #{msg.date}">
@@ -123,8 +123,8 @@
                                     <div class="card-body">
                                         <h:form>
                                             <h:panelGrid columns="4" styleClass="spaced-form">
-                                                <span class="required_field">#{msg.invoice_no}</span>
-                                                <p:inputText value="#{invoiceController.invoice.invoice_no}" required="true"/>
+                                                <span class="required_field">#{msg.ref_no}</span>
+                                                <p:inputText value="#{invoiceController.invoice.refNo}" required="true"/>
 
                                                 <span>#{msg.issue_date}</span>
                                                 <p:datePicker value="#{invoiceController.invoice.issueDate}" yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
@@ -198,8 +198,8 @@
                                             <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
                                         </h:outputText>
 
-                                        <span class="field-label">#{msg.invoice_no}</span>
-                                        <h:outputText value="#{invoiceController.invoice.invoice_no}" styleClass="shade-value"/>
+                                        <span class="field-label">#{msg.ref_no}</span>
+                                        <h:outputText value="#{invoiceController.invoice.refNo}" styleClass="shade-value"/>
 
                                         <span class="field-label">#{msg.total_amount}</span>
                                         <h:outputText value="#{appSession.currentUser.country.currencyCode} #{invoiceController.invoice.totalAmount}" styleClass="shade-value">
@@ -214,13 +214,13 @@
 
                         <fieldset>
                             <legend class="text-info">Please Add Items On Invoice</legend>
-                            <ui:include src="includes/invoice-item.xhtml"/>
+                            <ui:include src="../includes/invoice-item.xhtml"/>
                         </fieldset>
 
                     </h:panelGroup>
 
-                    <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="paymentDialog" height="540"  width="960">
-                        <!--<ui:include src="includes/invoice-payment.xhtml"/>-->
+                    <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="paymentDialog" height="450"  width="860">
+                        <ui:include src="../includes/invoice-payment.xhtml"/>
                     </p:dialog>
 
                 </h:panelGroup>

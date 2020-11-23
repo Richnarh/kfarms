@@ -85,7 +85,7 @@
                 <center>
                     <br/>
                     <h:panelGrid columns="2">
-                        <span class="field-shade">#{msg.total_amount}</span>
+                        <span>#{msg.total_amount}</span>
                         <h:outputText value="#{purchaseController.totalAmount}" styleClass="field-shade">
                             <f:convertNumber pattern="#{appSession.currentUser.country.currencyCode} #{msg.money_pattern}"/>
                         </h:outputText>

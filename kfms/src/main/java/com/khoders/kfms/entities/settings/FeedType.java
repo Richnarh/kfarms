@@ -66,7 +66,15 @@ public class FeedType  extends FarmAccountRecord implements Serializable{
     
     public void genCode()
     {
-        setId(SystemUtils.generateCode());
+        if(getFeedId() != null)
+        {
+            setFeedId(getFeedId());
+        }
+        else
+        {
+            setFeedId(SystemUtils.generateCode());
+        }
+        
     }
 
     @Override

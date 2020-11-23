@@ -8,42 +8,43 @@
     <h:body>
         <div class="col-md-12">
             <div class="card">
-                <h5 class="card-header display-box shadow-box text-white">Purchases Payment</h5>
+                <h5 class="card-header display-box shadow-box text-white">Invoice Payment</h5>
+
                 <div class="card-body">
                     <h:form id="billPaymentPanel">
                         <h:panelGrid columns="4" styleClass="spaced-form">
-                            <span>#{msg.receipt}</span>
-                            <p:selectOneMenu value="#{purchaseController.purchasePayment.purchase}" disabled="true">
+                            <span>#{msg.invoice}</span>
+                            <p:selectOneMenu value="#{invoiceController.invoicePayment.invoice}" disabled="true">
                                 <f:selectItem itemLabel="#{msg.choose}"/>
-                                <f:selectItems value="#{commonModule.purchaseList}"/>
+                                <f:selectItems value="#{commonClass.invoiceList}"/>
                             </p:selectOneMenu>
                             
-                            <span>#{msg.payment_staus}</span>
-                            <p:selectOneMenu value="#{purchaseController.purchasePayment.paymentStatus}">
+                            <span class="required_field">#{msg.payment_staus}</span>
+                            <p:selectOneMenu value="#{invoiceController.invoicePayment.paymentStatus}" required="true">
                                 <f:selectItem itemLabel="#{msg.choose}"/>
                                 <f:selectItems value="#{sharedClass.paymentStatusList}"/>
                             </p:selectOneMenu>
                             
-                            <span>Payment Date</span>
-                            <p:datePicker value="#{purchaseController.purchasePayment.paymentDate}" 
+                            <span class="required_field">Payment Date</span>
+                            <p:datePicker value="#{invoiceController.invoicePayment.paymentDate}" required="true"
                                           yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
 
-                            <span>Amount Paid</span>
-                            <p:inputText value="#{purchaseController.purchasePayment.amountPaid}"/>
+                            <span class="required_field">Amount Paid</span>
+                            <p:inputText value="#{invoiceController.invoicePayment.amountPaid}" required="true"/>
 
                             <span>Note</span>
-                            <p:inputTextarea value="#{purchaseController.purchasePayment.note}"/>
+                            <p:inputTextarea value="#{invoiceController.invoicePayment.note}"/>
 
                         </h:panelGrid>
 
                         <center class="mb-4 pt-4">
                             <h:panelGrid columns="2">
-                                <p:commandButton class="kbtn-success" value="#{purchaseController.optionText}" action="#{purchaseController.savePurchasePayment()}" update="@form"/>
-                                <p:commandButton class="kbtn-cancel" value="#{msg.clear}" action="#{purchaseController.clearPurchasePayment()}" update="@form"/>
+                                <p:commandButton class="kbtn-success" value="#{invoiceController.optionText}" action="#{invoiceController.saveInvoicePayment()}" update="@form"/>
+                                <p:commandButton class="kbtn-cancel" value="#{msg.clear}" action="#{invoiceController.clearInvoicePayment()}" update="@form"/>
                             </h:panelGrid>
                         </center>
 
-                        <p:dataTable value="#{purchaseController.purchasePaymentList}" var="payment" paginator="true" paginatorPosition="bottom" rows="5">
+                        <p:dataTable value="#{invoiceController.invoicePaymentList}" var="payment" paginator="true" paginatorPosition="bottom" rows="5">
                             <p:column class="row-toggler">
                                 <p:rowToggler/>
                             </p:column>
@@ -71,30 +72,30 @@
                                 </h:panelGrid>
                             </p:rowExpansion>
 
-                            <p:column headerText="#{msg.receipt_no}">
-                                #{payment.purchase.receiptNo}
+                            <p:column headerText="#{msg.ref_no}">
+                                #{payment.invoice.refNo}
                             </p:column>
 
-                            <p:column headerText="#{msg.total_amount}" class="text-right">
-                                <h:outputText value="#{payment.purchase.totalAmount}">
+                            <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.country.currencyCode})" class="text-right">
+                                <h:outputText value="#{payment.invoice.totalAmount}">
                                     <f:convertNumber pattern="#{msg.money_pattern}"/>
                                 </h:outputText>
                             </p:column>
                             
-                            <p:column headerText="#{msg.amount_paid}" class="text-right">
+                            <p:column headerText="#{msg.amount_paid} (#{appSession.currentUser.country.currencyCode})" class="text-right">
                                 <h:outputText value="#{payment.amountPaid}">
                                     <f:convertNumber pattern="#{msg.money_pattern}"/>
                                 </h:outputText>
                             </p:column>
                             
                             <p:column headerText="#{msg.action}">
-                                <p:commandButton class="kbtn-info text-white" value="#{msg.edit}" 
-                                               action="#{purchaseController.editPurchasePayment(payment)}" update="@form"/>
+                                <p:commandButton class="kbtn-info" value="#{msg.edit}" 
+                                               action="#{invoiceController.editInvoicePayment(payment)}" update="@form"/>
                             </p:column>
 
                             <p:column headerText="#{msg.action}">
-                                <p:commandButton class="kbtn-danger text-white" value="#{msg.delete}" 
-                                               action="#{purchaseController.deletePurchasePayment(payment)}" onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                <p:commandButton class="kbtn-danger" value="#{msg.delete}" 
+                                               action="#{invoiceController.deleteInvoicePayment(payment)}" onclick="return confirm('#{msg.delete_message}')" update="@form"/>
                             </p:column>
                         </p:dataTable>
 

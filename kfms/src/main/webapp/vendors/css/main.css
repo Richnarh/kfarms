@@ -27,6 +27,11 @@ and open the template in the editor.
     padding: .3em; 
 }
 
+.khoders-card{
+    background: #172D44 !important;
+    color: #f9f9f9 !important;
+}
+
 .kbtn-light{
     background: #f8f9fa !important;
     color: #1f2d3d !important;
@@ -37,6 +42,14 @@ and open the template in the editor.
     background: #81D4FA !important;
     color: #007bff !important;
     border-color: #007bff !important;
+}
+
+.display-box{
+    border: 2px solid #C51162; 
+    padding: 1%;
+    background: #1769aa;
+    color: #f9f9f9;
+    box-shadow: 0 0 15px 0 lightgrey;
 }
 
 .kbtn-primary:hover{

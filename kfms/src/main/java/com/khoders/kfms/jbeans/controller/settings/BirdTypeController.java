@@ -40,11 +40,12 @@ public class BirdTypeController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM BirdType e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM BirdType e";
+        String qryString = "SELECT e FROM BirdType e WHERE e.farmAccount = ?1";
         birdTypeList = crudApi.getEm().createQuery(qryString, BirdType.class)
-//                .setParameter(1, appSession.getCurrentUser())
+                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
+        
+        clearBirdType();
     }
     
     public void saveBirdType()
@@ -95,6 +96,7 @@ public class BirdTypeController implements Serializable{
     
     public void editBirdType(BirdType birdType)
     {
+       optionText = "Update";
        this.birdType=birdType;
     }
     

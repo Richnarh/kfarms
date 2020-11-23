@@ -12,9 +12,9 @@ import com.khoders.resource.utilities.MsgResolver;
  * @author khoders
  */
 public enum FlockPurpose implements MsgResolver{
-    EGGS("EGGS", "Eggs("+BirdCategory.LAYERS+")"),
-    MEAT("MEAT", "Meat("+BirdCategory.BROILER+")"),
-    CHICK_SALE("CHICK_SALE", "Chick Sale("+BirdCategory.HATCHERY+")"),
+    EGGS("EGGS", "Eggs ("+BirdCategory.LAYERS.getLabel()+")"),
+    MEAT("MEAT", "Meat ("+BirdCategory.BROILER.getLabel()+")"),
+    CHICK_SALE("CHICK_SALE", "Chick Sale ("+BirdCategory.HATCHERY.getLabel()+")"),
     BREEDING("BREEDING", "Breeding"),
     OTHER("OTHER", "Other");
     

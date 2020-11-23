@@ -43,10 +43,9 @@ public class BirdController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Bird e";
+        String qryString = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
         birdList = crudApi.getEm().createQuery(qryString, Bird.class)
-//                .setParameter(1, appSession.getCurrentUser())
+                .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
     }
     
@@ -107,6 +106,7 @@ public class BirdController implements Serializable{
     public void editBird(Bird bird)
     {
         formView.restToCreateView();
+        optionText = "Update";
         this.bird=bird;
     }
     
