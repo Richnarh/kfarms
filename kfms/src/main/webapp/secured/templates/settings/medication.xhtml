@@ -17,9 +17,9 @@
                     <div class="card">
                         <div class="card-header">Add new #{msg.medication}</div>
                         <div class="card-body">
-                            <div class="col-md-6 mx-auto">
+                            <div class="col-md-10 mx-auto">
                                 <h:form class="spaced-form mb-4" id="medicationForm">
-                                    <h:panelGrid columns="2">
+                                    <h:panelGrid columns="6">
                                         <span class="required_field">#{msg.medication}</span>
                                         <p:inputText value="#{medicationController.medication.medicationName}" required="true"/>
 
@@ -40,7 +40,7 @@
                             </div>
 
                             <h:form id="medicationTable">
-                                <p:dataTable value="#{medicationController.medicationList}" var="medication" paginator="true" paginatorPosition="bottom" rowDragSelector="5">
+                                <p:dataTable value="#{medicationController.medicationList}" var="medication" paginator="true" paginatorPosition="bottom" rows="5" resizableColumns="true">
                                     <p:column styleClass="row-toggler">
                                         <p:rowToggler/>
                                     </p:column>

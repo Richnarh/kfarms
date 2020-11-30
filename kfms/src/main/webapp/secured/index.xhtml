@@ -11,6 +11,16 @@
             <ui:define name="pageTitle">
                 Dashboard
             </ui:define>
+            
+            <style>
+                .ui-accordion .ui-accordion-header {
+                    border: 0px !important;
+                    background: #fff !important;
+                }
+                .ui-widget-content {
+                    border: 0px !important; 
+                }
+            </style>
 
             <ui:define name="pageContent">
                 <div class="row">
@@ -19,15 +29,25 @@
                             <span class="info-box-icon bg-info elevation-1"><i class="fa fa-cog"></i></span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text">Birds</span>
+                                <span class="info-box-text">Total Birds: <span style="font-size: 1.2rem;">#{dashboardController.birdSize}</span></span> 
                                 <span class="info-box-number">
-                                    10
-                                    <small>%</small>
+                                    
+                                    <small>
+                                        <p:accordionPanel activeIndex="-1" styleClass="accordionItem">
+                                            <p:tab title="Details">
+                                                <ui:repeat value="#{birdController.birdList}" var="items">
+                                                    <ul class="pt-2" style="list-style-type: none; line-height: 0.5rem;">
+                                                        <li>
+                                                            <span class="font-weight-bold">#{items.birdType.flockTypeName}</span> <span class="float-right">#{items.currentStock}</span>
+                                                        </li>
+                                                    </ul>
+                                                </ui:repeat>
+                                            </p:tab>
+                                        </p:accordionPanel>
+                                    </small>
                                 </span>
                             </div>
-                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
                     <div class="col-12 col-sm-6 col-md-3">
@@ -35,8 +55,32 @@
                             <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-thumbs-up"></i></span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text">Eggs</span>
-                                <span class="info-box-number">41,410</span>
+                                <span class="info-box-text">Eggs: <span style="font-size: 1.2rem;">#{dashboardController.eggSize}</span></span>
+                                <span class="info-box-number">
+                                    <small>
+                                        <p:accordionPanel activeIndex="-1" styleClass="accordionItem">
+                                            <p:tab title="Details">
+                                                    <ul class="pt-2" style="list-style-type: none; line-height: 0.5rem;">
+                                                        <li>
+                                                            <span>
+                                                                Healthy Eggs: 
+                                                                <span class="float-right font-weight-bold">#{dashboardController.healthyEggs}</span> 
+                                                            </span>
+                                                        </li>
+                                                        
+                                                    </ul>
+                                                    <ul style="list-style-type: none; line-height: 0.5rem;">
+                                                        <li>
+                                                            <span>
+                                                                Damaged Eggs: 
+                                                                <span class="float-right ont-weight-bold">#{dashboardController.damagedEggs}</span>
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                            </p:tab>
+                                        </p:accordionPanel>
+                                    </small>
+                                </span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>

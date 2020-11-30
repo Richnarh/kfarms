@@ -6,7 +6,9 @@
 package com.khoders.kfms.jbeans.controller;
 
 import com.khoders.kfms.entities.EggCollection;
+import com.khoders.kfms.entities.Production;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -15,7 +17,6 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -31,6 +32,9 @@ import javax.inject.Named;
 public class EggCollectionController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject private  ProductionService productionService;
+    
+    private Production production;
     
     private EggCollection eggCollection = new EggCollection();
     private List<EggCollection> eggCollectionList=  new LinkedList<>();
@@ -38,22 +42,25 @@ public class EggCollectionController implements Serializable{
     
     private String optionText;
     
-    @PostConstruct
-    private void init()
+    
+    public void initEggCollection(Production production) 
     {
-        optionText = "Save Changes";
-//        String qryString = "SELECT e FROM EggCollection e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM EggCollection e";
-        eggCollectionList = crudApi.getEm().createQuery(qryString, EggCollection.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        clearEggs();
+        
+        eggCollection.setProduction(production);
+        
+        
     }
     
+    public void loadEggs(Production production)
+    {
+        eggCollectionList = productionService.getEggList(production);
+    }
     public void saveEggCollection()
     {
         try 
         {
-            eggCollection.setProduction(eggCollection.getProduction());
+            
           if(crudApi.save(eggCollection) != null)
           {
               eggCollectionList = CollectionList.washList(eggCollectionList, eggCollection);
@@ -66,7 +73,7 @@ public class EggCollectionController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearEggCollection();
+          initEggCollection(production);
         } catch (Exception e) 
         {
             e.printStackTrace();
@@ -100,7 +107,9 @@ public class EggCollectionController implements Serializable{
        this.eggCollection=eggCollection;
     }
     
-    public void clearEggCollection() 
+
+    
+    public void clearEggs()
     {
         eggCollection = new EggCollection();
         eggCollection.setFarmAccount(appSession.getCurrentUser());

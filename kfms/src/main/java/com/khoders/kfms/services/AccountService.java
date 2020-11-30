@@ -40,25 +40,66 @@ public class AccountService {
                                 .setParameter(2, invoice);
                 return typedQuery.getResultList();
     }
-    
-    public List<Invoice> getInvoiceListData(DateRangeUtil dateRange, Invoice invoice)
+//    public List<InvoicePayment> getFullInvoicePaymentList(Invoice invoice)
+//    {
+//        
+//        String query = "SELECT e FROM InvoicePayment e WHERE e.farmAccount=?1 AND e.invoice=?2 AND e.paymentStatus=?3 ORDER BY e.paymentDate ASC";
+//        
+//        TypedQuery<InvoicePayment> typedQuery = crudApi.getEm().createQuery(query, InvoicePayment.class)
+//                                .setParameter(1, appSession.getCurrentUser())
+//                                .setParameter(2, invoice);
+////                                .setParameter(3, PaymentStatus.FULLY_PAID);
+//                return typedQuery.getResultList();
+//    }
+//    
+    public List<Invoice> getOutStandingInvoice(DateRangeUtil dateRange, Invoice invoice)
     {
         try {
             if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
             {
-                  String  queryString = "SELECT e FROM Invoice e WHERE e.farmAccount=?1";
+                  String  queryString = "SELECT e FROM Invoice e WHERE e.farmAccount=?1 AND e.paymentStatus=?2";
                   TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(queryString, Invoice.class)
-                                .setParameter(1, appSession.getCurrentUser());
+                                .setParameter(1, appSession.getCurrentUser())
+                                .setParameter(2, PaymentStatus.PARTIALLY_PAID);
 
                 return typedQuery.getResultList();
             }
             
-            String qryString = "SELECT e FROM Invoice e WHERE e.farmAccount=?1 AND e.issueDate BETWEEN ?2 AND ?3";
+            String qryString = "SELECT e FROM Invoice e WHERE e.farmAccount=?1 AND e.issueDate BETWEEN ?2 AND ?3 AND e.paymentStatus=?4";
             
             TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class)
                     .setParameter(1, appSession.getCurrentUser())
                     .setParameter(2, dateRange.getFromDate())
-                    .setParameter(3, dateRange.getToDate());
+                    .setParameter(3, dateRange.getToDate())
+                    .setParameter(4, PaymentStatus.PARTIALLY_PAID);
+            
+           return typedQuery.getResultList();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    public List<Invoice> getFullyPaidInvoiceList(DateRangeUtil dateRange, Invoice invoice)
+    {
+        try {
+            if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
+            {
+                  String  queryString = "SELECT e FROM Invoice e WHERE e.farmAccount=?1 AND e.paymentStatus=?2";
+                  TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(queryString, Invoice.class)
+                                .setParameter(1, appSession.getCurrentUser())
+                                .setParameter(2, PaymentStatus.FULLY_PAID);
+
+                return typedQuery.getResultList();
+            }
+            
+            String qryString = "SELECT e FROM Invoice e WHERE e.farmAccount=?1 AND e.issueDate BETWEEN ?2 AND ?3 AND e.paymentStatus=?4";
+            
+            TypedQuery<Invoice> typedQuery = crudApi.getEm().createQuery(qryString, Invoice.class)
+                    .setParameter(1, appSession.getCurrentUser())
+                    .setParameter(2, dateRange.getFromDate())
+                    .setParameter(3, dateRange.getToDate())
+                    .setParameter(4, PaymentStatus.FULLY_PAID);
             
            return typedQuery.getResultList();
             
@@ -82,11 +123,11 @@ public class AccountService {
     {
         try {
             
-            String  queryString = "SELECT e FROM InvoicePayment e WHERE e.farmAccount=?1 AND e.paymentStatus=?2 AND e.paymentStatus=?3";
+            String  queryString = "SELECT e FROM InvoicePayment e WHERE e.farmAccount=?1 AND e.paymentStatus=?2";
             TypedQuery<InvoicePayment> typedQuery = crudApi.getEm().createQuery(queryString, InvoicePayment.class)
                             .setParameter(1, appSession.getCurrentUser())
-                            .setParameter(2, PaymentStatus.PARTIALLY_PAID)
-                            .setParameter(3, PaymentStatus.PENDING);
+                            .setParameter(2, PaymentStatus.PARTIALLY_PAID);
+//                            .setParameter(3, PaymentStatus.PENDING);
             
            return typedQuery.getResultList();
             
@@ -113,9 +154,6 @@ public class AccountService {
         }
         return Collections.emptyList();
     }
-    
-    
-    
     
     public List<PurchasePayment> getPurchasePayment(Purchase purchase)
     {
@@ -156,9 +194,7 @@ public class AccountService {
         }
         return Collections.emptyList();
     }
-    
-    
-    
+   
     public List<PurchasePayment> getFullPurchasePayment()
     {
         try {
@@ -180,11 +216,11 @@ public class AccountService {
     {
         try {
             
-            String  queryString = "SELECT e FROM PurchasePayment e WHERE e.farmAccount=?1 AND e.paymentStatus=?2 AND e.paymentStatus=?3";
+            String  queryString = "SELECT e FROM PurchasePayment e WHERE e.farmAccount=?1 AND e.paymentStatus=?2";
             TypedQuery<PurchasePayment> typedQuery = crudApi.getEm().createQuery(queryString, PurchasePayment.class)
                             .setParameter(1, appSession.getCurrentUser())
-                            .setParameter(2, PaymentStatus.PARTIALLY_PAID)
-                            .setParameter(3, PaymentStatus.PENDING);
+                            .setParameter(2, PaymentStatus.PARTIALLY_PAID);
+//                            .setParameter(3, PaymentStatus.PENDING);
             
            return typedQuery.getResultList();
             

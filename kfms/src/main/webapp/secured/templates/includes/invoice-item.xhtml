@@ -30,7 +30,7 @@
 
                 <div class="pt-3">
                     <p:commandButton value="Add to list" 
-                                     action="#{invoiceController.addBillItemToTable()}" class="kbtn-primary" update=":invoiceItemTable, @form"/>
+                                     action="#{invoiceController.addBillItemToTable()}" class="kbtn-primary" update=":mainTabView:invoiceItemTable, @form"/>
 
                     <p:commandButton value="#{msg.clear}" 
                                      action="#{invoiceController.clearBillItem()}" class="kbtn-cancel ml-3" immediate="true" update="@form"/>
@@ -74,12 +74,12 @@
 
                     <p:column headerText="#{msg.action}" style="width: 80px;">
                         <p:commandButton  class="kbtn-info" action="#{invoiceController.editInvoiceItem(invoiceItem)}" 
-                                        value="#{msg.edit}" update=":orderItemForm"/>
+                                        value="#{msg.edit}" update=":mainTabView:orderItemForm"/>
                         
                     </p:column>
                     <p:column headerText="#{msg.action}" style="width: 100px;">
                         <p:commandButton value="#{msg.delete}" class="kbtn-danger"
-                                       action="#{invoiceController.deleteInvoicetem(invoiceItem)}"
+                                       action="#{invoiceController.deleteInvoiceItem(invoiceItem)}"
                                        update="@form"/>
                     </p:column>
                 </p:dataTable>
@@ -95,8 +95,8 @@
             </h:form>
             <center>
                 <h:form>
-                    <p:commandButton value="Save All" action="#{invoiceController.saveAll()}" class="kbtn-success mr-5" update=":invoiceItemTable"/>
-                    <p:commandButton value="Close Page" class="kbtn-danger" ajax="false" update=":mainPanel" action="#{invoiceController.closePage()}"/>
+                    <p:commandButton value="Save All" action="#{invoiceController.saveAll()}" class="kbtn-success mr-5" update=":mainTabView:invoiceItemTable"/>
+                    <p:commandButton value="Close Page" class="kbtn-danger" ajax="false" update=":mainTabView:mainPanel" action="#{invoiceController.closePage()}"/>
                 </h:form>
             </center>
         </div>

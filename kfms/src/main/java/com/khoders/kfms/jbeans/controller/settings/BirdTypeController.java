@@ -7,6 +7,7 @@ package com.khoders.kfms.jbeans.controller.settings;
 
 import com.khoders.kfms.entities.settings.BirdType;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
@@ -30,6 +31,7 @@ import javax.inject.Named;
 public class BirdTypeController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject ProductionService productionService;
     
     private BirdType birdType = new BirdType();
     private List<BirdType> birdTypeList=  new LinkedList<>();
@@ -40,10 +42,7 @@ public class BirdTypeController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-        String qryString = "SELECT e FROM BirdType e WHERE e.farmAccount = ?1";
-        birdTypeList = crudApi.getEm().createQuery(qryString, BirdType.class)
-                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        birdTypeList = productionService.getBirdTypeList();
         
         clearBirdType();
     }

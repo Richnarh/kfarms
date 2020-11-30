@@ -44,6 +44,7 @@ public class Invoice extends FarmChartRecord implements Serializable{
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
     
+    public static final String _paymentStatus = "paymentStatus";
     @Column(name = "payment_status")
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
@@ -57,7 +58,7 @@ public class Invoice extends FarmChartRecord implements Serializable{
     public static final String _amountRemaining = "amountRemaining";
     @Column(name = "amount_remaining")
     private double amountRemaining;
-
+    
     @Column(name = "note")
     @Lob
     private String note;
@@ -141,7 +142,7 @@ public class Invoice extends FarmChartRecord implements Serializable{
     public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
-    
+
     @Override
     public String toString() {
         return refNo +"-"+customer;

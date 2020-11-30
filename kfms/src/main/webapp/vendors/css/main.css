@@ -27,7 +27,8 @@ and open the template in the editor.
     padding: .3em; 
 }
 
-.khoders-card{
+.khoders-card-o{
+    box-shadow: 0 0 25px 0 lightgrey;
     background: #172D44 !important;
     color: #f9f9f9 !important;
 }

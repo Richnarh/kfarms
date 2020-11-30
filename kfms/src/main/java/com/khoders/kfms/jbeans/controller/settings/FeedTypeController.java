@@ -7,6 +7,7 @@ package com.khoders.kfms.jbeans.controller.settings;
 
 import com.khoders.kfms.entities.settings.FeedType;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
@@ -30,6 +31,7 @@ import javax.inject.Named;
 public class FeedTypeController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject ProductionService productionService;
     
     private FeedType feedType = new FeedType();
     private List<FeedType> feedTypeList =  new LinkedList<>();
@@ -40,11 +42,8 @@ public class FeedTypeController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM FeedType e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM FeedType e";
-        feedTypeList = crudApi.getEm().createQuery(qryString, FeedType.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        
+        feedTypeList = productionService.getFeedTypeList();
     }
     
     public void saveFeedType()

@@ -16,6 +16,7 @@ import com.khoders.kfms.entities.settings.Country;
 import com.khoders.kfms.entities.settings.FeedType;
 import com.khoders.kfms.entities.settings.Medication;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -34,6 +35,8 @@ import javax.inject.Named;
 public class CommonClass implements Serializable{
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
+    @Inject private ProductionService productionService;
+    
     
     private List<BirdType> birdTypeList = new LinkedList<>();
     private List<Bird> birdList = new LinkedList<>();
@@ -49,25 +52,13 @@ public class CommonClass implements Serializable{
     @PostConstruct
     public void init()
     {
-        String qryBirdType = "SELECT e FROM BirdType e WHERE e.farmAccount = ?1";
-        birdTypeList = crudApi.getEm().createQuery(qryBirdType, BirdType.class)
-                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        birdTypeList = productionService.getBirdTypeList();
     
-        String qryBird = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
-        birdList = crudApi.getEm().createQuery(qryBird, Bird.class)
-                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        birdList = productionService.getBirdList();
         
-        String qryFeedType = "SELECT e FROM Bird e WHERE e.farmAccount = ?1";
-        feedTypeList = crudApi.getEm().createQuery(qryFeedType, FeedType.class)
-                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        feedTypeList = productionService.getFeedTypeList();
         
-        String qryMedication = "SELECT e FROM Medication e WHERE e.farmAccount = ?1";
-        medicationList = crudApi.getEm().createQuery(qryMedication, Medication.class)
-                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        medicationList = productionService.getMedicationList();
         
         String qryCustomer = "SELECT e FROM Customer e WHERE e.farmAccount = ?1";
         customerList = crudApi.getEm().createQuery(qryCustomer, Customer.class)

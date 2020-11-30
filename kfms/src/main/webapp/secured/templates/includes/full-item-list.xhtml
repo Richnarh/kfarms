@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <div class="col-md-12">
+            <div class="card">
+                <h5 class="card-header display-box shadow-box text-white">Invoice Item Details</h5>
+
+                <div class="card-body">
+                    <h:form>
+                        <p:dataTable value="#{invoiceController.invoiceItemInfoList}" var="invoiceItem" paginator="true" paginatorPosition="bottom" rows="5">
+                            <p:column class="row-toggler">
+                                <p:rowToggler/>
+                            </p:column>
+                            <p:rowExpansion>
+                        <p:panelGrid columns="2">
+                            <span>#{msg.id}</span>
+                            <h:outputText value="#{invoiceItem.id}"/>
+                        </p:panelGrid>
+                    </p:rowExpansion>
+
+                    <p:column headerText="#{msg.product}">
+                        #{invoiceItem.product.productName}
+                    </p:column>
+                    
+                    <p:column headerText="#{msg.quantity}" class="text-right">
+                        #{invoiceItem.quantity}
+                    </p:column>
+
+                    <p:column headerText="#{msg.unit_price} (#{appSession.currentUser.country.currencyCode})" class="text-right">
+                        <h:outputText value="#{invoiceItem.unitPrice}">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.country.currencyCode})" class="text-right">
+                        <h:outputText value="#{invoiceItem.totalAmount}">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                        </h:outputText>
+                    </p:column>
+
+                        </p:dataTable>
+                        <div class="display-box">
+                            <h:outputText class="text-right" style="font-size: 15px;" value="#{msg.total_amount}: #{appSession.currentUser.country.currencyCode} #{invoiceController.totalAmountPaid}">
+                                <f:convertNumber pattern="#{msg.money_pattern}"/>
+                            </h:outputText>
+                        </div>
+
+                        <center class="pt-3">
+
+                            <p:commandButton class="kbtn-danger" value="#{msg.close}" action="#{invoiceController.closeFullPayment()}" ajax="false"/>
+                        </center>
+                    </h:form>
+                </div>
+            </div>
+
+        </div>
+    </h:body> 
+</html>
+

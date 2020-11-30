@@ -7,6 +7,7 @@ package com.khoders.kfms.jbeans.controller.settings;
 
 import com.khoders.kfms.entities.settings.Medication;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
@@ -30,6 +31,7 @@ import javax.inject.Named;
 public class MedicationController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject ProductionService productionService;
     
     private Medication medication = new Medication();
     private List<Medication> medicationList=  new LinkedList<>();
@@ -40,11 +42,8 @@ public class MedicationController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Medication e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Medication e";
-        medicationList = crudApi.getEm().createQuery(qryString, Medication.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        
+        medicationList = productionService.getMedicationList();
     }
     
     public void saveMedication()

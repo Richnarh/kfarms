@@ -8,6 +8,7 @@ package com.khoders.kfms.jbeans.controller;
 import com.khoders.kfms.entities.EggCollection;
 import com.khoders.kfms.entities.Production;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -32,9 +33,9 @@ import javax.inject.Named;
 public class ProductionController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject ProductionService productionService;
     
     private Production production = new Production();
-    private EggCollection eggCollection = new EggCollection();
     private List<Production> productionList = new LinkedList<>();
     
     private FormView formView = FormView.listForm();
@@ -45,10 +46,7 @@ public class ProductionController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-        String qryString = "SELECT e FROM Production e WHERE e.farmAccount = ?1";
-        productionList = crudApi.getEm().createQuery(qryString, Production.class)
-                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        productionList = productionService.getProductionList();
     }
     
     public void initProduction()
@@ -123,7 +121,6 @@ public class ProductionController implements Serializable{
     public void close()
     {
       production = null;
-      eggCollection = null;
       formView.restToListView();  
     }
     

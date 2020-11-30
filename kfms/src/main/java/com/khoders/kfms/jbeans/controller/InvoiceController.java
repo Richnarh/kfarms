@@ -44,30 +44,37 @@ public class InvoiceController implements Serializable
     private InvoiceItem invoiceItem = new InvoiceItem();
     private InvoicePayment invoicePayment = new InvoicePayment();
     private List<Invoice> invoiceList;
+    private List<Invoice> fullyPaidInvoiceList;
     private List<InvoicePayment> invoicePaymentList;
+    private List<InvoicePayment> fullInvoicePaymentList;
     
     private List<InvoiceItem> invoiceItemList = new LinkedList<>();
-    
+    private List<InvoiceItem> invoiceItemInfoList = new LinkedList<>();
     
     private DateRangeUtil dateRange = new DateRangeUtil();
     
     private FormView formView = FormView.listForm();
+    private FormView paymentView = FormView.listForm();
     
     private String optionText;
     
     private double totalAmount=0;
     
+    private double totalAmountPaid = 0.0;
+    
     @PostConstruct
     private void init()
     {
-        invoicePaymentList = accountService.getInvoicePayment();
+//        invoicePaymentList = accountService.getInvoicePayment();
         
         clearInvoice();
     }
     
     public void fetchFullyPaid()
     {
-        invoicePaymentList = accountService.getFullInvoicePayment();
+        this.reset();
+        fullyPaidInvoiceList = accountService.getFullyPaidInvoiceList(dateRange, invoice);
+//        invoicePaymentList = accountService.getFullInvoicePayment();
     }
     
     public void initInvoice()
@@ -76,14 +83,20 @@ public class InvoiceController implements Serializable
         formView.restToCreateView();
     }
     
-    public void filterByDate()
+    public void filterOutStandingInvoice()
     {
-        invoiceList = accountService.getInvoiceListData(dateRange, invoice);
+        this.reset();
+        invoiceList = accountService.getOutStandingInvoice(dateRange, invoice);   
     }
     
     public void reset()
     {
         invoiceList = new LinkedList<>();
+    }
+    
+    public void resetFullPayment()
+    {
+        fullyPaidInvoiceList = new LinkedList<>();
     }
     
 
@@ -119,11 +132,7 @@ public class InvoiceController implements Serializable
         }
     }
     
-    public void saveInvoiceAddItem()
-    {
-        
-    }
-    
+  
     public void editInvoice(Invoice invoice)
     {
         this.invoice = invoice;
@@ -135,17 +144,33 @@ public class InvoiceController implements Serializable
     {
         try 
         {
-          if(crudApi.delete(invoice))
-          {
-              invoiceList.remove(invoice);
-              FacesContext.getCurrentInstance().addMessage(null, 
-                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.deleteResponse(), null));
-          }
-          else
-          {
-              FacesContext.getCurrentInstance().addMessage(null, 
-                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.failedResponse(), null));
-          }
+           invoiceItemList = accountService.getInvoiceList(invoice);
+            System.out.println("List size: "+invoiceItemList.size());
+           if(!invoiceItemList.isEmpty())
+           {
+               invoiceItemList.forEach(item -> {
+                    crudApi.delete(item); 
+               });
+               
+               invoiceItemList = accountService.getInvoiceList(invoice);
+               System.out.println("List size: "+invoiceItemList.size());
+               if(invoiceItemList.isEmpty())
+               {
+                   if(crudApi.delete(invoice))
+                   {
+                       invoiceList.remove(invoice);
+                       FacesContext.getCurrentInstance().addMessage(null, 
+                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                   }
+                   else
+                   {
+                       FacesContext.getCurrentInstance().addMessage(null, 
+                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
+                   }
+                   
+               }
+           }
+           
         }
         catch (Exception e)
         {
@@ -171,6 +196,13 @@ public class InvoiceController implements Serializable
        formView.restToListView();
     }
     
+    public void closeFullPayment()
+    {
+       fullInvoicePaymentList = new LinkedList<>();
+       totalAmountPaid = 0;
+       paymentView.restToListView();
+    }
+    
 
     
     public void manageInvoiceItem(Invoice invoice)
@@ -186,6 +218,19 @@ public class InvoiceController implements Serializable
         {
             totalAmount += items.getTotalAmount();
             setTotalAmount(totalAmount);
+        }
+    }
+   
+    public void invoiceItemInfo(Invoice invoice)
+    {
+       this.invoice = invoice;
+        paymentView.restToDetailView();
+        
+        invoiceItemInfoList = accountService.getInvoiceList(invoice);
+        
+        for (InvoiceItem items : invoiceItemInfoList) 
+        {
+            totalAmountPaid += items.getTotalAmount();
         }
     }
    
@@ -273,7 +318,7 @@ public class InvoiceController implements Serializable
         optionText = "Update";
     }
     
-    public void deleteInvoicetem(InvoiceItem invoiceItem)
+    public void deleteInvoiceItem(InvoiceItem invoiceItem)
     {
         try 
         {
@@ -312,6 +357,21 @@ public class InvoiceController implements Serializable
         invoicePaymentList = accountService.getInvoicePayments(invoice);
     }
         
+    
+    public void fullPaymentList(Invoice invoice)
+    {
+       
+       this.invoice = invoice;
+       
+       paymentView.restToCreateView();
+        
+        fullInvoicePaymentList = accountService.getInvoicePayments(invoice);
+        
+        fullInvoicePaymentList.forEach(payment -> {
+            totalAmountPaid += payment.getAmountPaid();
+        });
+    }
+        
     public void saveInvoicePayment()
     {
         if(invoicePayment.getAmountPaid() > invoice.getAmountRemaining())
@@ -320,8 +380,23 @@ public class InvoiceController implements Serializable
                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please you're paying more than the remaining amount", null));
            return;
         }
+        
+        if(invoicePayment.getAmountPaid() != invoice.getAmountRemaining())
+        {
+            invoicePayment.setPaymentStatus(PaymentStatus.PARTIALLY_PAID);
+        }
+        else
+        {
+            invoicePayment.setPaymentStatus(PaymentStatus.FULLY_PAID);
+            
+            invoice = crudApi.getEm().find(Invoice.class, invoicePayment.getInvoice().getId());
+            invoice.setPaymentStatus(PaymentStatus.FULLY_PAID);
+            crudApi.save(invoice);
+        }
         try 
         {
+            
+            invoicePayment.setFarmAccount(appSession.getCurrentUser());
             invoicePayment.genCode();
             if(crudApi.save(invoicePayment) != null)
             {
@@ -450,6 +525,30 @@ public class InvoiceController implements Serializable
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public List<Invoice> getFullyPaidInvoiceList() {
+        return fullyPaidInvoiceList;
+    }
+
+    public List<InvoicePayment> getFullInvoicePaymentList() {
+        return fullInvoicePaymentList;
+    }
+
+    public double getTotalAmountPaid() {
+        return totalAmountPaid;
+    }
+
+    public FormView getPaymentView() {
+        return paymentView;
+    }
+
+    public void setPaymentView(FormView paymentView) {
+        this.paymentView = paymentView;
+    }
+
+    public List<InvoiceItem> getInvoiceItemInfoList() {
+        return invoiceItemInfoList;
     }
   
 }

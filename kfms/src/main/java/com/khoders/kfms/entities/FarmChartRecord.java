@@ -8,6 +8,7 @@ package com.khoders.kfms.entities;
 import com.khoders.kfms.entities.account.ChartOfAccount;
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -25,10 +26,8 @@ public class FarmChartRecord extends BaseModel implements Serializable{
     @ManyToOne
     private FarmAccount farmAccount;
     
-    private static final String _accountName = ChartOfAccount._accountName;
-    @JoinColumn(name = "account", referencedColumnName = "id")
-    @ManyToOne
-    private ChartOfAccount account;
+    @Column(name = "account")
+    private String account;
 
     public FarmAccount getFarmAccount() {
         return farmAccount;
@@ -38,13 +37,12 @@ public class FarmChartRecord extends BaseModel implements Serializable{
         this.farmAccount = farmAccount;
     }
 
-    public ChartOfAccount getAccount() {
+    public String getAccount() {
         return account;
     }
 
-    public void setAccount(ChartOfAccount account) {
+    public void setAccount(String account) {
         this.account = account;
     }
-    
     
 }

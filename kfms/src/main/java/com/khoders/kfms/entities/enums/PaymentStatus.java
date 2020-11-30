@@ -12,7 +12,7 @@ import com.khoders.resource.utilities.MsgResolver;
  * @author khoders
  */
 public enum PaymentStatus implements MsgResolver{
-    PENDING("PENDING","Pending"),
+//    PENDING("PENDING","Pending"),
     FULLY_PAID("FULLY_PAID","Fully Paid"),
     PARTIALLY_PAID("PARTIALLY_PAID","Partially Paid");
 

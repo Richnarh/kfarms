@@ -113,7 +113,7 @@
 
                             <h:panelGroup rendered="#{productionController.formView.detailView}">
                                 <p class="required_field">
-                                    Paultry farm on #{productionController.production.productionDate} for flock batch no: #{productionController.production.birdBatchNumber}
+                                    Poultry farm on #{productionController.production.productionDate} for flock batch no: #{productionController.production.birdBatchNumber}
                                 </p>
 
                                 <h:form>
@@ -154,8 +154,11 @@
                                     <h:form id="eggCollectionTable">
                                         <p:dataTable value="#{eggCollectionController.eggCollectionList}" var="eggCollection" paginator="true" paginatorPosition="bottom" rows="5">
                                             <f:facet name="header">
-                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggCollectionController.clearEggCollection()}"
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggCollectionController.initEggCollection(productionController.production)}"
                                                                  oncomplete="PF('eggCollectionForm').show()" update=":eggCollectionDialog"/>
+                                                
+                                                <p:commandButton style="float:right" styleClass="kbtn-info" value="Load Eggs" resetValues="true" action="#{eggCollectionController.loadEggs(productionController.production)}"
+                                                                 update="@form"/>
 
                                                 <h5 class="float-left text-maroon">Egg Collections</h5>
 
