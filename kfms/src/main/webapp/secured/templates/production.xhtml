@@ -73,7 +73,7 @@
                                         </p:column>
 
                                         <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                            <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" update=":mainPanel"
+                                            <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" immediate="true" update=":mainPanel"
                                                              action="#{productionController.editProduction(production)}"/>
                                         </p:column>
 
@@ -157,7 +157,7 @@
                                                 <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggCollectionController.initEggCollection(productionController.production)}"
                                                                  oncomplete="PF('eggCollectionForm').show()" update=":eggCollectionDialog"/>
                                                 
-                                                <p:commandButton style="float:right" styleClass="kbtn-info" value="Load Eggs" resetValues="true" action="#{eggCollectionController.loadEggs(productionController.production)}"
+                                                <p:commandButton style="float:right" class="kbtn-info mr-3" value="Load Eggs" resetValues="true" action="#{eggCollectionController.loadEggs(productionController.production)}"
                                                                  update="@form"/>
 
                                                 <h5 class="float-left text-maroon">Egg Collections</h5>
@@ -182,7 +182,7 @@
                                             </p:column>
 
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('eggCollectionForm').show()"
+                                                <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" immediate="true" oncomplete="PF('eggCollectionForm').show()"
                                                                  action="#{eggCollectionController.editEggCollection(eggCollection)}"
                                                                  update=":eggCollectionForm, :eggCollectionDialog"/>
                                             </p:column>
@@ -203,8 +203,12 @@
                                     <h:form id="eggWeightTable">
                                         <p:dataTable value="#{eggWeightController.eggWeightList}" var="eggWeight" paginator="true" paginatorPosition="bottom" rows="5">
                                             <f:facet name="header">
-                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggWeightController.clearEggWeight()}"
+                                                <p:commandButton style="float:right" class="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{eggWeightController.initEggWeight(productionController.production)}"
                                                                  oncomplete="PF('eggWeightForm').show()" update=":eggWeightDialog"/>
+                                                
+                                                <p:commandButton style="float:right" class="kbtn-info mr-3" value="Load Egg Weight" resetValues="true" action="#{eggWeightController.loadEggWeight(productionController.production)}"
+                                                                 update="@form"/>
+                                                
                                                 <h5 class="float-left text-maroon">Egg Weight</h5>
 
                                                 <div style="clear:both;"></div>
@@ -219,7 +223,7 @@
                                             </p:column>
 
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('eggWeightForm').show()"
+                                                <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" immediate="true" oncomplete="PF('eggWeightForm').show()"
                                                                  action="#{eggWeightController.editEggWeight(eggWeight)}"
                                                                  update=":eggWeightForm, :eggWeightDialog"/>
                                             </p:column>
@@ -240,8 +244,10 @@
                                     <h:form id="feedTable">
                                         <p:dataTable value="#{feedController.feedList}" var="feed" paginator="true" paginatorPosition="bottom" rows="5">
                                             <f:facet name="header">
-                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{feedController.clearFeed()}"
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{feedController.initFeed(productionController.production)}"
                                                                  oncomplete="PF('feedForm').show()" update=":feedDialog"/>
+                                                 <p:commandButton style="float:right" class="kbtn-info mr-3" value="Load Feed" resetValues="true" action="#{feedController.loadFeed(productionController.production)}"
+                                                                 update="@form"/>
                                                 <h5 class="float-left text-maroon">#{msg.feed}</h5>
 
                                                 <div style="clear:both;"></div>
@@ -266,13 +272,13 @@
                                             </p:column>
 
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('feedForm').show()"
+                                                <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" immediate="true" oncomplete="PF('feedForm').show()"
                                                                  action="#{feedController.editFeed(feed)}"
                                                                  update=":feedForm, :feedDialog"/>
                                             </p:column>
 
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
-                                                <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" 
+                                                <p:commandButton class="kbtn-danger" value="#{msg.delete}" onclick="return confirm('#{msg.delete_message}')" 
                                                         action="#{feedController.deleteFeed(feed)}" update="@form"/>
                                             </p:column>
                                         </p:dataTable>
@@ -287,8 +293,10 @@
                                     <h:form id="vaccinationTable">
                                         <p:dataTable value="#{vaccinationController.vaccinationList}" var="vaccination" paginator="true" paginatorPosition="bottom" rows="5">
                                             <f:facet name="header">
-                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{vaccinationController.clearVaccination()}"
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{vaccinationController.initVaccination(productionController.production)}"
                                                                  oncomplete="PF('vaccinationForm').show()" update=":vaccinationDialog"/>
+                                                <p:commandButton style="float:right" class="kbtn-info mr-3" value="Load Vaccination" resetValues="true" action="#{vaccinationController.loadVaccination(productionController.production)}"
+                                                                 update="@form"/>
                                                 <h5 class="float-left text-maroon">#{msg.vaccination}</h5>
 
                                                 <div style="clear:both;"></div>
@@ -307,7 +315,7 @@
                                             </p:column>
                                             
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('vaccinationForm').show()"
+                                                <p:commandButton styleClass="kbtn-edit-info" value="#{msg.edit}" immediate="true" oncomplete="PF('vaccinationForm').show()"
                                                                  action="#{vaccinationController.editVaccination(vaccination)}"
                                                                  update=":vaccinationForm, :vaccinationDialog"/>
                                             </p:column>
@@ -328,8 +336,12 @@
                                     <h:form id="mortalityTable">
                                         <p:dataTable value="#{mortalityController.mortalityList}" var="mortality" paginator="true" paginatorPosition="bottom" rows="5">
                                             <f:facet name="header">
-                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{mortalityController.clearMortality()}"
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{mortalityController.initMortality(productionController.production)}"
                                                                  oncomplete="PF('mortalityForm').show()" update=":mortalityDialog"/>
+                                                
+                                                <p:commandButton style="float:right" class="kbtn-info mr-3" value="Load Mortality" resetValues="true" action="#{mortalityController.loadMortality(productionController.production)}"
+                                                                 update="@form"/>
+                                                
                                                 <h5 class="float-left text-maroon">#{msg.mortality}</h5>
 
                                                 <div style="clear:both;"></div>
@@ -348,7 +360,7 @@
                                             </p:column>
                                             
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('mortalityForm').show()"
+                                                <p:commandButton styleClass="kbtn-edit-info" value="#{msg.edit}" immediate="true" oncomplete="PF('mortalityForm').show()"
                                                                  action="#{mortalityController.editMortality(mortality)}"
                                                                  update=":mortalityForm, :vaccinationDialog"/>
                                             </p:column>
@@ -369,8 +381,12 @@
                                     <h:form id="treatmentTable">
                                         <p:dataTable value="#{treatmentController.treatmentList}" var="treatment" paginator="true" paginatorPosition="bottom" rows="5">
                                             <f:facet name="header">
-                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{treatmentController.clearTreatment()}"
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{treatmentController.initTreatment(productionController.production)}"
                                                                  oncomplete="PF('treatmentForm').show()" update=":treatmentDialog"/>
+                                                
+                                                  <p:commandButton style="float:right" class="kbtn-info mr-3" value="Load Treatment" resetValues="true" action="#{treatmentController.loadTreatment(productionController.production)}"
+                                                                 update="@form"/>
+                                                
                                                 <h5 class="float-left text-maroon">#{msg.treatment_given}</h5>
 
                                                 <div style="clear:both;"></div>
@@ -385,7 +401,7 @@
                                             </p:column>
                                             
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('treatmentForm').show()"
+                                                <p:commandButton styleClass="kbtn-edit-info" value="#{msg.edit}" immediate="true" oncomplete="PF('treatmentForm').show()"
                                                                  action="#{treatmentController.editTreatment(treatment)}"
                                                                  update=":treatmentForm, :treatmentDialog"/>
                                             </p:column>
@@ -406,8 +422,12 @@
                                     <h:form id="birdWeightTable">
                                         <p:dataTable value="#{birdWeightController.birdWeightList}" var="birdWeight" paginator="true" paginatorPosition="bottom" rows="5">
                                             <f:facet name="header">
-                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{treatmentController.clearBirdWeight()}"
+                                                <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{birdWeightController.initBirdWeight(productionController.production)}"
                                                                  oncomplete="PF('birdWeightForm').show()" update=":birdWeightDialog"/>
+                                                
+                                                 <p:commandButton style="float:right" class="kbtn-info mr-3" value="Load Treatment" resetValues="true" action="#{birdWeightController.loadBirdWeight(productionController.production)}"
+                                                                 update="@form"/>
+                                                
                                                 <h5 class="float-left text-maroon">#{msg.bird_weight}</h5>
 
                                                 <div style="clear:both;"></div>
@@ -422,7 +442,7 @@
                                             </p:column>
                                             
                                             <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
-                                                <p:commandButton styleClass="kbtn-info" value="#{msg.edit}" immediate="true" oncomplete="PF('birdWeightForm').show()"
+                                                <p:commandButton styleClass="kbtn-edit-info" value="#{msg.edit}" immediate="true" oncomplete="PF('birdWeightForm').show()"
                                                                  action="#{birdWeightController.editBirdWeight(birdWeight)}"
                                                                  update=":birdWeightForm, :birdWeightDialog"/>
                                             </p:column>

@@ -5,8 +5,10 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
+import com.khoders.kfms.entities.Production;
 import com.khoders.kfms.entities.Treatment;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -15,7 +17,6 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -31,22 +32,20 @@ import javax.inject.Named;
 public class TreatmentController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject ProductionService productionService;
     
     private Treatment treatment = new Treatment();
     private List<Treatment> treatmentList=  new LinkedList<>();
     private FormView formView = FormView.listForm();
     
+    private Production production;
+    
     private String optionText;
     
-    @PostConstruct
-    private void init()
+    public void initTreatment(Production production)
     {
-        optionText = "Save Changes";
-        String qryString = "SELECT e FROM Treatment e WHERE e.farmAccount = ?1 AND e.production=?2";
-        treatmentList = crudApi.getEm().createQuery(qryString, Treatment.class)
-                .setParameter(1, appSession.getCurrentUser())
-                .setParameter(2, treatment.getProduction())
-                .getResultList();
+       clearTreatment();
+       treatment.setProduction(production);
     }
     
     public void saveTreatment()
@@ -66,7 +65,7 @@ public class TreatmentController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearTreatment();
+            initTreatment(production);
         } catch (Exception e) 
         {
             e.printStackTrace();
@@ -99,6 +98,11 @@ public class TreatmentController implements Serializable{
     {
        optionText = "Update";
        this.treatment=treatment;
+    }
+    
+    public void loadTreatment(Production production)
+    {
+        treatmentList = productionService.getTreatmentList(production);
     }
     
     public void clearTreatment() 

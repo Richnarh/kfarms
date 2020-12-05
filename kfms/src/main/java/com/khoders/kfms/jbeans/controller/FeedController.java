@@ -6,7 +6,9 @@
 package com.khoders.kfms.jbeans.controller;
 
 import com.khoders.kfms.entities.Feed;
+import com.khoders.kfms.entities.Production;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -31,22 +33,21 @@ import javax.inject.Named;
 public class FeedController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject ProductionService productionService;
     
     private Feed feed = new Feed();
     private List<Feed> feedList=  new LinkedList<>();
     private FormView formView = FormView.listForm();
     
-    private String optionText;
+    private Production production;
     
-    @PostConstruct
-    private void init()
+    private String optionText;
+  
+    public void initFeed(Production production) 
     {
-        optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Feed e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Feed e";
-        feedList = crudApi.getEm().createQuery(qryString, Feed.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        clearFeed();
+        
+        feed.setProduction(production);
     }
     
     public void saveFeed()
@@ -66,7 +67,7 @@ public class FeedController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearFeed();
+            initFeed(production);
         } catch (Exception e) 
         {
             e.printStackTrace();
@@ -99,6 +100,11 @@ public class FeedController implements Serializable{
     {
        optionText = "Update";
        this.feed=feed;
+    }
+    
+    public void loadFeed(Production production)
+    {
+        feedList = productionService.getFeedList(production);
     }
     
     public void clearFeed() 

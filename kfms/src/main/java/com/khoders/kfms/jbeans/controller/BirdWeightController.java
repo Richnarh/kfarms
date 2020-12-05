@@ -6,7 +6,9 @@
 package com.khoders.kfms.jbeans.controller;
 
 import com.khoders.kfms.entities.BirdWeight;
+import com.khoders.kfms.entities.Production;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -15,7 +17,6 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -31,23 +32,20 @@ import javax.inject.Named;
 public class BirdWeightController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject ProductionService productionService;
     
     private BirdWeight birdWeight = new BirdWeight();
     private List<BirdWeight> birdWeightList=  new LinkedList<>();
     private FormView formView = FormView.listForm();
     
-    private String optionText;
+    private Production production;
     
-    @PostConstruct
-    private void init()
+    private String optionText;
+
+    public void initBirdWeight(Production production)
     {
-        optionText = "Save Changes";
-//        String qryString = "SELECT e FROM BirdWeight e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM BirdWeight e";
-        birdWeightList = crudApi.getEm().createQuery(qryString, BirdWeight.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
         clearBirdWeight();
+        birdWeight.setProduction(production);
     }
     
     public void saveBirdWeight()
@@ -67,7 +65,7 @@ public class BirdWeightController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearBirdWeight();
+            initBirdWeight(production);
         } catch (Exception e) 
         {
             e.printStackTrace();
@@ -100,6 +98,11 @@ public class BirdWeightController implements Serializable{
     {
        optionText = "Update";
        this.birdWeight=birdWeight;
+    }
+    
+    public void loadBirdWeight(Production production)
+    {
+        birdWeightList = productionService.getbirdWeightlist(production);
     }
     
     public void clearBirdWeight() 

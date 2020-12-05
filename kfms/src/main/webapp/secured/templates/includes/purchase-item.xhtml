@@ -30,7 +30,7 @@
                 <center>
                     <p:commandButton value="#{msg.add}" styleClass="kbtn-info"
                                      action="#{purchaseController.addPurchaseItem()}" 
-                                     update=":purchaseItemTable, @form"/>
+                                     update=":mainTabView:purchaseItemTable, @form"/>
 
                     <p:commandButton value="#{msg.clear}" styleClass="kbtn-cancel"
                                      action="#{purchaseController.clearPurchaseItem()}" 
@@ -74,7 +74,7 @@
                     <p:column headerText="#{msg.action}">
                         <p:menuButton value="#{msg.manage}">
                             <p:menuitem icon="fa fa-check" value="#{msg.edit}"  class="kbtn-info text-white"
-                                         action="#{purchaseController.editPurchaseItem(purchaseItem)}" immediate="true" update=":mainPanel"/>
+                                         action="#{purchaseController.editPurchaseItem(purchaseItem)}" immediate="true" update=":mainTabView:mainPanel"/>
                             <p:menuitem icon="fa fa-remove" value="Permanent Delete"  class="kbtn-danger text-white"
                                          action="#{purchaseController.deletePurchaseItem(purchaseItem)}" update="@form"/>
                         </p:menuButton>
@@ -94,8 +94,8 @@
 
                 <center>
                     <br/>
-                    <p:commandButton value="#{msg.save} All" styleClass="kbtn-success mx-4" action="#{purchaseController.saveAll()}" update=":mainPanel"/>
-                    <p:commandButton value="Close Page" styleClass="kbtn-danger" update=":mainPanel"
+                    <p:commandButton value="#{msg.save} All" styleClass="kbtn-success mx-4" action="#{purchaseController.saveAll()}" update=":mainTabView:mainPanel"/>
+                    <p:commandButton value="Close Page" styleClass="kbtn-danger" update=":mainTabView:mainPanel"
                                      action="#{purchaseController.closePage()}"/>
                 </center>
             </h:form>

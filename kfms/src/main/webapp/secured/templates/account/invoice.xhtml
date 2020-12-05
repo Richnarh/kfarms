@@ -13,8 +13,8 @@
             </ui:define>
 
             <ui:define name="pageContent">
-                <p:tabView id="mainTabView">
-                    <p:tab title="Out Standing Invoices">
+                <p:tabView id="mainTabView" activeIndex="#{invoiceController.switchTab.activeTab}" onTabShow="#{invoiceController.switchTab.switchTabView()}">
+                    <p:tab id="firstTabView" title="Out Standing Invoices">
                         <h:panelGroup id="mainPanel">
                             <h:panelGroup rendered="#{invoiceController.formView.listView}">
                                 <div class="row">
@@ -61,7 +61,7 @@
                                                 <h:outputText value="#{invoice.paymentMethod}"/>
 
                                                 <span>#{msg.account}</span>
-                                                <h:outputText value="#{invoice.account.accountName}"/>
+                                                <h:outputText value="#{invoice.account}"/>
 
                                                 <span>#{msg.payment} #{msg.status}</span>
                                                 <h:outputText value="#{invoice.paymentStatus}"/>
@@ -184,7 +184,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
 
                             </h:panelGroup>

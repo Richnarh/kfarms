@@ -79,10 +79,6 @@ and open the template in the editor.
     color: #dc3545 !important;
     transition: ease-in 0.3s;
 }
-.kbtn-info{
-    background: #17a2b8 !important;
-    border-color: #17a2b8 !important;
-}
 
 .kbtn-cancel{
     background: #d3d9df !important;
@@ -95,6 +91,23 @@ and open the template in the editor.
     border-color: #dc3545 !important;
     transition: ease-in 0.3s;
 }
+.kbtn-info{
+    background: #17a2b8 !important;
+    border-color: #17a2b8 !important;
+}
+
+.kbtn-edit-info{
+    background: transparent !important;
+    color: #17a2b8 !important;
+    border-color: #17a2b8 !important;
+}
+
+.kbtn-edit-info:hover{
+    background: #17a2b8 !important;
+    color: #fff !important;
+    border-color: #17a2b8 !important;
+}
+
 
 .kbtn-info:hover{
     background: transparent !important;
@@ -105,6 +118,18 @@ and open the template in the editor.
 .kbtn-link{
     color: #17a2b8 !important;
 }
+.kbtn-secondary {
+    color: #f9f9f9 !important;
+    background-color: #607D8B !important;
+    border-color: #172D44 !important;
+}
+.kbtn-secondary:hover {
+    color: #172D44 !important;
+    background-color: #B0BEC5 !important;
+    border-color: #172D44 !important;
+    transition: ease-in 0.3s ;
+}
+
 .kbtn-link:hover{
     color: #17a2b8 !important;
     padding: 3px !important;

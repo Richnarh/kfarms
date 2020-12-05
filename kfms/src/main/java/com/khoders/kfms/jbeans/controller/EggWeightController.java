@@ -6,7 +6,9 @@
 package com.khoders.kfms.jbeans.controller;
 
 import com.khoders.kfms.entities.EggWeight;
+import com.khoders.kfms.entities.Production;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -31,22 +33,22 @@ import javax.inject.Named;
 public class EggWeightController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject ProductionService productionService;
     
     private EggWeight eggWeight = new EggWeight();
     private List<EggWeight> eggWeightList=  new LinkedList<>();
     private FormView formView = FormView.listForm();
     
+    private Production production;
+    
     private String optionText;
     
-    @PostConstruct
-    private void init()
+
+    public void initEggWeight(Production production)
     {
         optionText = "Save Changes";
-//        String qryString = "SELECT e FROM EggWeight e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM EggWeight e";
-        eggWeightList = crudApi.getEm().createQuery(qryString, EggWeight.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        clearEggWeight();
+        eggWeight.setProduction(production);
     }
     
     public void saveEggWeight()
@@ -66,7 +68,7 @@ public class EggWeightController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearEggWeight();
+            initEggWeight(production);
         } catch (Exception e) 
         {
             e.printStackTrace();
@@ -98,6 +100,11 @@ public class EggWeightController implements Serializable{
     public void editEggWeight(EggWeight eggWeight)
     {
        this.eggWeight=eggWeight;
+    }
+    
+    public void loadEggs(Production production)
+    {
+        eggWeightList = productionService.getEggWeightList(production);
     }
     
     public void clearEggWeight() 

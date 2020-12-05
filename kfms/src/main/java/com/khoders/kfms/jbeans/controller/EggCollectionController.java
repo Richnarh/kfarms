@@ -104,6 +104,7 @@ public class EggCollectionController implements Serializable{
     
     public void editEggCollection(EggCollection eggCollection)
     {
+        optionText = "Update";
        this.eggCollection=eggCollection;
     }
     

@@ -6,7 +6,9 @@
 package com.khoders.kfms.jbeans.controller;
 
 import com.khoders.kfms.entities.Mortality;
+import com.khoders.kfms.entities.Production;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -15,7 +17,6 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -31,22 +32,21 @@ import javax.inject.Named;
 public class MortalityController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject ProductionService productionService;
     
     private Mortality mortality = new Mortality();
     private List<Mortality> mortalityList=  new LinkedList<>();
     private FormView formView = FormView.listForm();
     
+    private Production production;
+    
     private String optionText;
     
-    @PostConstruct
-    private void init()
+    public void initMortality(Production production)
     {
-        optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Mortality e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Mortality e";
-        mortalityList = crudApi.getEm().createQuery(qryString, Mortality.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
+        clearMortality();
+        
+        mortality.setProduction(production);
     }
     
     public void saveMortality()
@@ -66,7 +66,7 @@ public class MortalityController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearMortality();
+            initMortality(production);
         } catch (Exception e) 
         {
             e.printStackTrace();
@@ -107,6 +107,11 @@ public class MortalityController implements Serializable{
         mortality.setFarmAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
+    }
+    
+    public void loadMortality(Production production)
+    {
+        mortalityList = productionService.getMortalityList(production);
     }
     
     public void close()

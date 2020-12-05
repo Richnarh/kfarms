@@ -6,8 +6,14 @@
 package com.khoders.kfms.services;
 
 import com.khoders.kfms.entities.Bird;
+import com.khoders.kfms.entities.BirdWeight;
 import com.khoders.kfms.entities.EggCollection;
+import com.khoders.kfms.entities.EggWeight;
+import com.khoders.kfms.entities.Feed;
+import com.khoders.kfms.entities.Mortality;
 import com.khoders.kfms.entities.Production;
+import com.khoders.kfms.entities.Treatment;
+import com.khoders.kfms.entities.Vaccination;
 import com.khoders.kfms.entities.settings.BirdType;
 import com.khoders.kfms.entities.settings.FeedType;
 import com.khoders.kfms.entities.settings.Medication;
@@ -73,6 +79,163 @@ public class ProductionService {
        {
           FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! could not load records egg..."), null));  
+       }
+        return Collections.emptyList();
+    }
+    
+    public List<EggWeight> getEggWeightList(Production production)
+    {
+       if(production != null)
+       {
+            String qryEggWeight = "SELECT e FROM EggWeight e WHERE e.farmAccount = ?1 AND e.production=?2";
+        try 
+        {
+            TypedQuery<EggWeight> typedQuery = crudApi.getEm().createQuery(qryEggWeight, EggWeight.class)
+                            .setParameter(1, appSession.getCurrentUser())
+                            .setParameter(2, production);
+            
+            return typedQuery.getResultList();
+            
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+       }
+       else
+       {
+          FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! could not load records..."), null));  
+       }
+        return Collections.emptyList();
+    }
+    
+    public List<Feed> getFeedList(Production production)
+    {
+       if(production != null)
+       {
+            String qryString = "SELECT e FROM Feed e WHERE e.farmAccount = ?1 AND e.production=?2";
+        try 
+        {
+            TypedQuery<Feed> typedQuery = crudApi.getEm().createQuery(qryString, Feed.class)
+                            .setParameter(1, appSession.getCurrentUser())
+                            .setParameter(2, production);
+            
+            return typedQuery.getResultList();
+            
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+       }
+       else
+       {
+          FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! could not load records..."), null));  
+       }
+        return Collections.emptyList();
+    }
+    
+    public List<Mortality> getMortalityList(Production production)
+    {
+       if(production != null)
+       {
+            String qryString = "SELECT e FROM Mortality e WHERE e.farmAccount = ?1 AND e.production=?2";
+        try 
+        {
+            TypedQuery<Mortality> typedQuery = crudApi.getEm().createQuery(qryString, Mortality.class)
+                            .setParameter(1, appSession.getCurrentUser())
+                            .setParameter(2, production);
+            
+            return typedQuery.getResultList();
+            
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+       }
+       else
+       {
+          FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! could not load records..."), null));  
+       }
+        return Collections.emptyList();
+    }
+    
+    public List<Treatment> getTreatmentList(Production production)
+    {
+       if(production != null)
+       {
+            String qryString = "SELECT e FROM Treatment e WHERE e.farmAccount = ?1 AND e.production=?2";
+        try 
+        {
+            TypedQuery<Treatment> typedQuery = crudApi.getEm().createQuery(qryString, Treatment.class)
+                            .setParameter(1, appSession.getCurrentUser())
+                            .setParameter(2, production);
+            
+            return typedQuery.getResultList();
+            
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+       }
+       else
+       {
+          FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! could not load records..."), null));  
+       }
+        return Collections.emptyList();
+    }
+    
+    
+    public List<Vaccination> getVaccinationList(Production production)
+    {
+       if(production != null)
+       {
+            String qryString = "SELECT e FROM Vaccination e WHERE e.farmAccount = ?1 AND e.production=?2";
+        try 
+        {
+            TypedQuery<Vaccination> typedQuery = crudApi.getEm().createQuery(qryString, Vaccination.class)
+                            .setParameter(1, appSession.getCurrentUser())
+                            .setParameter(2, production);
+            
+            return typedQuery.getResultList();
+            
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+       }
+       else
+       {
+          FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! could not load records..."), null));  
+       }
+        return Collections.emptyList();
+    }
+    
+    public List<BirdWeight> getbirdWeightlist(Production production)
+    {
+       if(production != null)
+       {
+            String qryString = "SELECT e FROM BirdWeight e WHERE e.farmAccount = ?1 AND e.production=?2";
+        try 
+        {
+            TypedQuery<BirdWeight> typedQuery = crudApi.getEm().createQuery(qryString, BirdWeight.class)
+                            .setParameter(1, appSession.getCurrentUser())
+                            .setParameter(2, production);
+            
+            return typedQuery.getResultList();
+            
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+       }
+       else
+       {
+          FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Oops! could not load records..."), null));  
        }
         return Collections.emptyList();
     }

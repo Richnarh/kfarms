@@ -8,7 +8,7 @@
     <h:body>
         <div class="col-md-12">
             <div class="card">
-                <h5 class="card-header display-box shadow-box text-white">Purchases Payment</h5>
+                <h5 class="card-header display-box shadow-box text-white">Bill Payment</h5>
                 <div class="card-body">
                     <h:form id="billPaymentPanel">
                         <h:panelGrid columns="4" styleClass="spaced-form">
@@ -16,12 +16,6 @@
                             <p:selectOneMenu value="#{purchaseController.purchasePayment.purchase}" disabled="true">
                                 <f:selectItem itemLabel="#{msg.choose}"/>
                                 <f:selectItems value="#{commonModule.purchaseList}"/>
-                            </p:selectOneMenu>
-                            
-                            <span>#{msg.payment_staus}</span>
-                            <p:selectOneMenu value="#{purchaseController.purchasePayment.paymentStatus}">
-                                <f:selectItem itemLabel="#{msg.choose}"/>
-                                <f:selectItems value="#{sharedClass.paymentStatusList}"/>
                             </p:selectOneMenu>
                             
                             <span>Payment Date</span>
@@ -75,13 +69,13 @@
                                 #{payment.purchase.receiptNo}
                             </p:column>
 
-                            <p:column headerText="#{msg.total_amount}" class="text-right">
+                            <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.country.currencyCode})" class="text-right">
                                 <h:outputText value="#{payment.purchase.totalAmount}">
                                     <f:convertNumber pattern="#{msg.money_pattern}"/>
                                 </h:outputText>
                             </p:column>
                             
-                            <p:column headerText="#{msg.amount_paid}" class="text-right">
+                            <p:column headerText="#{msg.amount_paid} (#{appSession.currentUser.country.currencyCode})" class="text-right">
                                 <h:outputText value="#{payment.amountPaid}">
                                     <f:convertNumber pattern="#{msg.money_pattern}"/>
                                 </h:outputText>

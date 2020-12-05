@@ -5,8 +5,10 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
+import com.khoders.kfms.entities.Production;
 import com.khoders.kfms.entities.Vaccination;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -15,7 +17,6 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -31,23 +32,20 @@ import javax.inject.Named;
 public class VaccinationController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject ProductionService productionService;
     
     private Vaccination vaccination = new Vaccination();
     private List<Vaccination> vaccinationList=  new LinkedList<>();
     private FormView formView = FormView.listForm();
     
+    private Production production;
+    
     private String optionText;
     
-    @PostConstruct
-    private void init()
+    public void initVaccination(Production production)
     {
-        optionText = "Save Changes";
-//        String qryString = "SELECT e FROM Vaccination e WHERE e.farmAccount = ?1";
-        String qryString = "SELECT e FROM Vaccination e";
-        vaccinationList = crudApi.getEm().createQuery(qryString, Vaccination.class)
-//                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
         clearVaccination();
+        vaccination.setProduction(production);
     }
     
     public void saveVaccination()
@@ -67,7 +65,7 @@ public class VaccinationController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearVaccination();
+            initVaccination(production);
         } catch (Exception e) 
         {
             e.printStackTrace();
@@ -100,6 +98,11 @@ public class VaccinationController implements Serializable{
     {
        optionText = "Update";
        this.vaccination=vaccination;
+    }
+    
+    public void loadVaccination(Production production)
+    {
+        vaccinationList = productionService.getVaccinationList(production);
     }
     
     public void clearVaccination() 

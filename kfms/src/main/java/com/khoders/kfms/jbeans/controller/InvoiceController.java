@@ -9,6 +9,7 @@ import com.khoders.kfms.entities.account.Invoice;
 import com.khoders.kfms.entities.account.InvoiceItem;
 import com.khoders.kfms.entities.account.InvoicePayment;
 import com.khoders.kfms.entities.enums.PaymentStatus;
+import com.khoders.kfms.jbeans.model.SwitchTab;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.kfms.services.AccountService;
 import com.khoders.resource.jpa.CrudApi;
@@ -56,25 +57,23 @@ public class InvoiceController implements Serializable
     private FormView formView = FormView.listForm();
     private FormView paymentView = FormView.listForm();
     
+    private SwitchTab switchTab = SwitchTab.firstTab();
+    
     private String optionText;
     
-    private double totalAmount=0;
+    private double totalAmount;
     
     private double totalAmountPaid = 0.0;
     
     @PostConstruct
     private void init()
     {
-//        invoicePaymentList = accountService.getInvoicePayment();
-        
         clearInvoice();
     }
-    
+   
     public void fetchFullyPaid()
     {
-        this.reset();
-        fullyPaidInvoiceList = accountService.getFullyPaidInvoiceList(dateRange, invoice);
-//        invoicePaymentList = accountService.getFullInvoicePayment();
+        fullyPaidInvoiceList = accountService.getFullyPaidInvoiceList(dateRange);
     }
     
     public void initInvoice()
@@ -550,5 +549,13 @@ public class InvoiceController implements Serializable
     public List<InvoiceItem> getInvoiceItemInfoList() {
         return invoiceItemInfoList;
     }
-  
+
+    public SwitchTab getSwitchTab() {
+        return switchTab;
+    }
+
+    public void setSwitchTab(SwitchTab switchTab) {
+        this.switchTab = switchTab;
+    }
+
 }
