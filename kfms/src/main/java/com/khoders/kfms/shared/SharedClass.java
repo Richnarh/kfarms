@@ -5,6 +5,7 @@
  */
 package com.khoders.kfms.shared;
 
+import com.khoders.kfms.entities.enums.AgeRange;
 import com.khoders.kfms.entities.enums.BirdCategory;
 import com.khoders.kfms.entities.enums.BirdSource;
 import com.khoders.kfms.entities.enums.CullingMortality;
@@ -13,6 +14,8 @@ import com.khoders.kfms.entities.enums.EggSize;
 import com.khoders.kfms.entities.enums.FlockPurpose;
 import com.khoders.kfms.entities.enums.MedicationType;
 import com.khoders.kfms.entities.enums.PaymentStatus;
+import com.khoders.kfms.entities.enums.StageType;
+import com.khoders.kfms.entities.enums.Units;
 import com.khoders.resource.enums.PaymentMethod;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -67,14 +70,24 @@ public class SharedClass implements Serializable
         return Arrays.asList(PaymentMethod.values());
     }
     
-//    public List<AccountType> getAccountTypeList()
-//    {
-//        return Arrays.asList(AccountType.values());
-//    }
-    
     public List<PaymentStatus> getPaymentStatusList()
     {
         return Arrays.asList(PaymentStatus.values());
+    }
+    
+    public List<AgeRange> getAgeRangeList()
+    {
+        return Arrays.asList(AgeRange.values());
+    }
+    
+    public List<StageType> getStageTypeList()
+    {
+        return Arrays.asList(StageType.values());
+    }
+    
+    public List<Units> getUnitsList()
+    {
+        return Arrays.asList(Units.values());
     }
     
 }

@@ -84,7 +84,6 @@ public class InvoiceController implements Serializable
     
     public void filterOutStandingInvoice()
     {
-        this.reset();
         invoiceList = accountService.getOutStandingInvoice(dateRange, invoice);   
     }
     
@@ -144,7 +143,7 @@ public class InvoiceController implements Serializable
         try 
         {
            invoiceItemList = accountService.getInvoiceList(invoice);
-            System.out.println("List size: "+invoiceItemList.size());
+           
            if(!invoiceItemList.isEmpty())
            {
                invoiceItemList.forEach(item -> {
@@ -152,7 +151,7 @@ public class InvoiceController implements Serializable
                });
                
                invoiceItemList = accountService.getInvoiceList(invoice);
-               System.out.println("List size: "+invoiceItemList.size());
+               
                if(invoiceItemList.isEmpty())
                {
                    if(crudApi.delete(invoice))

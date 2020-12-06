@@ -5,18 +5,16 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
-import com.khoders.kfms.entities.EggWeight;
-import com.khoders.kfms.entities.Production;
+import com.khoders.kfms.entities.settings.Ingredient;
 import com.khoders.kfms.jpa.AppSession;
-import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
-import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -27,37 +25,31 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "eggWeightController")
+@Named(value = "ingredientController")
 @SessionScoped
-public class EggWeightController implements Serializable{
+public class IngredientController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
-    @Inject ProductionService productionService;
-    
-    private EggWeight eggWeight = new EggWeight();
-    private List<EggWeight> eggWeightList=  new LinkedList<>();
-    private FormView formView = FormView.listForm();
-    
-    private Production production;
     
     private String optionText;
     
-
-    public void initEggWeight(Production production)
+    private Ingredient ingredient = new Ingredient();
+    private List<Ingredient> ingredientList = new LinkedList<>();
+    
+    @PostConstruct
+    private void init()
     {
-        optionText = "Save Changes";
-        clearEggWeight();
-        eggWeight.setProduction(production);
+        clearIngredient();
     }
     
-    public void saveEggWeight()
+   public void saveIngredient()
     {
         try 
         {
-            eggWeight.setProduction(eggWeight.getProduction());
-          if(crudApi.save(eggWeight) != null)
+          ingredient.genCode();
+          if(crudApi.save(ingredient) != null)
           {
-              eggWeightList = CollectionList.washList(eggWeightList, eggWeight);
+              ingredientList = CollectionList.washList(ingredientList, ingredient);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -67,20 +59,26 @@ public class EggWeightController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-            initEggWeight(production);
+           clearIngredient();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
+   
+    public void editIngredient(Ingredient ingredient)
+    {
+        optionText = "Update";
+       this.ingredient=ingredient;
+    }
     
-    public void deleteEggWeight(EggWeight eggWeight)
+    public void deleteIngredient(Ingredient ingredient)
     {
         try 
         {
-          if(crudApi.delete(eggWeight))
+          if(crudApi.delete(ingredient))
           {
-              eggWeightList.remove(eggWeight);
+              ingredientList.remove(ingredient);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -96,40 +94,23 @@ public class EggWeightController implements Serializable{
         }
     }
     
-    public void editEggWeight(EggWeight eggWeight)
-    {
-       this.eggWeight=eggWeight;
-    }
-    
-    public void loadEggs(Production production)
-    {
-        eggWeightList = productionService.getEggWeightList(production);
-    }
-    
-    public void clearEggWeight() 
-    {
-        eggWeight = new EggWeight();
-        eggWeight.setFarmAccount(appSession.getCurrentUser());
+    public void clearIngredient() {
+        ingredient = new Ingredient();
+        ingredient.setFarmAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
-    
-    public void close()
-    {
-      eggWeight = null;
-      formView.restToListView();
+
+    public Ingredient getIngredient() {
+        return ingredient;
     }
 
-    public List<EggWeight> getEggWeightList() {
-        return eggWeightList;
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 
-    public EggWeight getEggWeight() {
-        return eggWeight;
-    }
-
-    public void setEggWeight(EggWeight eggWeight) {
-        this.eggWeight = eggWeight;
+    public List<Ingredient> getIngredientList() {
+        return ingredientList;
     }
 
     public String getOptionText() {
@@ -139,13 +120,6 @@ public class EggWeightController implements Serializable{
     public void setOptionText(String optionText) {
         this.optionText = optionText;
     }
-
-    public FormView getFormView() {
-        return formView;
-    }
-
-    public void setFormView(FormView formView) {
-        this.formView = formView;
-    }
-
+    
+    
 }

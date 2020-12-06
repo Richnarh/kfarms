@@ -5,7 +5,6 @@
  */
 package com.khoders.kfms.entities;
 
-import com.khoders.kfms.entities.account.ChartOfAccount;
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -22,7 +21,7 @@ public class FarmChartRecord extends BaseModel implements Serializable{
     private static final String _farmAccount = "farmAccount";
     private static final String _farmName = FarmAccount._farmName;
     private static final String _farmEmail = FarmAccount._businessEmail;
-    @JoinColumn(name = "farm_account")
+    @JoinColumn(name = "farm_account", referencedColumnName = "id")
     @ManyToOne
     private FarmAccount farmAccount;
     
