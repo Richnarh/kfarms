@@ -111,7 +111,7 @@
                                             <p:datePicker value="#{birdController.bird.retirementDate}" pattern="#{msg.formatted_date}" yearNavigator="true" monthNavigator="true"/>
 
                                             <span>Type of bird</span>
-                                            <p:selectOneMenu value="#{birdController.bird.birdType}">
+                                            <p:selectOneMenu value="#{birdController.bird.birdType}" filter="true" filterMatchMode="contains">
                                                 <f:selectItem itemLabel="#{msg.choose}"/>
                                                 <f:selectItems value="#{commonClass.birdTypeList}"/>
                                             </p:selectOneMenu>

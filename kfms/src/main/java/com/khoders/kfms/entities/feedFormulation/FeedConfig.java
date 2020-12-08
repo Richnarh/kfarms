@@ -5,12 +5,11 @@
  */
 package com.khoders.kfms.entities.feedFormulation;
 
-import com.khoders.kfms.entities.FarmChartRecord;
+import com.khoders.kfms.entities.FarmAccountRecord;
 import com.khoders.kfms.entities.enums.AgeRange;
 import com.khoders.kfms.entities.enums.StageType;
 import com.khoders.kfms.entities.enums.Units;
 import com.khoders.kfms.entities.settings.FeedType;
-import com.khoders.kfms.entities.settings.Ingredient;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -18,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,24 +27,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "feed_config")
-public class FeedConfig extends FarmChartRecord implements Serializable{
+public class FeedConfig extends FarmAccountRecord implements Serializable{
     @Column(name = "feed_config_id")
     private String feedConfigId;
+    
+    @Column(name = "feed_size")
+    private int feedSize;
     
     @JoinColumn(name = "feed", referencedColumnName = "id")
     @ManyToOne
     private FeedType feed;
-    
-    @Column(name = "feed_amount")
-    private int feedAmount;
-    
-    @Column(name = "unit")
-    @Enumerated(EnumType.STRING)
-    private Units units;
-    
-    @JoinColumn(name = "ingredient", referencedColumnName = "id")
-    @ManyToOne
-    private Ingredient ingredient;
     
     @Column(name = "stage_type")
     @Enumerated(EnumType.STRING)
@@ -53,6 +45,10 @@ public class FeedConfig extends FarmChartRecord implements Serializable{
     @Column(name = "age_range")
     @Enumerated(EnumType.STRING)
     private AgeRange ageRange;
+    
+    @Column(name = "note")
+    @Lob
+    private String note;
 
     public String getFeedConfigId() {
         return feedConfigId;
@@ -70,30 +66,6 @@ public class FeedConfig extends FarmChartRecord implements Serializable{
         this.feed = feed;
     }
 
-    public int getFeedAmount() {
-        return feedAmount;
-    }
-
-    public void setFeedAmount(int feedAmount) {
-        this.feedAmount = feedAmount;
-    }
-
-    public Units getUnits() {
-        return units;
-    }
-
-    public void setUnits(Units units) {
-        this.units = units;
-    }
-
-    public Ingredient getIngredient() {
-        return ingredient;
-    }
-
-    public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
-    }
-
     public AgeRange getAgeRange() {
         return ageRange;
     }
@@ -109,6 +81,22 @@ public class FeedConfig extends FarmChartRecord implements Serializable{
     public void setStageType(StageType stageType) {
         this.stageType = stageType;
     }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public int getFeedSize() {
+        return feedSize;
+    }
+
+    public void setFeedSize(int feedSize) {
+        this.feedSize = feedSize;
+    }
     
     public void genCode()
     {
@@ -122,4 +110,11 @@ public class FeedConfig extends FarmChartRecord implements Serializable{
         }
         
     }
+
+    @Override
+    public String toString() {
+        return  feed+"";
+    }
+    
+    
 }

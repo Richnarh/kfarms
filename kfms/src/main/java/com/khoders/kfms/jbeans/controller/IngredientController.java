@@ -7,6 +7,7 @@ package com.khoders.kfms.jbeans.controller;
 
 import com.khoders.kfms.entities.settings.Ingredient;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.FeedFormulationService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.Msg;
@@ -30,6 +31,7 @@ import javax.inject.Named;
 public class IngredientController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject FeedFormulationService feedFormulationService;
     
     private String optionText;
     
@@ -40,6 +42,8 @@ public class IngredientController implements Serializable{
     private void init()
     {
         clearIngredient();
+        
+        ingredientList = feedFormulationService.getIngredientList();
     }
     
    public void saveIngredient()

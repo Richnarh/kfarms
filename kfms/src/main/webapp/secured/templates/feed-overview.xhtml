@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                #{msg.feed_overview}
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <div class="col-md-12">
+                    <h:form class="spaced-form">
+                        <h:panelGrid columns="3">
+                            <p:selectOneMenu value="#{feedOverviewController.selectedFeedConfig}" filter="true" filterMatchMode="contains">
+                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                <f:selectItems value="#{commonClass.feedConfigList}"/>
+                            </p:selectOneMenu>
+                            <p:commandButton action="#{feedOverviewController.initChart()}" value="View Chart" class="kbtn-secondary" update="@form"/>
+                            
+                            <ui:remove>
+                                <p:commandButton value="Export (XLS)" class="kbtn-secondary" update="@form"/>
+                            </ui:remove>
+                        </h:panelGrid>
+
+                        <div class="row pt-2">
+                          
+                            <div class="col-md-9">
+                                <p:dataTable id="feedChartTable" value="#{feedOverviewController.feedOverviewChartList}" var="feedOverviewChart">
+                                    <p:column headerText="#{msg.ingredient}">
+                                        <h:outputText value="#{feedOverviewChart.ingredient.ingredientName}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="#{msg.amount} (#{appSession.currentUser.units.label})" class="text-right">
+                                        <h:outputText value="#{feedOverviewChart.ingredientAmount}"/>
+                                    </p:column>
+
+
+                                    <p:column headerText="DCP (%)" class="text-right">
+                                        <h:outputText value="#{feedOverviewChart.dcp}"/>
+                                    </p:column>
+
+                                    <p:column headerText="DCP (#{appSession.currentUser.units.label})" class="text-right">
+                                        <h:outputText value="#{feedOverviewController.dcpAmount}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                            
+                              <div class="col-md-3 shadow-sm">
+                                <div class="">
+                                    <div class="mx-2 my-2">
+                                        <div>
+                                            <span>#{msg.feed}</span>
+                                            <span class="float-right">#{feedOverviewController.selectedFeedConfig.feed}</span>
+                                        </div>
+                                        <div>
+                                            <span>#{msg.feed_size}</span>
+                                            <span class="float-right">#{feedOverviewController.selectedFeedConfig.feedSize} #{appSession.currentUser.units.label}</span>
+                                        </div>
+                                        <div>
+                                            <span>#{msg.type}</span>
+                                            <span class="float-right">#{feedOverviewController.selectedFeedConfig.stageType.label}</span>
+                                        </div>
+                                        <div>
+                                            <span>Age Range (wks)</span>
+                                            <span class="float-right">#{feedOverviewController.selectedFeedConfig.ageRange.label}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -49,10 +49,10 @@
                 <!-- Right navbar links -->
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-<!--                        <span>-->
-                            <h:form>
-                                <p:commandButton title="Refresh" ajax="false" icon="fa fa-refresh" action="#{commonClass.init()}"/>
-                            </h:form>
+                        <!--                        <span>-->
+                        <h:form>
+                            <p:commandButton title="Refresh" ajax="false" icon="fa fa-refresh" action="#{commonClass.init()}"/>
+                        </h:form>
                         <!--</span>-->
                     </li>
                     <li class="nav-item dropdown">
@@ -61,24 +61,23 @@
                             <span>#{appSession.currentUser.farmName}<i class="fa fa-angle-down"></i></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <span class="dropdown-item dropdown-header">15 Notifications</span>
+                            <span class="dropdown-item dropdown-header">Profile Activity</span>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fa fa-envelope mr-2"></i> 4 new messages
-                                <span class="float-right text-muted text-sm">3 mins</span>
+                            <a href="#{application.contextPath}/secured/templates/profile-update.xhtml" class="dropdown-item">
+                                <i class="fa fa-user mr-2"></i> Update Account
+                                <span class="float-right text-muted text-sm"></span>
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="#" class="dropdown-item">
-                                <i class="fa fa-users mr-2"></i> 8 friend requests
-                                <span class="float-right text-muted text-sm">12 hours</span>
+                                <i class="fa fa-users mr-2"></i> Update Password
+                                <span class="float-right text-muted text-sm"></span>
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fa fa-file mr-2"></i> 3 new reports
-                                <span class="float-right text-muted text-sm">2 days</span>
-                            </a>
+                            <h:form>
+                                <h:commandLink class="btn kbtn-danger text-white btn-block" value="Logout" action="#{loginController.doLogout()}"/>
+                            </h:form>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                            <a href="#" class="dropdown-item dropdown-footer">#{appSession.currentUser.farmName}</a>
                         </div>
                     </li>
                 </ul>
@@ -168,7 +167,7 @@
         <script src="#{application.contextPath}/vendors/js/jquery.mousewheel.js"></script>
         <script src="#{application.contextPath}/vendors/js/raphael.min.js"></script>
         <script src="#{application.contextPath}/vendors/js/wow.min.js"></script>
-        
+
         <script type="text/javascript">
             new WOW().init();
         </script>

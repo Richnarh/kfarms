@@ -6,7 +6,9 @@
 package com.khoders.kfms.jbeans.controller;
 
 import com.khoders.kfms.entities.feedFormulation.FeedConfig;
+import com.khoders.kfms.entities.feedFormulation.FeedConfigItem;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.FeedFormulationService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
 import com.khoders.resource.utilities.FormView;
@@ -15,6 +17,7 @@ import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -30,12 +33,22 @@ import javax.inject.Named;
 public class FeedConfigController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
+    @Inject FeedFormulationService feedFormulationService;
     
     private String optionText;
     private FeedConfig feedConfig = new FeedConfig();
     private List<FeedConfig> feedConfigList = new LinkedList<>();
     
+    private FeedConfigItem feedConfigItem = new FeedConfigItem();
+    private List<FeedConfigItem> feedConfigItemList = new LinkedList<>();
+    
     private FormView formView = FormView.listForm();
+    
+    @PostConstruct
+    private void init()
+    {
+        feedConfigList = feedFormulationService.getFeedConfigList();
+    }
     
         
     public void initFeedConfig()
@@ -44,7 +57,7 @@ public class FeedConfigController implements Serializable{
         formView.restToCreateView();
     }
     
-    public void saveInvoice()
+    public void saveFeedConfig()
     {
         try 
         {
@@ -81,16 +94,126 @@ public class FeedConfigController implements Serializable{
     {
         try 
         {
-            if(crudApi.delete(feedConfig))
+           feedConfigItemList = feedFormulationService.getFeedConfigList(feedConfig);
+           
+           if(!feedConfigItemList.isEmpty())
+           {
+               feedConfigItemList.forEach(item -> {
+                    crudApi.delete(item); 
+               });
+               
+               feedConfigItemList = feedFormulationService.getFeedConfigList(feedConfig);
+               
+               if(feedConfigItemList.isEmpty())
+               {
+                   if(crudApi.delete(feedConfig))
+                   {
+                       feedConfigList.remove(feedConfig);
+                       FacesContext.getCurrentInstance().addMessage(null, 
+                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                   }
+                   else
+                   {
+                       FacesContext.getCurrentInstance().addMessage(null, 
+                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
+                   }
+                   
+               }
+           }
+           
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+   public void addFeedConfigItem()
+    {
+        try 
+        {
+              if(feedConfigItem != null)
+              {
+                feedConfigItemList.add(feedConfigItem);
+                feedConfigItemList = CollectionList.washList(feedConfigItemList, feedConfigItem);
+                
+                FacesContext
+                        .getCurrentInstance()
+                        .addMessage(null, 
+                            new FacesMessage(
+                                    FacesMessage.SEVERITY_INFO, Msg.setMsg("Ingredient added"), null));
+              }
+              else
+                {
+                   FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Ingredient removed!"), null));
+                }
+            clearFeedConfigItem();
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public void manageFeedConfigItem(FeedConfig feedConfig)
+    {
+       this.feedConfig = feedConfig;
+        formView.restToDetailView();
+        
+        clearFeedConfigItem();
+
+        feedConfigItemList = feedFormulationService.getFeedConfigList(feedConfig);
+        
+    }
+    
+    public void editFeedConfigItem(FeedConfigItem feedConfigItem)
+    {
+        this.feedConfigItem = feedConfigItem;
+        optionText = "Update";
+    }
+    
+    public void deleteFeedConfigItem(FeedConfigItem feedConfigItem)
+    {
+        try 
+        {
+            if(crudApi.delete(feedConfigItem))
             {
-                feedConfigList.remove(feedConfig);
+                feedConfigItemList.remove(feedConfigItem);
                 FacesContext.getCurrentInstance().addMessage(null, 
-                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
+            }
+            else
+            {
+               FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.DELETE_MESSAGE, null));
+            }
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+     
+    public void saveAll()
+    {
+        try 
+        {
+            if(feedConfigItemList != null)
+            {
+                for (FeedConfigItem items : feedConfigItemList) 
+                {
+                    items.setFarmAccount(appSession.getCurrentUser());
+                    crudApi.save(items);
+                }
+                
+                FacesContext.getCurrentInstance().addMessage(null, 
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Feed Ingredient list saved!"), null));
             }
             else
             {
                 FacesContext.getCurrentInstance().addMessage(null, 
-                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
+                        new FacesMessage(FacesMessage.SEVERITY_WARN, Msg.setMsg("The list is empty!"), null));
             }
         } catch (Exception e) 
         {
@@ -106,14 +229,30 @@ public class FeedConfigController implements Serializable{
         SystemUtils.resetJsfUI();
     }
     
+    public void clearFeedConfigItem()
+    {
+        feedConfigItem = new FeedConfigItem();
+        optionText = "Save Changes";
+        feedConfigItem.setFeedConfig(feedConfig);
+        SystemUtils.resetJsfUI();
+    }
+    
     public void closePage()
     {
        feedConfig = new FeedConfig();
-       feedConfigList = new LinkedList<>();
        optionText = "Save Changes";
        formView.restToListView();
     }
-
+    
+    public void close()
+    {
+       feedConfig = new FeedConfig();
+       feedConfigItem = new FeedConfigItem();
+       feedConfigItemList = new LinkedList<>();
+       optionText = "Save Changes";
+       formView.restToListView();
+    }
+    
     public String getOptionText() {
         return optionText;
     }
@@ -140,6 +279,18 @@ public class FeedConfigController implements Serializable{
 
     public List<FeedConfig> getFeedConfigList() {
         return feedConfigList;
+    }
+
+    public FeedConfigItem getFeedConfigItem() {
+        return feedConfigItem;
+    }
+
+    public void setFeedConfigItem(FeedConfigItem feedConfigItem) {
+        this.feedConfigItem = feedConfigItem;
+    }
+
+    public List<FeedConfigItem> getFeedConfigItemList() {
+        return feedConfigItemList;
     }
     
     

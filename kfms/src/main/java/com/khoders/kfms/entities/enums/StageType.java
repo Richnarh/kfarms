@@ -16,13 +16,13 @@ public enum StageType implements MsgResolver{
     PULLET("PULLET", "Pullet (Adolescent)"),
     HEN("HEN", "Hen (Adult)");
     
-    private final String label;
     private final String code;
+    private final String label;
     
-    private StageType(String label, String code)
+    private StageType(String code, String label)
     {
-        this.label=label;
         this.code=code;
+        this.label=label;
     }
 
     @Override

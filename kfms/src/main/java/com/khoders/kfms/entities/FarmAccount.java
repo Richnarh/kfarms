@@ -1,10 +1,13 @@
 package com.khoders.kfms.entities;
 
+import com.khoders.kfms.entities.enums.Units;
 import com.khoders.kfms.entities.settings.Country;
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -42,9 +45,10 @@ public class FarmAccount extends BaseModel implements Serializable{
     @ManyToOne
     private Country country;
     
-    public static final String _unitOfWeight = "unitOfWeight";
-    @Column(name = "unit_of_weight")
-    private String unitOfWeight;
+    public static final String _units = "units";
+    @Column(name = "units")
+    @Enumerated(EnumType.STRING)
+    private Units units;
     
     public static final String _address = "address";
     @Column(name="address")
@@ -105,14 +109,15 @@ public class FarmAccount extends BaseModel implements Serializable{
         this.country = country;
     }
 
-    public String getUnitOfWeight() {
-        return unitOfWeight;
+    public Units getUnits() {
+        return units;
     }
 
-    public void setUnitOfWeight(String unitOfWeight) {
-        this.unitOfWeight = unitOfWeight;
+    public void setUnits(Units units) {
+        this.units = units;
     }
 
+    
     public String getAddress() {
         return address;
     }
@@ -120,8 +125,6 @@ public class FarmAccount extends BaseModel implements Serializable{
     public void setAddress(String address) {
         this.address = address;
     }
-
-    
 
     public String getPassword() {
         return password;

@@ -5,11 +5,12 @@
  */
 package com.khoders.kfms.entities.settings;
 
-import com.khoders.kfms.entities.FarmChartRecord;
+import com.khoders.kfms.entities.FarmAccountRecord;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -18,12 +19,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ingredient")
-public class Ingredient extends FarmChartRecord implements Serializable{
+public class Ingredient extends FarmAccountRecord implements Serializable{
    @Column(name = "ingredient_id")
    private String ingredientId;
    
    @Column(name = "ingredient_name")
    private String ingredientName;
+   
+   @Lob
+   @Column(name = "note")
+   private String note;
 
     public String getIngredientId() {
         return ingredientId;
@@ -39,6 +44,14 @@ public class Ingredient extends FarmChartRecord implements Serializable{
 
     public void setIngredientName(String ingredientName) {
         this.ingredientName = ingredientName;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
     
     public void genCode()

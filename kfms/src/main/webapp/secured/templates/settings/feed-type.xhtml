@@ -23,8 +23,8 @@
                                         <span class="required_field">#{msg.feed_type} Name</span>
                                         <p:inputText value="#{feedTypeController.feedType.feedName}" required="true"/>
 
-                                        <span class="required_field">Cost Per #{productionController.production.farmAccount.unitOfWeight}</span>
-                                        <p:inputText value="#{feedTypeController.feedType.costPerUnit}" required="true"/>
+                                        <span>Cost Per #{appSession.currentUser.units.label}</span>
+                                        <p:inputText value="#{feedTypeController.feedType.costPerUnit}"/>
 
                                         <span>#{msg.brand}</span>
                                         <p:inputText value="#{feedTypeController.feedType.brand}"/>
@@ -65,7 +65,7 @@
                                         #{feedType.brand}
                                     </p:column>
 
-                                    <p:column headerText="Cost Per #{productionController.production.farmAccount.unitOfWeight}" class="text-right"> 
+                                    <p:column headerText="Cost Per #{appSession.currentUser.units.label}" class="text-right"> 
                                         #{feedType.costPerUnit}
                                     </p:column>
 

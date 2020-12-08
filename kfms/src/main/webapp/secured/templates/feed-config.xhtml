@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                #{msg.feed_formulation}
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <h:panelGroup id="mainPanel">
+                    <div class="card mb-5">
+                        <div class="container-fluid">
+                            <div class="card-header">Create Data</div>
+                            <h:panelGroup rendered="#{feedConfigController.formView.listView}">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-lg-12">
+                                        <h:form class="float-right pt-3" style="margin-bottom: 5px;">
+
+                                            <p:commandButton value="#{msg.create_feed}" 
+                                                             class="kbtn-primary"  icon="fa fa-plus-circle" update=":mainPanel"
+                                                             action="#{feedConfigController.initFeedConfig()}"/>
+                                        </h:form>
+                                    </div>
+                                </div>
+
+                                <h:form id="feedConfigTable" class="mb-3 wow">
+                                    <p:dataTable id="feedConfigTable" value="#{feedConfigController.feedConfigList}" var="feedConfig"
+                                                 paginator="true" paginatorPosition="bottom" rows="8">
+                                        <p:column exportable="false" style="width: 40px;">
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:rowExpansion>
+                                            <p:panelGrid columns="2">
+                                                <span>Config Id</span>
+                                                <h:outputText value="#{feedConfig.feedConfigId}"/>
+
+                                                <span>Note</span>
+                                                <h:outputText value="#{feedConfig.note}"/>
+                                            </p:panelGrid>
+                                        </p:rowExpansion>
+
+                                        <p:column headerText="#{msg.created_date}">
+                                            <h:outputText value="#{feedConfig.createdDate}">
+                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.feed_size}" class="text-right">
+                                            <h:outputText value="#{feedConfig.feedSize} #{appSession.currentUser.units.label}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.feed}">
+                                            <h:outputText value="#{feedConfig.feed.feedName}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.type}">
+                                            <h:outputText value="#{feedConfig.stageType.label}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.age} Range (Weeks)">
+                                            <h:outputText value="#{feedConfig.ageRange.label}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}" style="width: 120px;">
+                                            <p:menuButton value="#{msg.manage}">
+                                                <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.edit}" action="#{feedConfigController.editFeedConfig(feedConfig)}" immediate="true" update=":mainPanel"/>
+                                                <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Ingredient" action="#{feedConfigController.manageFeedConfigItem(feedConfig)}" immediate="true" update=":mainPanel"/>
+                                            </p:menuButton>
+                                        </p:column>
+                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                            <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{feedConfigController.deleteFeedConfig(feedConfig)}" 
+                                                             onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{feedConfigController.formView.createView}">
+                                <div class="col-md-6 mb-5 pt-3 mx-auto">
+                                    <h:form>
+                                        <h:panelGrid columns="2" styleClass="spaced-form">
+                                            <span class="required_field">#{msg.feed}</span>
+                                            <p:selectOneMenu value="#{feedConfigController.feedConfig.feed}" filter="true" filterMatchMode="contains" required="true">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{commonClass.feedTypeList}"/>
+                                            </p:selectOneMenu>
+                                            
+                                            <span>#{msg.feed_size} (#{appSession.currentUser.units.label})</span>
+                                            <p:inputText value="#{feedConfigController.feedConfig.feedSize}"/>
+
+                                            <span class="required_field">#{msg.type}</span>
+                                            <p:selectOneMenu value="#{feedConfigController.feedConfig.stageType}" required="true">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{sharedClass.stageTypeList}"/>
+                                            </p:selectOneMenu>
+
+                                            <span class="required_field">#{msg.age_range} (Weeks)</span>
+                                            <p:selectOneMenu value="#{feedConfigController.feedConfig.ageRange}" required="true">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{sharedClass.ageRangeList}"/>
+                                            </p:selectOneMenu>
+
+                                            <span>#{msg.note}</span>
+                                            <p:inputTextarea value="#{feedConfigController.feedConfig.note}"/>
+
+                                        </h:panelGrid>
+
+                                        <div class="pt-3">
+                                            <p:commandButton styleClass="kbtn-success mx-5" value="#{feedConfigController.optionText}" update=":mainPanel, :feedConfigTable"
+                                                             action="#{feedConfigController.saveFeedConfig()}" />
+
+                                            <p:commandButton styleClass="kbtn-cancel" value="#{msg.close}" immediate="true"
+                                                             action="#{feedConfigController.closePage()}" update="@form,:mainPanel"/>
+                                        </div>
+
+                                    </h:form>
+                                </div>
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{feedConfigController.formView.detailView}">
+                                <div class="mx-3 my-3">
+                                    <ui:include src="includes/feed_config_item.xhtml"/>
+                                </div>
+                            </h:panelGroup>
+
+                        </div>
+                    </div>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

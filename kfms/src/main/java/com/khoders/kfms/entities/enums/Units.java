@@ -12,18 +12,15 @@ import com.khoders.resource.utilities.MsgResolver;
  * @author khoders
  */
 public enum Units implements MsgResolver{
-    GRAMS("GRAMS", "Grams", "g"),
-    KILOGRAM("KILOGRAMS", "Kilograms", "kg");
+    GRAMS("GRAMS", "g"),
+    KILOGRAM("KILOGRAMS", "kg");
     
     private final String label;
     private final String code;
-    private final String abbr;
-    
-    private Units(String label, String code, String abbr)
+    private Units(String code, String label)
     {
-        this.label=label;
         this.code=code;
-        this.abbr=abbr;
+        this.label=label;
     }
 
     @Override

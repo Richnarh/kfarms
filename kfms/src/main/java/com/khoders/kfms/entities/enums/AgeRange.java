@@ -16,13 +16,13 @@ public enum AgeRange implements MsgResolver{
     EIGHT_TO_18_WEEKS("EIGHT_TO_18_WEEKS", "8 - 18"),
     EIGHTEEN_TO_72_WEEKS("EIGHTEEN_TO_72_WEEKS", "18 - 72");
     
-    private final String label;
     private final String code;
+    private final String label;
     
-    private AgeRange(String label, String code)
+    private AgeRange( String code, String label)
     {
-        this.label=label;
         this.code=code;
+        this.label=label;
     }
 
     @Override

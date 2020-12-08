@@ -163,16 +163,15 @@ and open the template in the editor.
     box-shadow: 0 0 15px 0 lightgrey;
 }
 
-.shade-value
-{
+.faded-shade{
     font-family: cursive;
     display: inline-block;
     display: block;
     min-height: 1em;
     margin: 2px;
     padding: 2px 5px 2px 5px;
-    background: #2A3F54;
+    background: #CFD8DC;
     border-bottom:solid 1px #CCC;
     line-height: 20px;
-    color: #f9f9f9;
+    color: #2A3F54;
 }

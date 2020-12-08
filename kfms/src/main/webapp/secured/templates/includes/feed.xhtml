@@ -13,8 +13,8 @@
             <div class="card-body">
                 <h:form class="spaced-form" id="feedForm">
                     <h:panelGrid columns="2">
-                        <span class="required_field">#{msg.feed}</span>
-                        <p:selectOneMenu value="#{feedController.feed.feedType}" required="true">
+                        <span class="required_field">#{msg.feed} Type</span>
+                        <p:selectOneMenu value="#{feedController.feed.feedType}" required="true" filter="true" filterMatchMode="contains">
                             <f:selectItem itemLabel="#{msg.choose}"/>
                             <f:selectItems value="#{commonClass.feedTypeList}"/>
                         </p:selectOneMenu>

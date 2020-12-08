@@ -11,11 +11,14 @@ import com.khoders.kfms.entities.Product;
 import com.khoders.kfms.entities.Supplier;
 import com.khoders.kfms.entities.account.ChartOfAccount;
 import com.khoders.kfms.entities.account.Invoice;
+import com.khoders.kfms.entities.feedFormulation.FeedConfig;
 import com.khoders.kfms.entities.settings.BirdType;
 import com.khoders.kfms.entities.settings.Country;
 import com.khoders.kfms.entities.settings.FeedType;
+import com.khoders.kfms.entities.settings.Ingredient;
 import com.khoders.kfms.entities.settings.Medication;
 import com.khoders.kfms.jpa.AppSession;
+import com.khoders.kfms.services.FeedFormulationService;
 import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import java.io.Serializable;
@@ -36,6 +39,7 @@ public class CommonClass implements Serializable{
     @Inject private CrudApi crudApi;
     @Inject private AppSession appSession;
     @Inject private ProductionService productionService;
+    @Inject FeedFormulationService feedFormulationService;
     
     
     private List<BirdType> birdTypeList = new LinkedList<>();
@@ -48,6 +52,8 @@ public class CommonClass implements Serializable{
     private List<Product> productList = new LinkedList<>();
     private List<Country> countryList = new LinkedList<>();
     private List<Invoice> invoiceList = new LinkedList<>();
+    private List<Ingredient> ingredientList = new LinkedList<>();
+    private List<FeedConfig> feedConfigList = new LinkedList<>();
     
     @PostConstruct
     public void init()
@@ -59,6 +65,9 @@ public class CommonClass implements Serializable{
         feedTypeList = productionService.getFeedTypeList();
         
         medicationList = productionService.getMedicationList();
+        
+        ingredientList = feedFormulationService.getIngredientList();
+        feedConfigList = feedFormulationService.getFeedConfigList();
         
         String qryCustomer = "SELECT e FROM Customer e WHERE e.farmAccount = ?1";
         customerList = crudApi.getEm().createQuery(qryCustomer, Customer.class)
@@ -129,6 +138,14 @@ public class CommonClass implements Serializable{
 
     public List<Invoice> getInvoiceList() {
         return invoiceList;
+    }
+
+    public List<Ingredient> getIngredientList() {
+        return ingredientList;
+    }
+
+    public List<FeedConfig> getFeedConfigList() {
+        return feedConfigList;
     }
     
 }

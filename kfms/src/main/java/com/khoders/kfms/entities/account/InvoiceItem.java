@@ -30,7 +30,7 @@ public class InvoiceItem extends FarmAccountRecord implements Serializable{
     @ManyToOne
     private Product product;
    
-   @JoinColumn(name = "invoice")
+   @JoinColumn(name = "invoice", referencedColumnName = "id")
    @ManyToOne
    private Invoice invoice;
    
