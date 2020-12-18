@@ -25,17 +25,17 @@
                     <p>Birds</p>
                 </a>
             </li>
-            
+
             <li class="nav-item">
                 <a href="#{application.contextPath}/#{msg.farm_menu_url}/product.xhtml" class="nav-link">
                     <i class="fa fa-check-circle nav-icon"></i>
                     <p>#{msg.product}</p>
                 </a>
             </li>
-            
+
         </ul>
     </li>
-    
+
     <li class="nav-item has-treeview">
         <a href="#" class="nav-link">
             <i class="nav-icon fa fa-cube"></i>
@@ -45,13 +45,13 @@
             </p>
         </a>
         <ul class="nav nav-treeview">
-             <li class="nav-item">
+            <li class="nav-item">
                 <a href="#{application.contextPath}/#{msg.farm_menu_url}/feed-config.xhtml" class="nav-link">
                     <i class="fa fa-check-circle nav-icon"></i>
                     <p>Configure Feed</p>
                 </a>
             </li>
-             <li class="nav-item">
+            <li class="nav-item">
                 <a href="#{application.contextPath}/#{msg.farm_menu_url}/feed-overview.xhtml" class="nav-link">
                     <i class="fa fa-check-circle nav-icon"></i>
                     <p>Overview</p>
@@ -59,8 +59,8 @@
             </li>
         </ul>
     </li>
-    
-    
+
+
     <li class="nav-item has-treeview">
         <a href="#" class="nav-link">
             <i class="nav-icon fa fa-user"></i>
@@ -82,34 +82,36 @@
                     <p>#{msg.supplier}s</p>
                 </a>
             </li>
-            
+
         </ul>
     </li>
-    
-    
-    <li class="nav-item has-treeview">
-        <a href="#" class="nav-link">
-            <i class="nav-icon fa fa-book"></i>
-            <p>
-                Reports And Uploads
-                <i class="fa fa-angle-left right"></i>
-            </p>
-        </a>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="#{application.contextPath}/#{msg.farm_menu_url}/reports.xhtml" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon"></i>
-                    <p>#{msg.report}s</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#{application.contextPath}/#{msg.farm_menu_url}/uploads.xhtml" class="nav-link">
-                    <i class="fa fa-check-circle nav-icon"></i>
-                    <p>#{msg.upload}s</p>
-                </a>
-            </li>
-            
-        </ul>
-    </li>
-    
+
+    <ui:remove>
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-book"></i>
+                <p>
+                    Reports And Uploads
+                    <i class="fa fa-angle-left right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="#{application.contextPath}/#{msg.farm_menu_url}/reports.xhtml" class="nav-link">
+                        <i class="fa fa-check-circle nav-icon"></i>
+                        <p>#{msg.report}s</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#{application.contextPath}/#{msg.farm_menu_url}/uploads.xhtml" class="nav-link">
+                        <i class="fa fa-check-circle nav-icon"></i>
+                        <p>#{msg.upload}s</p>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+    </ui:remove>
+
+
 </f:subview>

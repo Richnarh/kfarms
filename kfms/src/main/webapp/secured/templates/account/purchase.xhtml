@@ -199,18 +199,18 @@
                                         <div class="display-box">
                                             <h:panelGrid columns="8" styleClass="spaced-table">
                                                 <span class="field-label">#{msg.supplier}</span>
-                                                <h:outputText value="#{purchaseController.purchase.customer.customerName}" styleClass="shade-value"/>
+                                                <h:outputText value="#{purchaseController.purchase.customer.customerName}" styleClass="field-shade"/>
 
                                                 <span class="field-label">#{msg.due_date}</span>
-                                                <h:outputText value="#{purchaseController.purchase.dueDate}" styleClass="shade-value">
+                                                <h:outputText value="#{purchaseController.purchase.dueDate}" styleClass="field-shade">
                                                     <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
                                                 </h:outputText>
 
                                                 <span class="field-label">#{msg.purchase_id}</span>
-                                                <h:outputText value="#{purchaseController.purchase.purchaseId}" styleClass="shade-value"/>
+                                                <h:outputText value="#{purchaseController.purchase.purchaseId}" styleClass="field-shade"/>
 
                                                 <span class="field-label">#{msg.total_amount}</span>
-                                                <h:outputText value="#{appSession.currentUser.country.currencyCode} #{purchaseController.purchase.totalAmount}" styleClass="shade-value">
+                                                <h:outputText value="#{appSession.currentUser.country.currencyCode} #{purchaseController.purchase.totalAmount}" styleClass="field-shade">
                                                     <f:convertNumber pattern="#{msg.money_pattern}"/>
                                                 </h:outputText>
 

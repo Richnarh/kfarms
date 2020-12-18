@@ -24,7 +24,7 @@
                     </p:selectOneMenu>
 
                     <span>#{msg.dcp}</span>
-                    <p:inputText value="#{feedConfigController.feedConfigItem.dcp}"/>
+                    <p:inputText value="#{feedConfigController.feedConfigItem.dcpPercent}"/>
 
                     <span class="required_field">#{msg.amount} (#{feedConfigController.feedConfig.farmAccount.units.label})</span>
                     <p:inputText value="#{feedConfigController.feedConfigItem.ingredientAmount}" required="true"/>
@@ -47,7 +47,7 @@
                         <h:outputText value="#{feedConfigItem.ingredient.ingredientName}"/>
                     </p:column>
                     <p:column headerText="#{msg.dcp}" class="text-right">
-                        <h:outputText value="#{feedConfigItem.dcp}"/>
+                        <h:outputText value="#{feedConfigItem.dcpPercent}"/>
                     </p:column>
 
                     <p:column headerText="#{msg.amount} (#{appSession.currentUser.units})" class="text-right">

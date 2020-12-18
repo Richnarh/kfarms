@@ -204,6 +204,8 @@ public class FeedConfigController implements Serializable{
                 for (FeedConfigItem items : feedConfigItemList) 
                 {
                     items.setFarmAccount(appSession.getCurrentUser());
+                    items.setDcpKG(items.getIngredientAmount() * (items.getDcpPercent()/100));
+                   
                     crudApi.save(items);
                 }
                 

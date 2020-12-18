@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -24,8 +25,8 @@ public class FeedConfigItem extends FarmAccountRecord implements Serializable{
     @Column(name = "ingredient_amount")
     private double ingredientAmount;
     
-    @Column(name = "dcp")
-    private double dcp;
+    @Column(name = "dcp_percent")
+    private double dcpPercent;
     
     @JoinColumn(name = "ingredient", referencedColumnName = "id")
     @ManyToOne
@@ -34,6 +35,9 @@ public class FeedConfigItem extends FarmAccountRecord implements Serializable{
     @JoinColumn(name = "feed_config", referencedColumnName = "id")
     @ManyToOne
     private FeedConfig feedConfig;
+    
+    @Column(name = "dcp_kg")
+    private double dcpKG;
 
     public double getIngredientAmount() {
         return ingredientAmount;
@@ -59,12 +63,20 @@ public class FeedConfigItem extends FarmAccountRecord implements Serializable{
         this.feedConfig = feedConfig;
     }
 
-    public double getDcp() {
-        return dcp;
+    public double getDcpPercent() {
+        return dcpPercent;
     }
 
-    public void setDcp(double dcp) {
-        this.dcp = dcp;
+    public void setDcpPercent(double dcpPercent) {
+        this.dcpPercent = dcpPercent;
+    }
+
+    public double getDcpKG() {
+        return dcpKG;
+    }
+
+    public void setDcpKG(double dcpKG) {
+        this.dcpKG = dcpKG;
     }
     
 }

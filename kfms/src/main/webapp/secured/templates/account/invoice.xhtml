@@ -195,18 +195,18 @@
                                         <div class="display-box">
                                             <h:panelGrid columns="8" styleClass="spaced-table">
                                                 <span class="field-label">#{msg.supplier}</span>
-                                                <h:outputText value="#{invoiceController.invoice.customer.customerName}" styleClass="shade-value"/>
+                                                <h:outputText value="#{invoiceController.invoice.customer.customerName}" styleClass="field-shade"/>
 
                                                 <span class="field-label">#{msg.due_date}</span>
-                                                <h:outputText value="#{invoiceController.invoice.dueDate}" styleClass="shade-value">
+                                                <h:outputText value="#{invoiceController.invoice.dueDate}" styleClass="field-shade">
                                                     <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
                                                 </h:outputText>
 
                                                 <span class="field-label">#{msg.ref_no}</span>
-                                                <h:outputText value="#{invoiceController.invoice.refNo}" styleClass="shade-value"/>
+                                                <h:outputText value="#{invoiceController.invoice.refNo}" styleClass="field-shade"/>
 
                                                 <span class="field-label">#{msg.total_amount}</span>
-                                                <h:outputText value="#{appSession.currentUser.country.currencyCode} #{invoiceController.invoice.totalAmount}" styleClass="shade-value">
+                                                <h:outputText value="#{appSession.currentUser.country.currencyCode} #{invoiceController.invoice.totalAmount}" styleClass="field-shade">
                                                     <f:convertNumber pattern="#{msg.money_pattern}"/>
                                                 </h:outputText>
 

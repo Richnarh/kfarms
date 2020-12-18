@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">  
 
-    
+
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
             <ui:define name="pageTitle">
@@ -22,36 +22,38 @@
                                 <f:selectItems value="#{commonClass.feedConfigList}"/>
                             </p:selectOneMenu>
                             <p:commandButton action="#{feedOverviewController.initChart()}" value="View Chart" class="kbtn-secondary" update="@form"/>
-                            
+
                             <ui:remove>
                                 <p:commandButton value="Export (XLS)" class="kbtn-secondary" update="@form"/>
                             </ui:remove>
                         </h:panelGrid>
 
                         <div class="row pt-2">
-                          
+
                             <div class="col-md-9">
                                 <p:dataTable id="feedChartTable" value="#{feedOverviewController.feedOverviewChartList}" var="feedOverviewChart">
                                     <p:column headerText="#{msg.ingredient}">
                                         <h:outputText value="#{feedOverviewChart.ingredient.ingredientName}"/>
                                     </p:column>
-                                    
+
                                     <p:column headerText="#{msg.amount} (#{appSession.currentUser.units.label})" class="text-right">
                                         <h:outputText value="#{feedOverviewChart.ingredientAmount}"/>
                                     </p:column>
 
 
                                     <p:column headerText="DCP (%)" class="text-right">
-                                        <h:outputText value="#{feedOverviewChart.dcp}"/>
+                                        <h:outputText value="#{feedOverviewChart.dcpPercent}"/>
                                     </p:column>
 
                                     <p:column headerText="DCP (#{appSession.currentUser.units.label})" class="text-right">
-                                        <h:outputText value="#{feedOverviewController.dcpAmount}"/>
+                                        <h:outputText value="#{feedOverviewChart.dcpKG}">
+                                            <f:convertNumber pattern="#.##"/>
+                                        </h:outputText>
                                     </p:column>
                                 </p:dataTable>
                             </div>
-                            
-                              <div class="col-md-3 shadow-sm">
+
+                            <div class="col-md-3 shadow-sm">
                                 <div class="">
                                     <div class="mx-2 my-2">
                                         <div>

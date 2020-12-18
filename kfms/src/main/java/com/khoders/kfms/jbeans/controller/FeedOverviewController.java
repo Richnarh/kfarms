@@ -29,20 +29,13 @@ public class FeedOverviewController implements Serializable{
     @Inject private FeedFormulationService feedFormulationService;
     
     private List<FeedConfigItem> feedOverviewChartList = new LinkedList<>();
+    private FeedConfigItem configItem = new FeedConfigItem();
     
     private FeedConfig selectedFeedConfig;
     
-    private double dcpAmount = 0.0;
-    
     public void initChart()
     {
-        feedOverviewChartList = feedFormulationService.getFeedConfigList(selectedFeedConfig);
-        
-        feedOverviewChartList.forEach(feedConfigItem -> 
-        {
-            dcpAmount = feedConfigItem.getIngredientAmount() * (feedConfigItem.getDcp()/100);
-            System.out.println("product -- "+dcpAmount);
-        });
+        feedOverviewChartList = feedFormulationService.getFeedConfigList(selectedFeedConfig);   
     }
     
     public List<FeedConfigItem> getFeedOverviewChartList() {
@@ -57,13 +50,12 @@ public class FeedOverviewController implements Serializable{
         this.selectedFeedConfig = selectedFeedConfig;
     }
 
-    public double getDcpAmount() {
-        return dcpAmount;
+    public FeedConfigItem getConfigItem() {
+        return configItem;
     }
 
-    public void setDcpAmount(double dcpAmount) {
-        this.dcpAmount = dcpAmount;
+    public void setConfigItem(FeedConfigItem configItem) {
+        this.configItem = configItem;
     }
-
-   
+    
 }

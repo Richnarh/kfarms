@@ -11,14 +11,11 @@
             <ui:define name="pageTitle">
                 Dashboard
             </ui:define>
-            
+
             <style>
                 .ui-accordion .ui-accordion-header {
-                    border: 0px !important;
-                    background: #fff !important;
-                }
-                .ui-widget-content {
-                    border: 0px !important; 
+                    border: 0px solid #fff !important; 
+                    background: inherit !important; 
                 }
             </style>
 
@@ -31,9 +28,9 @@
                             <div class="info-box-content">
                                 <span class="info-box-text">Total Birds: <span style="font-size: 1.2rem;">#{dashboardController.birdSize}</span></span> 
                                 <span class="info-box-number">
-                                    
+
                                     <small>
-                                        <p:accordionPanel activeIndex="-1" styleClass="accordionItem">
+                                        <p:accordionPanel activeIndex="-1" styleClass="accordionItem" style="">
                                             <p:tab title="Details">
                                                 <ui:repeat value="#{birdController.birdList}" var="items">
                                                     <ul class="pt-2" style="list-style-type: none; line-height: 0.5rem;">
@@ -60,17 +57,17 @@
                                     <small>
                                         <p:accordionPanel activeIndex="-1" styleClass="accordionItem">
                                             <p:tab title="Details">
-                                                    <ul class="pt-2" style="list-style-type: none; line-height: 0.5rem;">
-                                                        <li>
-                                                            <span class="font-weight-bold">Healthy: </span> <span class="float-right">#{dashboardController.healthyEggs}</span> 
-                                                        </li>
-                                                        
-                                                    </ul>
-                                                    <ul style="list-style-type: none; line-height: 0.5rem;">
-                                                        <li>
-                                                            <span class="font-weight-bold">Damaged: </span><span class="float-right">#{dashboardController.damagedEggs}</span>
-                                                        </li>
-                                                    </ul>
+                                                <ul class="pt-2" style="list-style-type: none; line-height: 0.5rem;">
+                                                    <li>
+                                                        <span class="font-weight-bold">Healthy: </span> <span class="float-right">#{dashboardController.healthyEggs}</span> 
+                                                    </li>
+
+                                                </ul>
+                                                <ul style="list-style-type: none; line-height: 0.5rem;">
+                                                    <li>
+                                                        <span class="font-weight-bold">Damaged: </span><span class="float-right">#{dashboardController.damagedEggs}</span>
+                                                    </li>
+                                                </ul>
                                             </p:tab>
                                         </p:accordionPanel>
                                     </small>
