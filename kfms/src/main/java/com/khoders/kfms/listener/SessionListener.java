@@ -5,7 +5,7 @@
  */
 package com.khoders.kfms.listener;
 
-import com.khoders.asore.Pages;
+import com.khoders.kfms.Pages;
 import com.khoders.kfms.jpa.AppSession;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -47,7 +47,9 @@ public class SessionListener implements PhaseListener{
                         e.printStackTrace();
                     }
                 }
+                System.out.println("session contain sercure");
             }
+            System.out.println("session != null");
         }
         }
     }

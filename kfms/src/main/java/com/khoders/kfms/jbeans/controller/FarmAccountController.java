@@ -10,6 +10,7 @@ import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SecurityUtil;
 import com.khoders.kfms.entities.FarmAccount;
 import com.khoders.kfms.services.FarmAccountService;
+import static com.khoders.resource.utilities.SecurityUtil.hashText;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class FarmAccountController implements Serializable{
             
             if(!accountService.isTaken(farmAccount.getBusinessEmail()))
             {
-              farmAccount.setPassword(SecurityUtil.hashText(farmAccount.getPassword()));
+              farmAccount.setPassword(hashText(farmAccount.getPassword()));
 
             if(crudApi.save(farmAccount) != null)
             {

@@ -101,7 +101,7 @@ public class EggWeightController implements Serializable{
        this.eggWeight=eggWeight;
     }
     
-    public void loadEggs(Production production)
+    public void loadEggWeight(Production production)
     {
         eggWeightList = productionService.getEggWeightList(production);
     }
@@ -120,31 +120,38 @@ public class EggWeightController implements Serializable{
       formView.restToListView();
     }
 
-    public List<EggWeight> getEggWeightList() {
+    public List<EggWeight> getEggWeightList()
+    {
         return eggWeightList;
     }
 
-    public EggWeight getEggWeight() {
+    public EggWeight getEggWeight()
+    {
         return eggWeight;
     }
 
-    public void setEggWeight(EggWeight eggWeight) {
+    public void setEggWeight(EggWeight eggWeight)
+    {
         this.eggWeight = eggWeight;
     }
 
-    public String getOptionText() {
+    public String getOptionText()
+    {
         return optionText;
     }
 
-    public void setOptionText(String optionText) {
+    public void setOptionText(String optionText)
+    {
         this.optionText = optionText;
     }
 
-    public FormView getFormView() {
+    public FormView getFormView()
+    {
         return formView;
     }
 
-    public void setFormView(FormView formView) {
+    public void setFormView(FormView formView)
+    {
         this.formView = formView;
     }
 

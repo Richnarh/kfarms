@@ -5,8 +5,8 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
+import com.khoders.kfms.Pages;
 import com.khoders.resource.utilities.Msg;
-import com.khoders.asore.Pages;
 import com.khoders.kfms.entities.FarmAccount;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.kfms.jbeans.Credential;
