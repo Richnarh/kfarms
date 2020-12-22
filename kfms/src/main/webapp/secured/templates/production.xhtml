@@ -9,7 +9,7 @@
     <h:body>
         <ui:composition template="../templatesUI.xhtml">
             <ui:define name="pageTitle">
-                #{msg.production}
+                #{msg.production} (Capture daily activities on the farm!, select Date)
             </ui:define>
 
             <ui:define name="pageContent">
@@ -165,6 +165,12 @@
                                                 <div style="clear:both;"></div>
                                             </f:facet>
 
+                                            <p:column headerText="#{msg.date}">
+                                                <h:outputText value="#{eggCollection.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+                                            </p:column>
+
                                             <p:column headerText="#{msg.egg_color}">
                                                 #{eggCollection.eggColor}
                                             </p:column>
@@ -214,6 +220,12 @@
                                                 <div style="clear:both;"></div>
                                             </f:facet>
 
+                                            <p:column headerText="#{msg.date}">
+                                                <h:outputText value="#{eggWeight.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            
                                             <p:column headerText="Number weighed" class="text-right">
                                                 #{eggWeight.numberWeighed}
                                             </p:column>
@@ -252,6 +264,13 @@
 
                                                 <div style="clear:both;"></div>
                                             </f:facet>
+
+                                            <p:column headerText="#{msg.date}">
+                                                <h:outputText value="#{feed.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            
 
                                             <p:column headerText="#{msg.feed_type}">
                                                 #{feed.feedType.feedName}
@@ -302,6 +321,12 @@
                                                 <div style="clear:both;"></div>
                                             </f:facet>
 
+                                            <p:column headerText="#{msg.date}">
+                                                <h:outputText value="#{vaccination.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+                                            </p:column>
+
                                             <p:column headerText="#{msg.medication}">
                                                 #{vaccination.medication}
                                             </p:column>
@@ -346,6 +371,12 @@
 
                                                 <div style="clear:both;"></div>
                                             </f:facet>
+
+                                            <p:column headerText="#{msg.date}">
+                                                <h:outputText value="#{mortality.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+                                            </p:column>
 
                                             <p:column headerText="#{msg.number}" class="text-right">
                                                 #{mortality.number}
@@ -392,6 +423,12 @@
                                                 <div style="clear:both;"></div>
                                             </f:facet>
 
+                                            <p:column headerText="#{msg.date}">
+                                                <h:outputText value="#{treatment.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+                                            </p:column>
+
                                             <p:column headerText="#{msg.treatment_given}">
                                                 #{treatment.treatmentGiven}
                                             </p:column>
@@ -432,6 +469,12 @@
 
                                                 <div style="clear:both;"></div>
                                             </f:facet>
+
+                                            <p:column headerText="#{msg.date}">
+                                                <h:outputText value="#{birdWeight.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+                                            </p:column>
 
                                             <p:column headerText="#{msg.number} Weighed" class="text-right">
                                                 #{birdWeight.numberWeighed}
