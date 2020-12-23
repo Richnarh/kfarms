@@ -13,6 +13,9 @@
             <div class="card-body">
                 <h:form class="spaced-form" id="mortalityForm">
                     <h:panelGrid columns="2">
+                        <span class="required_field">#{msg.date}</span>
+                        <p:datePicker value="#{mortalityController.mortality.createdDate}" yearNavigator="true" monthNavigator="true"/>
+                        
                         <span class="required_field">#{msg.medication}</span>
                         <p:inputText value="#{mortalityController.mortality.number}"/>
                         

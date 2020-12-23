@@ -6,76 +6,76 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>#{msg.appName} Login</title>
+        <title>#{msg.title} | Register</title>
         <link rel="stylesheet" href="#{application.contextPath}/vendors/font-awesome/font-awesome.min.css" /> 
         <link rel="stylesheet" href="#{application.contextPath}/vendors/css/all.min.css" />    
         <link rel="stylesheet" href="#{application.contextPath}/vendors/css/icheck-bootstrap.min.css" /> 
         <link rel="stylesheet" href="#{application.contextPath}/vendors/css/adminlte.min.css" />    
     </h:head>
-<body class="hold-transition register-page">
-<div class="register-box">
-    <h4 class="text-center">
-      Create Account
-  </h4>
-  <!-- /.login-logo -->
-      <p:messages/>
-  <div class="card">
-    <div class="card-body login-card-body">
-      <h:form>
-        <div class="form-group mb-3">
-            <input type="text" class="form-control" jsf:value="#{farmAccountController.farmAccount.fullName}" placeholder="Owner Name, full name"/>
-          </div>
-          
-        <div class="form-group mb-3">
-            <input type="text" class="form-control" jsf:value="#{farmAccountController.farmAccount.farmName}" placeholder="Farm Name"/>
-          </div>
-          
-          
-        <div class="form-group mb-3">
-            <input type="email" class="form-control" jsf:value="#{farmAccountController.farmAccount.businessEmail}" placeholder="Business Email"/>
-        </div>
-          
-        <div class="form-group mb-3">
-            <input type="text" class="form-control" jsf:value="#{farmAccountController.farmAccount.phoneNumber}" placeholder="Phone Number"/>
-        </div>
-          
-        <div class="form-group mb-3">
-            <h:selectOneMenu class="form-control" value="#{farmAccountController.farmAccount.country}">
-                <f:selectItem itemLabel="#{msg.choose}"/>
-                <f:selectItems value="#{commonClass.countryList}"/>
-            </h:selectOneMenu>
-        </div>
-          
-        <div class="form-group mb-3">
-          <input type="password" class="form-control" jsf:value="#{farmAccountController.farmAccount.password}" placeholder="Password"/>
-        </div>
-          
-        <div class="input-group mb-3">
-            <input type="password" class="form-control" jsf:value="#{farmAccountController.farmAccount.password2}" placeholder="Confirm Password"/>
-        </div>
-          
-          <div class="col-md-12">
-            <button type="submit" jsf:action="#{farmAccountController.saveAccount()}" class="btn btn-primary btn-sm btn-block">Register</button>
-        </div>
-      </h:form>
+    <body class="hold-transition register-page">
+        <div class="register-box">
+            <h4 class="text-center">
+                Create Account
+            </h4>
+            <!-- /.login-logo -->
+            <p:messages/>
+            <div class="card">
+                <div class="card-body login-card-body">
+                    <h:form>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" jsf:value="#{farmAccountController.farmAccount.fullName}" placeholder="Owner Name, full name"/>
+                        </div>
 
-      <div class="social-auth-links text-center mb-3">
-        
-        <p class="mb-1">
-            <span>Already have an account? </span> <a href="login.xhtml">Login</a>
-      </p>
-      </div>
-        
-    </div>
-  </div>
-</div>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" jsf:value="#{farmAccountController.farmAccount.farmName}" placeholder="Farm Name"/>
+                        </div>
+
+
+                        <div class="form-group mb-3">
+                            <input type="email" class="form-control" jsf:value="#{farmAccountController.farmAccount.businessEmail}" placeholder="Business Email"/>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" jsf:value="#{farmAccountController.farmAccount.phoneNumber}" placeholder="Phone Number"/>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <h:selectOneMenu class="form-control" value="#{farmAccountController.farmAccount.country}">
+                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                <f:selectItems value="#{commonClass.countryList}"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <input type="password" class="form-control" jsf:value="#{farmAccountController.farmAccount.password}" placeholder="Password"/>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" jsf:value="#{farmAccountController.farmAccount.password2}" placeholder="Confirm Password"/>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button type="submit" jsf:action="#{farmAccountController.saveAccount()}" class="btn btn-primary btn-sm btn-block">Register</button>
+                        </div>
+                    </h:form>
+
+                    <div class="social-auth-links text-center mb-3">
+
+                        <p class="mb-1">
+                            <span>Already have an account? </span> <a href="login.xhtml">Login</a>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
         <script src="#{application.contextPath}/vendors/js/jquery.min.js"></script>
 
         <script src="#{application.contextPath}/vendors/js/bootstrap.bundle.min.js"></script>
 
         <script src="#{application.contextPath}/vendors/js/adminlte.min.js"></script>
-      
-</body>
+
+    </body>
 </html>
 

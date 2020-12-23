@@ -13,6 +13,9 @@
             <div class="card-body">
                 <h:form class="spaced-form" id="birdWeightForm">
                     <h:panelGrid columns="2">
+                        <span class="required_field">#{msg.date}</span>
+                        <p:datePicker value="#{birdWeightController.birdWeight.createdDate}" yearNavigator="true" monthNavigator="true"/>
+                        
                         <span class="required_field">#{msg.number} Weighed</span>
                         <p:inputText value="#{birdWeightController.birdWeight.numberWeighed}" required="true"/>
                         

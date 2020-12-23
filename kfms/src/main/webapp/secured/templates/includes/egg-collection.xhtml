@@ -13,6 +13,9 @@
             <div class="card-body">
                 <h:form class="spaced-form" id="eggCollectionForm">
                     <h:panelGrid columns="2">
+                        <span class="required_field">#{msg.date}</span>
+                        <p:datePicker value="#{eggCollectionController.dateCreated}" yearNavigator="true" monthNavigator="true"/>
+                        
                         <span class="required_field">#{msg.egg_color}</span>
                         <p:selectOneMenu value="#{eggCollectionController.eggCollection.eggColor}" required="true">
                             <f:selectItem itemLabel="#{msg.choose}"/>

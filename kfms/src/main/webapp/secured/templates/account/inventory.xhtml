@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                #{msg.inventory}
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <h:panelGroup id="mainPanel">
+                    <div class="card mb-5">
+                        <div class="container-fluid">
+                            <div class="card-header">Add #{msg.inventory}</div>
+                            <h:panelGroup rendered="#{inventoryController.formView.listView}">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-lg-12">
+                                        <h:form class="float-right pt-3" style="margin-bottom: 5px;">
+
+                                            <p:commandButton value="#{msg.new} #{msg.inventory}" 
+                                                             class="kbtn-primary"  icon="fa fa-plus-circle" update=":mainPanel"
+                                                             action="#{inventoryController.initInventory()}"/>
+                                        </h:form>
+                                    </div>
+                                </div>
+
+                                <h:form class="mb-3 wow">
+                                    <p:dataTable id="inventoryTable" value="#{inventoryController.inventoryList}" var="inventory"
+                                                 paginator="true" paginatorPosition="bottom" rows="8">
+                                        <p:column exportable="false" style="width: 40px;">
+                                            <p:rowToggler/>
+                                        </p:column>
+
+                                        <p:rowExpansion>
+                                            <p:panelGrid columns="2">
+                                                <span>Created Date</span>
+                                                <h:outputText value="#{inventory.createdDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                                </h:outputText>
+
+                                                <span>Inventory Code</span>
+                                                <h:outputText value="#{inventory.inventoryId}"/>
+
+                                                <span>Note</span>
+                                                <h:outputText value="#{inventory.note}"/>
+                                            </p:panelGrid>
+                                        </p:rowExpansion>
+
+                                        <p:column headerText="#{msg.received_date}">
+                                            <h:outputText value="#{inventory.receivedDate}">
+                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{msg.product}">
+                                            <h:outputText value="#{inventory.product.productName}"/>
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{msg.category}">
+                                            <h:outputText value="#{inventory.category.categoryName}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.quantity}" class="text-right">
+                                            <h:outputText value="#{inventory.quantity}"/>
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{msg.price} (#{appSession.currentUser.country.currencyCode})" class="text-right">
+                                            <h:outputText value="#{inventory.sellingPrice}"/>
+                                        </p:column>
+                                      
+                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 80px;">
+                                            <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" immediate="true" update=":mainPanel"
+                                                             action="#{inventoryController.editInventory(inventory)}"/>
+                                        </p:column>
+
+                                        <p:column headerText="#{msg.action}" exportable="false" style="width: 100px;">
+                                            <p:commandButton styleClass="kbtn-danger" value="#{msg.delete}"  action="#{inventoryController.deleteInventory(inventory)}" 
+                                                             onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </h:panelGroup>
+
+                            <h:panelGroup  rendered="#{inventoryController.formView.createView}" >
+                                <div class="col-md-6 mb-5 pt-3 mx-auto">
+                                    <h:form>
+                                        <h:panelGrid columns="2" styleClass="spaced-form">
+                                            <span>#{msg.received_date}</span>
+                                            <p:datePicker value="#{inventoryController.inventory.receivedDate}" pattern="#{msg.formatted_date}" yearNavigator="true" monthNavigator="true"/>
+                                            
+                                            <span>#{msg.product}</span>
+                                            <p:selectOneMenu value="#{inventoryController.inventory.product}" filter="true" filterMatchMode="contains">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{commonClass.productList}"/>
+                                            </p:selectOneMenu>
+                                            
+                                            <span>#{msg.category}</span>
+                                            <p:selectOneMenu value="#{inventoryController.inventory.category}" filter="true" filterMatchMode="contains">
+                                                <f:selectItem itemLabel="#{msg.choose}"/>
+                                                <f:selectItems value="#{commonClass.categoryList}"/>
+                                            </p:selectOneMenu>
+                                            
+                                            <span>#{msg.quantity}</span>
+                                            <p:inputText value="#{inventoryController.inventory.quantity}"/>
+                                            
+                                            <span>#{msg.price}</span>
+                                            <p:inputText value="#{inventoryController.inventory.sellingPrice}"/>
+                                            
+                                            <span>#{msg.note}</span>
+                                            <p:inputTextarea value="#{inventoryController.inventory.note}"/>
+
+                                        </h:panelGrid>
+
+                                        <div class="pt-3">
+                                            <p:commandButton styleClass="kbtn-success mx-5" value="#{inventoryController.optionText}" update=":mainPanel"
+                                                             action="#{inventoryController.saveInventory()}" />
+
+                                            <p:commandButton styleClass="kbtn-cancel" value="#{msg.close}"
+                                                             action="#{inventoryController.close()}" update="@form,:mainPanel"/>
+                                        </div>
+                                        
+                                    </h:form>
+                                </div>
+                            </h:panelGroup>
+
+                        </div>
+                    </div>
+                </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -10,11 +10,13 @@ import com.khoders.kfms.entities.BirdWeight;
 import com.khoders.kfms.entities.EggCollection;
 import com.khoders.kfms.entities.EggWeight;
 import com.khoders.kfms.entities.Feed;
+import com.khoders.kfms.entities.Inventory;
 import com.khoders.kfms.entities.Mortality;
 import com.khoders.kfms.entities.Production;
 import com.khoders.kfms.entities.Treatment;
 import com.khoders.kfms.entities.Vaccination;
 import com.khoders.kfms.entities.settings.BirdType;
+import com.khoders.kfms.entities.settings.Category;
 import com.khoders.kfms.entities.settings.FeedType;
 import com.khoders.kfms.entities.settings.Medication;
 import com.khoders.kfms.jpa.AppSession;
@@ -45,6 +47,42 @@ public class ProductionService {
         try 
         {
             TypedQuery<Bird> typedQuery = crudApi.getEm().createQuery(qryString, Bird.class);
+                            
+            typedQuery.setParameter(1, appSession.getCurrentUser());
+            
+            return typedQuery.getResultList();
+            
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    
+    public List<Inventory> getInventoryList()
+    {
+        String qryString = "SELECT e FROM Inventory e WHERE e.farmAccount = ?1";
+        try 
+        {
+            TypedQuery<Inventory> typedQuery = crudApi.getEm().createQuery(qryString, Inventory.class);
+                            
+            typedQuery.setParameter(1, appSession.getCurrentUser());
+            
+            return typedQuery.getResultList();
+            
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    
+    public List<Category> getCategoryList()
+    {
+        String qryString = "SELECT e FROM Category  e WHERE e.farmAccount=?1 ORDER BY e.categoryName ASC";
+        try 
+        {
+            TypedQuery<Category> typedQuery = crudApi.getEm().createQuery(qryString, Category.class);
                             
             typedQuery.setParameter(1, appSession.getCurrentUser());
             

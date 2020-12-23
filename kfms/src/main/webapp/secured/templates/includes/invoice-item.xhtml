@@ -6,7 +6,6 @@
       xmlns:p="http://primefaces.org/ui">  
 
     <div class="row">
-
         <div class="col-lg-4">
             <h:form id="orderItemForm" >
                 <h:panelGrid columns="2" class="spaced-form"> 
@@ -14,7 +13,7 @@
                     <p:selectOneMenu class="fill-space" value="#{invoiceController.invoiceItem.product}" 
                                      filter="true" filterMatchMode="contains" required="true">
                         <f:selectItem itemLabel="#{msg.choose}"/>
-                        <f:selectItems value="#{commonClass.productList}" />
+                        <f:selectItems value="#{commonClass.productList}"/>
                     </p:selectOneMenu>
 
                     <span class="required_field">#{msg.quantity}</span>
@@ -87,7 +86,7 @@
                 <center class="py-3">
                     <h:panelGrid columns="2">
                         <span>Total Amount</span>
-                        <h:outputText value="#{invoiceController.totalAmount}" class="shade-value">
+                        <h:outputText value="#{invoiceController.totalAmount}" class="field-shade">
                             <f:convertNumber pattern="#{appSession.currentUser.country.currencyCode} #{msg.money_pattern}"/>
                         </h:outputText>
                     </h:panelGrid>

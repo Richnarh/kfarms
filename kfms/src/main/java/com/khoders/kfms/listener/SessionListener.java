@@ -47,9 +47,7 @@ public class SessionListener implements PhaseListener{
                         e.printStackTrace();
                     }
                 }
-                System.out.println("session contain sercure");
             }
-            System.out.println("session != null");
         }
         }
     }

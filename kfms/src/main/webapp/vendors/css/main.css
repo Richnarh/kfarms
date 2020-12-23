@@ -15,13 +15,22 @@ and open the template in the editor.
 .row-toggler{
      width: 40px;
 }
+
+.cart-card{
+   border: 1px solid #042955; 
+   padding: 1%;
+   box-shadow: 0 0 15px 0 lightgrey; 
+}
+
 .khoders-card{
     padding: 10px; 
     box-shadow: 0 0 25px 0 lightgrey;
     background: #F9F9F9;
     border: 1px solid #607D8B;
 }
-
+.text-color{
+    color: #042955;
+}
 .spaced-form td
 {
     padding: .3em; 

@@ -15,6 +15,7 @@ import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -41,6 +42,8 @@ public class EggCollectionController implements Serializable{
     private FormView formView = FormView.listForm();
     
     private String optionText;
+    
+    private LocalDate dateCreated = LocalDate.now();
     
     
     public void initEggCollection(Production production) 
@@ -152,4 +155,15 @@ public class EggCollectionController implements Serializable{
         this.formView = formView;
     }
 
+    public LocalDate getDateCreated()
+    {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDate dateCreated)
+    {
+        this.dateCreated = dateCreated;
+    }
+
+    
 }

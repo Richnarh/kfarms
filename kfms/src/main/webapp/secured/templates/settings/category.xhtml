@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+              #{msg.category}
+            </ui:define>
+            <ui:define name="pageContent">
+                <div class="col-md-12 col-sm-12">
+                    <div class="row card-border">
+                        <div class="col-md-4">
+                            <h:form id="categoryForm">
+                                <h:panelGrid columns="2" styleClass="spaced-form mb-3">
+                                    <span class="required_field">#{msg.category} Name</span>
+                                    <p:inputText value="#{categoryController.category.categoryName}" required="true"/>
+
+                                    <span>#{msg.note}</span>
+                                    <p:inputTextarea value="#{categoryController.category.note}"/>
+
+                                </h:panelGrid>
+                                <h:panelGrid columns="2">
+                                    <p:commandButton class="kbtn-success mr-4" value="#{categoryController.optionText}"
+                                                     action="#{categoryController.saveCategory()}" update="@form, :categoryTable"/>
+                                    
+                                    <p:commandButton class="kbtn-cancel" value="#{msg.clear}" action="#{categoryController.clearCategory()}" 
+                                                     immediate="true"  update="@form"/>
+                                </h:panelGrid>
+                            </h:form>
+                        </div>
+                        <div class="col-md-8">
+                            <h:form id="categoryTable">
+                                <p:dataTable value="#{categoryController.categoryList}" paginator="true" paginatorPosition="bottom" var="category" rows="10">
+                                    <p:column class="row-toggler">
+                                        <p:rowToggler/>
+                                    </p:column>
+                                    <p:rowExpansion>
+                                        <p:panelGrid columns="2">
+                                            
+                                            <span>#{msg.note}</span>
+                                            <h:outputText value="#{category.note}"/>
+                                            
+                                            <span>#{msg.code}</span>
+                                            <h:outputText value="#{category.categoryCode}"/>
+                                            
+                                        </p:panelGrid>
+                                    </p:rowExpansion>
+
+                                    <p:column headerText="#{msg.created_date}">
+                                        <h:outputText value="#{category.createdDate}">
+                                            <f:convertDateTime type="localDate" pattern="#{msg.formatted_date}"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.category}">
+                                        #{category.categoryName}
+                                    </p:column>
+                                    <p:column headerText="#{msg.action}" style="width: 80px;">
+                                        <p:commandButton class="kbtn-edit-info" value="#{msg.edit}" action="#{categoryController.editCategory(category)}" update=":categoryForm"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msg.action}" style="width: 100px;" >
+                                        <p:commandButton class="kbtn-danger" value="#{msg.delete}" action="#{categoryController.deleteCategory(category)}" update="@form"
+                                                         onclick="return confirm('#{msg.delete_message}')"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

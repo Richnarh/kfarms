@@ -13,6 +13,7 @@ import com.khoders.kfms.entities.account.ChartOfAccount;
 import com.khoders.kfms.entities.account.Invoice;
 import com.khoders.kfms.entities.feedFormulation.FeedConfig;
 import com.khoders.kfms.entities.settings.BirdType;
+import com.khoders.kfms.entities.settings.Category;
 import com.khoders.kfms.entities.settings.Country;
 import com.khoders.kfms.entities.settings.FeedType;
 import com.khoders.kfms.entities.settings.Ingredient;
@@ -54,6 +55,7 @@ public class CommonClass implements Serializable{
     private List<Invoice> invoiceList = new LinkedList<>();
     private List<Ingredient> ingredientList = new LinkedList<>();
     private List<FeedConfig> feedConfigList = new LinkedList<>();
+    private List<Category> categoryList = new LinkedList<>();
     
     @PostConstruct
     public void init()
@@ -65,9 +67,9 @@ public class CommonClass implements Serializable{
         feedTypeList = productionService.getFeedTypeList();
         
         medicationList = productionService.getMedicationList();
-        
         ingredientList = feedFormulationService.getIngredientList();
         feedConfigList = feedFormulationService.getFeedConfigList();
+        categoryList = productionService.getCategoryList();
         
         String qryCustomer = "SELECT e FROM Customer e WHERE e.farmAccount = ?1";
         customerList = crudApi.getEm().createQuery(qryCustomer, Customer.class)
@@ -146,6 +148,11 @@ public class CommonClass implements Serializable{
 
     public List<FeedConfig> getFeedConfigList() {
         return feedConfigList;
+    }
+
+    public List<Category> getCategoryList()
+    {
+        return categoryList;
     }
     
 }

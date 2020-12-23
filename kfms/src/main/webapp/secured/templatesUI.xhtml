@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>#{msg.appName}</title>
+        <title>#{msg.title}</title>
 
         <link rel="stylesheet" href="#{application.contextPath}/vendors/font-awesome/font-awesome.min.css" />
         <link rel="stylesheet" href="#{application.contextPath}/vendors/css/adminlte.min.css" />    
@@ -30,7 +30,10 @@
                         <a href="#{application.contextPath}/secured/index.xhtml" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#{application.contextPath}/secured/templates/feed-overview.xhtml" class="nav-link">Feed Overview</a>
+                        <a href="#{application.contextPath}/#{msg.farm_menu_url}/feed-overview.xhtml" class="nav-link">Feed Overview</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#{application.contextPath}/#{msg.account_menu_url}/pos.xhtml" class="nav-link">POS</a>
                     </li>
                 </ul>
 

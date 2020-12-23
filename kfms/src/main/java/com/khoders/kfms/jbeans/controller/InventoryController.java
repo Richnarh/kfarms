@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.kfms.jbeans.controller.settings;
+package com.khoders.kfms.jbeans.controller;
 
-import com.khoders.kfms.entities.settings.FeedType;
+import com.khoders.kfms.entities.Inventory;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.kfms.services.ProductionService;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
+import com.khoders.resource.utilities.FormView;
 import com.khoders.resource.utilities.Msg;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
@@ -26,15 +27,17 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "feedTypeController")
+@Named(value = "inventoryController")
 @SessionScoped
-public class FeedTypeController implements Serializable{
+public class InventoryController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
-    @Inject ProductionService productionService;
+    @Inject private  ProductionService productionService;
     
-    private FeedType feedType = new FeedType();
-    private List<FeedType> feedTypeList =  new LinkedList<>();
+    private Inventory inventory = new Inventory();
+    private List<Inventory> inventoryList = new LinkedList<>();
+    
+    private FormView formView = FormView.listForm();
     
     private String optionText;
     
@@ -42,20 +45,25 @@ public class FeedTypeController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-        
-        feedTypeList = productionService.getFeedTypeList();
-        clearFeedType();
-        
+        inventoryList = productionService.getInventoryList();
     }
     
-    public void saveFeedType()
+    public void initInventory()
+    {
+        inventory = new Inventory();
+        formView.restToCreateView();
+        optionText = "Save Changes";
+        clearInventory();
+    }
+    
+    public void saveInventory()
     {
         try 
         {
-            feedType.genCode();
-          if(crudApi.save(feedType) != null)
+          inventory.genCode();
+          if(crudApi.save(inventory) != null)
           {
-              feedTypeList = CollectionList.washList(feedTypeList, feedType);
+              inventoryList = CollectionList.washList(inventoryList, inventory);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -65,20 +73,21 @@ public class FeedTypeController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearFeedType();
+          clearInventory();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
     
-    public void deleteFeedType(FeedType feedType)
+    public void deleteInventory(Inventory inventory)
     {
         try 
         {
-          if(crudApi.delete(feedType))
+            
+          if(crudApi.delete(inventory))
           {
-              feedTypeList.remove(feedType);
+              inventoryList.remove(inventory);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -88,36 +97,51 @@ public class FeedTypeController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-           
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
     
-    public void editFeedType(FeedType feedType)
+    public void editInventory(Inventory inventory)
     {
-       this.feedType=feedType;
+        formView.restToCreateView();
+        optionText = "Update";
+        this.inventory=inventory;
     }
     
-    public void clearFeedType() 
+    public void clearInventory() 
     {
-        feedType = new FeedType();
-        feedType.setFarmAccount(appSession.getCurrentUser());
+        inventory = new Inventory();
+        inventory.setFarmAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
-    public List<FeedType> getFeedTypeList() {
-        return feedTypeList;
+    public void close()
+    {
+      inventory = null;
+      formView.restToListView();  
     }
 
-    public FeedType getFeedType() {
-        return feedType;
+    public List<Inventory> getInventoryList() {
+        return inventoryList;
     }
 
-    public void setFeedType(FeedType bird) {
-        this.feedType = bird;
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public FormView getFormView() {
+        return formView;
+    }
+
+    public void setFormView(FormView formView) {
+        this.formView = formView;
     }
 
     public String getOptionText() {
