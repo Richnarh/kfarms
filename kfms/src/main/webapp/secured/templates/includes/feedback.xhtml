@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">  
+
+    <h:body>
+
+
+        <div class="khoders-card">
+            <h5 class="card-header">
+                <span>#{msg.feedback}</span>
+            </h5>
+            <div class="card-body">
+
+                <h:form class="spaced-form" id="feedbackForm">
+                    <h:panelGrid columns="2">
+                        <span>On a scale 1-10 how do you rate this application</span>
+                        <h:inputText value="#{feedBackController.feedBack.phone}" a:placeholder="e.g 6" class="form-control"/>
+                        
+                        <span>#{msg.phone} (Optional)</span>
+                        <h:inputText value="#{feedBackController.feedBack.phone}" a:placeholder="Type phone number." class="form-control"/>
+
+                        <span class="required_field">#{msg.message}</span>
+                        <p:inputTextarea value="#{feedBackController.feedBack.message}" placeholder="Type something..." class="form-control" cols="40" rows="5" required="true"/>
+
+                        <br/>
+
+                    </h:panelGrid>
+                    <p:commandButton class="kbtn-success mx-3" ajax="false" value="Submit" action="#{feedBackController.saveFeedBack()}"/>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>
+

@@ -127,8 +127,8 @@
                                     </p:column>
 
                                     <p:column headerText="#{msg.action}">
-                                        <p:commandButton class="kbtn-info" value="#{msg.edit}" action="#{posController.editCart(cart)}" update="salesSubPanel"/>
-                                        <p:commandButton class="kbtn-danger" value="Del" action="#{posController.removeFromCart(cart)}" update="salesSubPanel"/>
+                                        <p:commandButton class="kbtn-info" value="#{msg.edit}" action="#{posController.editCart(cart)}" update="mainPanel"/>
+                                        <p:commandButton class="kbtn-danger" value="Del" action="#{posController.removeFromCart(cart)}" update="mainPanel"/>
                                     </p:column>
 
                                 </p:dataTable>
@@ -156,7 +156,9 @@
 
                                             <p:commandButton action="#{posController.resetAllTransaction()}"
                                                              class="kbtn-secondary" value="#{msg.cancel}" update=":mainPanel, :catalogueTable"/>
-                                            <p:commandButton class="kbtn-secondary" value="#{msg.print_receipt}"/>
+                                            <ui:remove>
+                                                <p:commandButton class="kbtn-secondary" value="#{msg.print_receipt}"/>
+                                            </ui:remove>
                                         </h:panelGrid>
                                     </center>
                                 </div>

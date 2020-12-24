@@ -80,14 +80,14 @@ public class PosController implements Serializable{
        if(cart.getInventory().getProduct() == null)
         {
             FacesContext.getCurrentInstance().addMessage(null, 
-                    new FacesMessage(FacesMessage.SEVERITY_WARN, Msg.setMsg("Please select a product"), null));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please select a product"), null));
             return;
         }
        
         if(cart.getQuantity() <= 0)
         {
             FacesContext.getCurrentInstance().addMessage(null, 
-                    new FacesMessage(FacesMessage.SEVERITY_WARN, Msg.setMsg("Please enter a valid quantity!"), null));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.setMsg("Please enter a valid quantity!"), null));
 
             return;
         }

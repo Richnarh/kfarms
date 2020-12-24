@@ -21,7 +21,7 @@
                                 <div class="row">
                                     <div class="col-12 col-sm-12 col-lg-12">
                                         <h:form class="py-3" style="margin-bottom: 5px;">
-                                        <span class="text-info"> (Capture daily activities on the farm? select Date) </span>
+                                        <span class="text-info"> (Capture daily activities on the farm? select Batch) </span>
 
                                         <p:commandButton value="#{msg.new} #{msg.production}" 
                                                              class="float-right kbtn-primary"  icon="fa fa-plus-circle" update=":mainPanel"
@@ -49,12 +49,14 @@
                                             </p:panelGrid>
                                         </p:rowExpansion>
 
-                                        <p:column headerText="#{msg.date}">
-                                            <h:commandLink styleClass="kbtn-link" value="#{production.productionDate}" action="#{productionController.manage(production)}"/>
+                                        <p:column headerText="#{msg.created_date}">
+                                            <h:outputText value="#{production.productionDate}">
+                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                            </h:outputText>
                                         </p:column>
 
                                         <p:column headerText="#{msg.bird_batch_no}" filterBy="#{production.birdBatchNumber}" filterMatchMode="contains">
-                                            <h:outputText value="#{production.birdBatchNumber}"/>
+                                            <h:commandLink class="kbtn-link" value="#{production.birdBatchNumber}" action="#{productionController.manage(production)}"/>
                                         </p:column>
 
                                         <p:column headerText="#{msg.location}">

@@ -18,6 +18,7 @@
                         <div class="container-fluid">
                             <div class="card-header">Add #{msg.inventory}</div>
                             <h:panelGroup rendered="#{inventoryController.formView.listView}">
+                                
                                 <div class="row">
                                     <div class="col-12 col-sm-12 col-lg-12">
                                         <h:form class="float-right pt-3" style="margin-bottom: 5px;">
@@ -86,7 +87,14 @@
                                 </h:form>
                             </h:panelGroup>
 
-                            <h:panelGroup  rendered="#{inventoryController.formView.createView}" >
+                            <h:panelGroup  rendered="#{inventoryController.formView.createView}">
+                                <small class="text-muted">
+                                    <span>
+                                        <b>NOTE: </b>
+                                        Egg quantity is treated as cratex.
+                                        e.g a quantity of an egg when entered as '5' mean 5 crates.
+                                    </span>
+                                </small>
                                 <div class="col-md-6 mb-5 pt-3 mx-auto">
                                     <h:form>
                                         <h:panelGrid columns="2" styleClass="spaced-form">
