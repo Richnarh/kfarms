@@ -9,5 +9,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 <modules>  <module>kfms</module>
-  </modules>
+    <module>kfms-admin</module>
+</modules>
 </project>
