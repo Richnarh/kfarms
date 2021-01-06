@@ -281,16 +281,16 @@
                                                 #{feed.feedType.feedName}
                                             </p:column>
                                             
-                                            <p:column headerText="#{msg.amount} Of Feed" class="text-right">
-                                                #{feed.feedAmount} #{feed.farmAccount.unitOfWeight}
+                                            <p:column headerText="#{msg.amount} Of Feed (#{appSession.currentUser.units.label})" class="text-right">
+                                                #{feed.feedAmount} 
                                             </p:column>
                                             
-                                            <p:column headerText="Cost Per #{feed.farmAccount.unitOfWeight}" class="text-right">
+                                            <p:column headerText="Cost Per #{appSession.currentUser.units.label}" class="text-right">
                                                 #{feed.feedType.costPerUnit}
                                             </p:column>
                                             
-                                            <p:column headerText="Total Cost" class="text-right">
-                                                <h:outputText value="#{feed.feedAmount * feed.feedType.costPerUnit} #{feed.farmAccount.country.currencyCode}">
+                                            <p:column headerText="Total Cost (#{appSession.currentUser.country.currencyCode})" class="text-right">
+                                                <h:outputText value="#{feed.feedAmount * feed.feedType.costPerUnit}">
                                                     <f:convertNumber pattern="#{msg.money_pattern}"/>
                                                 </h:outputText>
                                             </p:column>
@@ -467,7 +467,7 @@
                                                 <p:commandButton style="float:right" styleClass="kbtn-primary" icon="fa fa-plus" resetValues="true" action="#{birdWeightController.initBirdWeight(productionController.production)}"
                                                                  oncomplete="PF('birdWeightForm').show()" update=":birdWeightDialog"/>
                                                 
-                                                 <p:commandButton style="float:right" class="kbtn-info mr-3" value="Load Treatment" resetValues="true" action="#{birdWeightController.loadBirdWeight(productionController.production)}"
+                                                 <p:commandButton style="float:right" class="kbtn-info mr-3" value="Load Bird Weight" resetValues="true" action="#{birdWeightController.loadBirdWeight(productionController.production)}"
                                                                  update="@form"/>
                                                 
                                                 <h5 class="float-left text-maroon">#{msg.bird_weight}</h5>

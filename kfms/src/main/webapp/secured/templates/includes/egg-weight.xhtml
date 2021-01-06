@@ -14,7 +14,7 @@
                 <h:form class="spaced-form" id="eggWeightForm">
                     <h:panelGrid columns="2">
                         <span class="required_field">#{msg.date}</span>
-                        <p:datePicker value="#{eggWeightController.eggWeight.createdDate}" yearNavigator="true" monthNavigator="true"/>
+                        <p:datePicker value="#{eggWeightController.eggWeight.createdDate}" pattern="#{msg.formatted_date}" yearNavigator="true" monthNavigator="true"/>
                         
                         <span class="required_field">Number weighed</span>
                         <p:inputText value="#{eggWeightController.eggWeight.numberWeighed}" required="true"/>

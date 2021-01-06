@@ -14,7 +14,7 @@
                 <h:form class="spaced-form" id="treatmentForm">
                     <h:panelGrid columns="2">
                         <span class="required_field">#{msg.date}</span>
-                        <p:datePicker value="#{treatmentController.treatment.createdDate}" yearNavigator="true" monthNavigator="true"/>
+                        <p:datePicker value="#{treatmentController.treatment.createdDate}" pattern="#{msg.formatted_date}" yearNavigator="true" monthNavigator="true"/>
                         
                         <span class="required_field">#{msg.treatment}</span>
                         <p:selectOneMenu value="#{treatmentController.treatment.treatmentGiven}" required="true">
