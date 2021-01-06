@@ -35,6 +35,7 @@
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="#{application.contextPath}/#{msg.account_menu_url}/pos.xhtml" class="nav-link">POS</a>
                     </li>
+
                 </ul>
 
                 <p:dialog resizable="false" showEffect="explode" hideEffect="fade" widgetVar="feedbackForm" closeOnEscape="true" modal="true" id="feedbackDialog" height="360
@@ -62,6 +63,22 @@
                             <p:commandButton class="kbtn-secondary" title="Refresh" ajax="false" icon="fa fa-refresh" action="#{commonClass.init()}"/>
                         </h:form>
                         <!--</span>-->
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#" title="Help?">
+                            <i class="fa fa-question-circle" style="font-size: 1.7em; display: flex"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-envelope mr-2"></i> User Guide
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-users mr-2"></i> Contact Us
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
@@ -159,7 +176,7 @@
             </footer>
         </div>
 
-        
+
         <script src="#{application.contextPath}/vendors/js/bootstrap.bundle.min.js"></script>
         <!-- overlayScrollbars -->
         <script src="#{application.contextPath}/vendors/js/jquery.overlayScrollbars.min.js"></script>
