@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">  
+
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+                #{msg.feedback}
+            </ui:define>
+
+            <ui:define name="pageContent">
+                <div class="col-md-12 mb-3">
+                    <div class="card">
+                        <div class="card-header">Users Responses</div>
+                        <div class="card-body">
+                            <h:form>
+                                 <p:dataTable value="#{feedBackController.feedBackList}" var="feedback">
+                                     <p:column class="row-toggler">
+                                    <p:rowToggler/>
+                                </p:column>
+
+                                <p:rowExpansion>
+                                    <h:panelGrid columns="2">
+                                        <span>#{msg.created_date}</span>
+                                        <h:outputText value="#{feedback.createdDate}">
+                                            <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                        </h:outputText>
+                                        
+                                        <span>#{msg.phone}</span>
+                                        <h:outputText value="#{feedback.phone}"/>
+                                    </h:panelGrid>
+                                </p:rowExpansion>
+
+                                <p:column headerText="#{msg.message}">
+                                    #{feedback.message}
+                                </p:column>
+                                
+                                     <p:column headerText="#{msg.action}" style="width: 100px;">
+                                         <p:commandButton value="#{msg.delete}" class="kbtn-danger" action="#{feedBackController.deleteFeedBack(feedback)}"
+                                                     onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                </p:column>
+
+                            </p:dataTable>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

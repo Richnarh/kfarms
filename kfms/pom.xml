@@ -23,14 +23,20 @@
     
     <dependencies>        
         <dependency>
-            <groupId>com.statelyhub.modules</groupId>
-            <artifactId>stately-common</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
             <version>5.13.0</version>
+        </dependency>
+        <!--        <dependency>
+            <groupId>com.khoders</groupId>
+            <artifactId>kfms-entities</artifactId>
+            <version>1</version>
+            <type>jar</type>
+        </dependency>-->
+        <dependency>
+            <groupId>com.statelyhub.modules</groupId>
+            <artifactId>stately-common</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>

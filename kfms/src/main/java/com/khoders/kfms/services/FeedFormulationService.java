@@ -5,9 +5,10 @@
  */
 package com.khoders.kfms.services;
 
+import com.khoders.kfms.entities.enums.ConfigType;
 import com.khoders.kfms.entities.feedFormulation.FeedConfig;
 import com.khoders.kfms.entities.feedFormulation.FeedConfigItem;
-import com.khoders.kfms.entities.settings.Ingredient;
+import com.khoders.kfms.entities.feedFormulation.Ingredient;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import java.util.Collections;
@@ -43,15 +44,28 @@ public class FeedFormulationService {
         return Collections.emptyList();
     }
     
-    public List<FeedConfigItem> getFeedConfigList(FeedConfig feedConfig)
+    public List<FeedConfigItem> getFeedConfigChart(FeedConfig feedConfig, ConfigType configType)
     {
-        String qryString = "SELECT e FROM FeedConfigItem e WHERE e.farmAccount=?1 AND e.feedConfig=?2";
+        String qryString =null;
+        TypedQuery<FeedConfigItem> typedQuery;
+        
         try 
         {
-            TypedQuery<FeedConfigItem> typedQuery = crudApi.getEm().createQuery(qryString, FeedConfigItem.class);
-                            
-            typedQuery.setParameter(1, appSession.getCurrentUser());
-            typedQuery.setParameter(2, feedConfig);
+            if(ConfigType.FARMER.equals(configType))
+            {
+                qryString = "SELECT e FROM FeedConfigItem e WHERE e.farmAccount=?1 AND e.feedConfig=?2";
+                typedQuery = crudApi.getEm().createQuery(qryString, FeedConfigItem.class);
+
+                typedQuery.setParameter(1, appSession.getCurrentUser());
+                typedQuery.setParameter(2, feedConfig);
+            }
+            else
+            {
+                qryString = "SELECT e FROM FeedConfigItem e WHERE e.feedConfig=?1";
+                typedQuery = crudApi.getEm().createQuery(qryString, FeedConfigItem.class);
+
+                typedQuery.setParameter(1, feedConfig);
+            }
             
             return typedQuery.getResultList();
             
@@ -62,9 +76,64 @@ public class FeedFormulationService {
         return Collections.emptyList();
     }
     
+    
+    public List<FeedConfigItem> getFeedConfigList(FeedConfig feedConfig)
+    {
+        try 
+        {
+            String qryString = "SELECT e FROM FeedConfigItem e WHERE e.farmAccount=?1 AND e.feedConfig=?2";
+            TypedQuery<FeedConfigItem> typedQuery = crudApi.getEm().createQuery(qryString, FeedConfigItem.class);
+
+            typedQuery.setParameter(1, appSession.getCurrentUser());
+            typedQuery.setParameter(2, feedConfig);
+
+            return typedQuery.getResultList();
+            
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+    
+    public List<FeedConfig> getFeedConfiguration(ConfigType configType)
+    {
+        String qryString = null;
+        
+        TypedQuery<FeedConfig> typedQuery;
+        
+      try 
+        {
+            
+        if(ConfigType.FARMER.equals(configType))
+        {
+            qryString = "SELECT e FROM FeedConfig e WHERE e.farmAccount=?1 AND e.configType=?2";
+             typedQuery = crudApi.getEm().createQuery(qryString, FeedConfig.class);
+                            
+            typedQuery.setParameter(1, appSession.getCurrentUser());
+            typedQuery.setParameter(2, configType);
+        }
+        else
+        {
+            qryString = "SELECT e FROM FeedConfig e WHERE e.configType=?1";
+             typedQuery = crudApi.getEm().createQuery(qryString, FeedConfig.class);
+                            
+            typedQuery.setParameter(1, configType);
+        }
+        
+        
+            return typedQuery.getResultList();
+            
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+  
     public List<FeedConfig> getFeedConfigList()
     {
-        String qryString = "SELECT e FROM FeedConfig e WHERE e.farmAccount=?1";
+        String qryString = "SELECT e FROM FeedConfig e WHERE e.farmAccount=?1 ";
         try 
         {
             TypedQuery<FeedConfig> typedQuery = crudApi.getEm().createQuery(qryString, FeedConfig.class);

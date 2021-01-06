@@ -6,14 +6,12 @@
 package com.khoders.kfms.entities.feedFormulation;
 
 import com.khoders.kfms.entities.FarmAccountRecord;
-import com.khoders.kfms.entities.settings.Ingredient;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  *
@@ -32,6 +30,7 @@ public class FeedConfigItem extends FarmAccountRecord implements Serializable{
     @ManyToOne
     private Ingredient ingredient;
     
+    public static final String _configType = FeedConfig._configType;
     @JoinColumn(name = "feed_config", referencedColumnName = "id")
     @ManyToOne
     private FeedConfig feedConfig;

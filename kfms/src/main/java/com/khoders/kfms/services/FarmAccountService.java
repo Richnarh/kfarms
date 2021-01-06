@@ -5,9 +5,9 @@
  */
 package com.khoders.kfms.services;
 
+import com.khoders.kfms.entities.FarmAccount;
 import com.khoders.resource.jpa.CrudApi;
 import static com.khoders.resource.utilities.SecurityUtil.hashText;
-import com.khoders.kfms.entities.FarmAccount;
 import com.khoders.kfms.jbeans.Credential;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

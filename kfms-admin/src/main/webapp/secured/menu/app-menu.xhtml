@@ -21,7 +21,7 @@
                             <img src="#{application.contextPath}/vendors/img/p.png" class="img-circle elevation-2" alt="User Image"/>
                         </div>
                         <div class="info">
-                            <span class="d-block text-light"><i class="fa fa-circle text-success mr-3" title="Online"></i> #{appSession.currentUser.fullName} </span>
+                            <span class="d-block text-light"><i class="fa fa-circle text-success mr-3" title="Online"></i> #{appSession.currentUser.fullName} - ADMIN </span>
                         </div>
                     </div>
 
@@ -34,7 +34,7 @@
                                 <ui:include src="farm-menu.xhtml"/>
                             </h:panelGroup>
                             
-                            
+                            <ui:remove>
                             <li class="nav-header">SALES and RECORD</li>
                             <h:panelGroup>
                                 <ui:include src="account-menu.xhtml"/>
@@ -44,7 +44,7 @@
                             <h:panelGroup>
                                 <ui:include src="settings-menu.xhtml"/>
                             </h:panelGroup>
-                            
+                            </ui:remove>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->

@@ -17,9 +17,9 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class FarmAccountRecord extends BaseModel implements Serializable{
-    private static final String _farmAccount = "farmAccount";
-    private static final String _farmName = FarmAccount._farmName;
-    private static final String _farmEmail = FarmAccount._businessEmail;
+    public static final String _farmAccount = "farmAccount";
+    public static final String _farmName = FarmAccount._farmName;
+    public static final String _farmEmail = FarmAccount._businessEmail;
     @JoinColumn(name = "farm_account")
     @ManyToOne
     private FarmAccount farmAccount;

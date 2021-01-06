@@ -1,7 +1,7 @@
 package com.khoders.kfms.entities;
 
-import com.khoders.kfms.entities.settings.Country;
 import com.khoders.kfms.entities.settings.Units;
+import com.khoders.kfms.entities.settings.Country;
 import com.khoders.resource.jpa.BaseModel;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -58,9 +58,23 @@ public class FarmAccount extends BaseModel implements Serializable{
     @Column(name="password")
     private String password;
     
+    @Column(name="plaintext")
+    private String plaintext;
+    
     @Transient
     private String password2;
 
+    public String getPlaintext()
+    {
+        return plaintext;
+    }
+
+    public void setPlaintext(String plaintext)
+    {
+        this.plaintext = plaintext;
+    }
+
+    
     public String getFullName() {
         return fullName;
     }

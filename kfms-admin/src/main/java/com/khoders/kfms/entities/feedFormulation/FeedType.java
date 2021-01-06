@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.kfms.entities.settings;
+package com.khoders.kfms.entities.feedFormulation;
 
 import com.khoders.kfms.entities.FarmAccountRecord;
 import com.khoders.resource.utilities.SystemUtils;

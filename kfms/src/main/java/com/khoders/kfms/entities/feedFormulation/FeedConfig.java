@@ -7,9 +7,8 @@ package com.khoders.kfms.entities.feedFormulation;
 
 import com.khoders.kfms.entities.FarmAccountRecord;
 import com.khoders.kfms.entities.enums.AgeRange;
+import com.khoders.kfms.entities.enums.ConfigType;
 import com.khoders.kfms.entities.enums.StageType;
-import com.khoders.kfms.entities.enums.Units;
-import com.khoders.kfms.entities.settings.FeedType;
 import com.khoders.resource.utilities.SystemUtils;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -41,6 +40,11 @@ public class FeedConfig extends FarmAccountRecord implements Serializable{
     @Column(name = "stage_type")
     @Enumerated(EnumType.STRING)
     private StageType stageType;
+    
+    public static final String _configType = "configType";
+    @Column(name = "config_type")
+    @Enumerated(EnumType.STRING)
+    private ConfigType configType;
     
     @Column(name = "age_range")
     @Enumerated(EnumType.STRING)
@@ -96,6 +100,16 @@ public class FeedConfig extends FarmAccountRecord implements Serializable{
 
     public void setFeedSize(int feedSize) {
         this.feedSize = feedSize;
+    }
+
+    public ConfigType getConfigType()
+    {
+        return configType;
+    }
+
+    public void setConfigType(ConfigType configType)
+    {
+        this.configType = configType;
     }
     
     public void genCode()

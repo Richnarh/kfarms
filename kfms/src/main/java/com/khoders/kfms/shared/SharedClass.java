@@ -8,6 +8,7 @@ package com.khoders.kfms.shared;
 import com.khoders.kfms.entities.enums.AgeRange;
 import com.khoders.kfms.entities.enums.BirdCategory;
 import com.khoders.kfms.entities.enums.BirdSource;
+import com.khoders.kfms.entities.enums.ConfigType;
 import com.khoders.kfms.entities.enums.CullingMortality;
 import com.khoders.kfms.entities.enums.EggColor;
 import com.khoders.kfms.entities.enums.EggSize;
@@ -15,7 +16,7 @@ import com.khoders.kfms.entities.enums.FlockPurpose;
 import com.khoders.kfms.entities.enums.MedicationType;
 import com.khoders.kfms.entities.enums.PaymentStatus;
 import com.khoders.kfms.entities.enums.StageType;
-import com.khoders.kfms.entities.enums.Units;
+import com.khoders.kfms.entities.settings.Units;
 import com.khoders.resource.enums.PaymentMethod;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -88,6 +89,11 @@ public class SharedClass implements Serializable
     public List<Units> getUnitsList()
     {
         return Arrays.asList(Units.values());
+    }
+    
+    public List<ConfigType> getConfigTypeList()
+    {
+        return Arrays.asList(ConfigType.values());
     }
     
 }

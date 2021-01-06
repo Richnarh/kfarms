@@ -5,6 +5,7 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
+import com.khoders.kfms.entities.enums.ConfigType;
 import com.khoders.kfms.entities.feedFormulation.FeedConfig;
 import com.khoders.kfms.entities.feedFormulation.FeedConfigItem;
 import com.khoders.kfms.jpa.AppSession;
@@ -32,11 +33,19 @@ public class FeedOverviewController implements Serializable{
     private FeedConfigItem configItem = new FeedConfigItem();
     
     private FeedConfig selectedFeedConfig;
+    private List<FeedConfig> feedConfigList = new LinkedList<>();
+    private ConfigType configType;
     
     public void initChart()
     {
-        feedOverviewChartList = feedFormulationService.getFeedConfigList(selectedFeedConfig);   
+        feedOverviewChartList = feedFormulationService.getFeedConfigChart(selectedFeedConfig, configType);   
     }
+    
+    public void loadConfigFeedList()
+    {
+        feedConfigList = feedFormulationService.getFeedConfiguration(configType);
+    }
+    
     
     public List<FeedConfigItem> getFeedOverviewChartList() {
         return feedOverviewChartList;
@@ -56,6 +65,21 @@ public class FeedOverviewController implements Serializable{
 
     public void setConfigItem(FeedConfigItem configItem) {
         this.configItem = configItem;
+    }
+
+    public ConfigType getConfigType()
+    {
+        return configType;
+    }
+
+    public void setConfigType(ConfigType configType)
+    {
+        this.configType = configType;
+    }
+
+    public List<FeedConfig> getFeedConfigList()
+    {
+        return feedConfigList;
     }
     
 }

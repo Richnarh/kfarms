@@ -1,5 +1,6 @@
 package com.khoders.kfms.entities;
 
+import com.khoders.kfms.entities.FarmAccountRecord;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;

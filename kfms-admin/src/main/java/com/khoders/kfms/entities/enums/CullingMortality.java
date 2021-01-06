@@ -11,16 +11,17 @@ import com.khoders.resource.utilities.MsgResolver;
  *
  * @author khoders
  */
-public enum Units implements MsgResolver{
-    GRAMS("GRAMS", "g"),
-    KILOGRAM("KILOGRAMS", "kg");
+public enum CullingMortality implements MsgResolver{
+    CULLING("CULLING", "Culling"),
+    MORTALITY("MORTALITY", "Mortality (Death)");
     
-    private final String label;
     private final String code;
-    private Units(String code, String label)
+    private final String label;
+    
+    private CullingMortality(String code, String label)
     {
-        this.code=code;
-        this.label=label;
+        this.code = code;
+        this.label = label;
     }
 
     @Override
@@ -32,11 +33,10 @@ public enum Units implements MsgResolver{
     public String getLabel() {
         return label;
     }
-    
-    
+
     @Override
     public String toString() {
         return label;
     }
+    
 }
-

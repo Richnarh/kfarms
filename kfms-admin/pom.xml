@@ -7,7 +7,7 @@
         <version>1</version>
     </parent>
     <groupId>com.khoders</groupId>
-    <artifactId>kfms</artifactId>
+    <artifactId>kfms-admin</artifactId>
     <version>1</version>
     <packaging>war</packaging>
     <name>kfms-admin</name>
@@ -21,7 +21,13 @@
         <jakartaee>8.0</jakartaee>
     </properties>
     
-    <dependencies>        
+    <dependencies>
+        <dependency>
+            <groupId>com.khoders</groupId>
+            <artifactId>kfms-entities</artifactId>
+            <version>1</version>
+            <type>jar</type>
+        </dependency>        
         <dependency>
             <groupId>com.statelyhub.modules</groupId>
             <artifactId>stately-common</artifactId>

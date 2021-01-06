@@ -5,6 +5,7 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
+import com.khoders.kfms.entities.enums.ConfigType;
 import com.khoders.kfms.entities.feedFormulation.FeedConfig;
 import com.khoders.kfms.entities.feedFormulation.FeedConfigItem;
 import com.khoders.kfms.jpa.AppSession;
@@ -62,6 +63,7 @@ public class FeedConfigController implements Serializable{
         try 
         {
             feedConfig.genCode();
+            feedConfig.setConfigType(ConfigType.FARMER);
             if(crudApi.save(feedConfig) != null)
             {
                 feedConfigList = CollectionList.washList(feedConfigList, feedConfig);

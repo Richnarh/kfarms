@@ -5,6 +5,7 @@
  */
 package com.khoders.kfms.shared.account;
 
+import com.khoders.kfms.entities.enums.AccountCategory;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.khoders.kfms.jbeans.controller.settings;
+package com.khoders.kfms.entities.enums;
 
 import com.khoders.resource.utilities.MsgResolver;
 
@@ -11,20 +11,18 @@ import com.khoders.resource.utilities.MsgResolver;
  *
  * @author khoders
  */
-public enum AccountCategory implements MsgResolver{
-    ASSETS("ASSET", "Assets"),
-    LIABILITY("LIABILITY","Liability"),
-    EQUITY("EQUITY","Equity"),
-    REVENUE("REVENUE","Revenue"),
-    EXPENSE("EXPENSE","Expense");
+public enum BirdCategory implements MsgResolver{
+    LAYERS("LAYERS", "Layers"),
+    BROILER("BROILER", "Broiler"),
+    HATCHERY("HATCHERY", "Hatchery");
     
     private final String code;
     private final String label;
     
-    private AccountCategory(String code, String label)
+    private BirdCategory(String code, String label)
     {
-        this.code=code;
-        this.label=label;
+        this.code = code;
+        this.label = label;
     }
 
     @Override
