@@ -18,12 +18,12 @@
                                 <f:selectItems value="#{commonModule.purchaseList}"/>
                             </p:selectOneMenu>
                             
-                            <span>Payment Date</span>
-                            <p:datePicker value="#{purchaseController.purchasePayment.paymentDate}" 
-                                          yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
+                            <span class="required_field">Amount Paid</span>
+                            <p:inputText value="#{purchaseController.purchasePayment.amountPaid}" required="true"/>
 
-                            <span>Amount Paid</span>
-                            <p:inputText value="#{purchaseController.purchasePayment.amountPaid}"/>
+                            <span class="required_field">Payment Date</span>
+                            <p:datePicker value="#{purchaseController.purchasePayment.paymentDate}" required="true"
+                                          yearNavigator="true" monthNavigator="true" pattern="#{msg.formatted_date}"/>
 
                             <span>Note</span>
                             <p:inputTextarea value="#{purchaseController.purchasePayment.note}"/>

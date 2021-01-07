@@ -7,6 +7,7 @@
 
     <h:body>
         <div class="col-md-12">
+                <p:messages id="message"/>
             <div class="card">
                 <h5 class="card-header display-box shadow-box text-white">Invoice Payment</h5>
 
@@ -33,7 +34,7 @@
 
                         <center class="mb-4 pt-4">
                             <h:panelGrid columns="2">
-                                <p:commandButton class="kbtn-success" value="#{invoiceController.optionText}" action="#{invoiceController.saveInvoicePayment()}" update=":paymentTable"/>
+                                <p:commandButton class="kbtn-success" value="#{invoiceController.optionText}" action="#{invoiceController.saveInvoicePayment()}" update=":paymentTable, :message"/>
                                 <p:commandButton class="kbtn-cancel" value="#{msg.clear}" immediate="true" action="#{invoiceController.clearInvoicePayment()}" update="@form"/>
                             </h:panelGrid>
                         </center>
@@ -91,8 +92,8 @@
                             </p:column>
 
                             <p:column headerText="#{msg.action}">
-                                <p:commandButton class="kbtn-danger" value="#{msg.delete}" 
-                                                 action="#{invoiceController.deleteInvoicePayment(payment)}" onclick="return confirm('#{msg.delete_message}')" update="@form"/>
+                                <p:commandButton class="kbtn-secondary" value="#{msg.undo}" 
+                                                 action="#{invoiceController.undoInvoicePayment(payment)}" onclick="return confirm('#{msg.undo_message}')" update="@form"/>
                             </p:column>
                         </p:dataTable>
 

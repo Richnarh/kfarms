@@ -69,6 +69,7 @@ public class InvoiceController implements Serializable
     private void init()
     {
         clearInvoice();
+        clearInvoicePayment();
     }
    
     public void fetchFullyPaid()
@@ -143,16 +144,22 @@ public class InvoiceController implements Serializable
         try 
         {
            invoiceItemList = accountService.getInvoiceList(invoice);
+           invoicePaymentList = accountService.getInvoicePayments(invoice);
            
-           if(!invoiceItemList.isEmpty())
+           if(!invoiceItemList.isEmpty() || !invoicePaymentList.isEmpty())
            {
                invoiceItemList.forEach(item -> {
                     crudApi.delete(item); 
                });
                
-               invoiceItemList = accountService.getInvoiceList(invoice);
+               invoicePaymentList.forEach(payment -> {
+                   crudApi.delete(payment);
+               });
                
-               if(invoiceItemList.isEmpty())
+               invoiceItemList = accountService.getInvoiceList(invoice);
+               invoicePaymentList = accountService.getInvoicePayments(invoice);
+               
+               if(invoiceItemList.isEmpty() || invoicePaymentList.isEmpty())
                {
                    if(crudApi.delete(invoice))
                    {
@@ -379,6 +386,8 @@ public class InvoiceController implements Serializable
            return;
         }
         
+        if(invoicePayment.getAmountPaid() == 0.0) return;
+        
         if(invoicePayment.getAmountPaid() != invoice.getAmountRemaining())
         {
             invoicePayment.setPaymentStatus(PaymentStatus.PARTIALLY_PAID);
@@ -423,15 +432,24 @@ public class InvoiceController implements Serializable
         optionText = "Update";
     }
     
-    public void deleteInvoicePayment(InvoicePayment billPayment)
+    public void undoInvoicePayment(InvoicePayment invoicePayment)
     {
         try 
-        {
-          if(crudApi.delete(billPayment))
+        {          
+            invoice = crudApi.getEm().find(Invoice.class, invoicePayment.getInvoice().getId());
+            
+            System.out.println("Amount Remaining -- "+invoice.getAmountRemaining());
+            System.out.println("Amount Paid -- "+invoicePayment.getAmountPaid());
+            
+            invoice.setAmountRemaining(invoice.getAmountRemaining() + invoicePayment.getAmountPaid());
+            System.out.println("Amount Remaining (Updated) -- "+invoice.getAmountRemaining());
+            crudApi.save(invoice);
+          
+          if(crudApi.delete(invoicePayment))
           {
-              invoicePaymentList.remove(billPayment);
+              invoicePaymentList.remove(invoicePayment);
                FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Undo successfully!"), null));
           }
           else
           {

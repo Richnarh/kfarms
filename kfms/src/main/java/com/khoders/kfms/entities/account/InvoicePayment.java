@@ -37,7 +37,7 @@ public class InvoicePayment extends FarmChartRecord implements Serializable{
     
     public static final String _paymentDate = "paymentDate";
     @Column(name = "payment_date")
-    private LocalDate paymentDate;
+    private LocalDate paymentDate = LocalDate.now();
     
     public static final String _amountPaid = "amountPaid";
     @Column(name = "amount_paid")

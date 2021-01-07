@@ -30,7 +30,7 @@ public class PurchasePayment extends FarmChartRecord{
     private Purchase purchase;
     
     @Column(name = "payment_date")
-    private LocalDate paymentDate;
+    private LocalDate paymentDate = LocalDate.now();
     
     @Column(name = "payment_code")
     private String paymentCode;

@@ -11,7 +11,6 @@
             <ui:define name="pageTitle">
                 #{msg.purchases}/Bill
             </ui:define>
-
             <ui:define name="pageContent">
                 <p:tabView id="mainTabView" activeIndex="#{purchaseController.switchTab.activeTab}" onTabShow="#{invoiceController.switchTab.switchTabView()}">
                     <p:tab id="firstTabView" title="Out Standing Bills">
@@ -56,23 +55,22 @@
 
                                         <p:rowExpansion>
                                             <p:panelGrid columns="2">
+                                                <span>#{msg.received_date}</span>
+                                                <h:outputText value="#{purchase.receivedDate}">
+                                                    <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate" />
+                                                </h:outputText>
                                                 <span>#{msg.note}</span>
                                                 <h:outputText value="#{purchase.note}"/>
 
-                                                <span>Id</span>
-                                                <h:outputText value="#{purchase.purchaseId}"/>
 
                                                 <span>#{msg.account}</span>
                                                 <h:outputText value="#{purchase.account}"/>
 
+                                                <span>Id</span>
+                                                <h:outputText value="#{purchase.purchaseId}"/>
+
                                             </p:panelGrid>
                                         </p:rowExpansion>
-
-                                        <p:column headerText="#{msg.date}">
-                                            <h:outputText value="#{purchase.receivedDate}">
-                                                <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate" />
-                                            </h:outputText>
-                                        </p:column>
 
                                         <p:column headerText="#{msg.due_date}">
                                             <h:outputText value="#{purchase.dueDate}">
@@ -115,12 +113,10 @@
                                                 <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.payment}" action="#{purchaseController.addPyament(purchase)}" oncomplete="PF('paymentForm').show()" update=":paymentDialog"/>
                                             </p:menuButton>
                                         </p:column>
-                                        
+
                                         <p:column>
-                                            <h:commandButton class="btn kbtn-danger text-white btn-sm" value="#{msg.delete}" action="#{purchaseController.deletePurchase(purchase)}" 
-                                                             onclick="return confirm('#{msg.delete_message}')">
-                                                <p:ajax update=":mainTabView:mainPanel"/>
-                                            </h:commandButton>
+                                            <p:commandButton icon="fa fa-remove"  class="kbtn-danger" value="#{msg.delete}" action="#{purchaseController.deletePurchase(purchase)}" 
+                                                             onclick="return confirm('#{msg.delete_message}')" update=":mainTabView:mainPanel"/>
                                         </p:column>
                                     </p:dataTable>
                                 </h:form>
@@ -236,7 +232,7 @@
                 <p:dialog resizable="false" widgetVar="paymentInfo" closeOnEscape="true" modal="true" id="paymentModal" height="450"  width="960">
                     <ui:include src="../includes/full-payment-list.xhtml"/>
                 </p:dialog>
-                <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="paymentDialog" height="450"  width="860">
+                <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="paymentDialog" height="410"  width="860">
                     <ui:include src="../includes/purchase-payment.xhtml"/>
                 </p:dialog>
             </ui:define>

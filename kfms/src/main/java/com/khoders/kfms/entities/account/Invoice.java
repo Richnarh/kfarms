@@ -27,6 +27,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "invoice")
 public class Invoice extends FarmChartRecord implements Serializable{
+    public static final String _refNo="refNo";
     @Column(name = "ref_no")
     private String refNo;
     
