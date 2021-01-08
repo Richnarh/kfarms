@@ -8,51 +8,53 @@
     <h:body>
         <div class="col-md-12">
             <div class="card">
-                <h5 class="card-header display-box shadow-box text-white">Invoice Item Details</h5>
+                <h5 class="card-header shadow-box bg-gray">
+                    <span style="text-decoration: underline">Bill Item Details</span>
+                    <div class="field-shade">
+                        <h:outputText class="text-right" style="font-size: 15px;" value="#{msg.total_amount}: #{appSession.currentUser.country.currencyCode} #{purchaseController.totalAmountPaid}">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                        </h:outputText>
+                    </div>
+                </h5>
 
                 <div class="card-body">
                     <h:form>
-                        <p:dataTable value="#{invoiceController.invoiceItemInfoList}" var="invoiceItem" paginator="true" paginatorPosition="bottom" rows="5">
+                        <p:dataTable value="#{purchaseController.purchaseItemInfoList}" var="purchaseItem" paginator="true" paginatorPosition="bottom" rows="5">
                             <p:column class="row-toggler">
                                 <p:rowToggler/>
                             </p:column>
                             <p:rowExpansion>
                         <p:panelGrid columns="2">
                             <span>#{msg.id}</span>
-                            <h:outputText value="#{invoiceItem.id}"/>
+                            <h:outputText value="#{purchaseItem.id}"/>
                         </p:panelGrid>
                     </p:rowExpansion>
 
                     <p:column headerText="#{msg.product}">
-                        #{invoiceItem.product.productName}
+                        #{purchaseItem.itemName}
                     </p:column>
                     
                     <p:column headerText="#{msg.quantity}" class="text-right">
-                        #{invoiceItem.quantity}
+                        #{purchaseItem.quantity}
                     </p:column>
 
                     <p:column headerText="#{msg.unit_price} (#{appSession.currentUser.country.currencyCode})" class="text-right">
-                        <h:outputText value="#{invoiceItem.unitPrice}">
+                        <h:outputText value="#{purchaseItem.unitPrice}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
                     </p:column>
 
                     <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.country.currencyCode})" class="text-right">
-                        <h:outputText value="#{invoiceItem.totalAmount}">
+                        <h:outputText value="#{purchaseItem.totalAmount}">
                             <f:convertNumber pattern="#{msg.money_pattern}"/>
                         </h:outputText>
                     </p:column>
 
                         </p:dataTable>
-                        <div class="display-box">
-                            <h:outputText class="text-right" style="font-size: 15px;" value="#{msg.total_amount}: #{appSession.currentUser.country.currencyCode} #{invoiceController.totalAmountPaid}">
-                                <f:convertNumber pattern="#{msg.money_pattern}"/>
-                            </h:outputText>
-                        </div>
 
                         <center class="pt-3">
 
-                            <p:commandButton class="kbtn-danger" value="#{msg.close}" action="#{invoiceController.closeFullPayment()}" ajax="false"/>
+                            <p:commandButton class="kbtn-danger" value="#{msg.close}" action="#{purchaseController.closeFullPayment()}" ajax="false"/>
                         </center>
                     </h:form>
                 </div>

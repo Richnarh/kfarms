@@ -11,6 +11,7 @@ import com.khoders.kfms.entities.Product;
 import com.khoders.kfms.entities.Supplier;
 import com.khoders.kfms.entities.account.ChartOfAccount;
 import com.khoders.kfms.entities.account.Invoice;
+import com.khoders.kfms.entities.account.Purchase;
 import com.khoders.kfms.entities.feedFormulation.FeedConfig;
 import com.khoders.kfms.entities.settings.BirdType;
 import com.khoders.kfms.entities.settings.Category;
@@ -53,6 +54,7 @@ public class CommonClass implements Serializable{
     private List<Product> productList = new LinkedList<>();
     private List<Country> countryList = new LinkedList<>();
     private List<Invoice> invoiceList = new LinkedList<>();
+    private List<Purchase> purchaseList = new LinkedList<>();
     private List<Ingredient> ingredientList = new LinkedList<>();
     private List<FeedConfig> feedConfigList = new LinkedList<>();
     private List<Category> categoryList = new LinkedList<>();
@@ -97,6 +99,11 @@ public class CommonClass implements Serializable{
         
          String qryInvoice = "SELECT e FROM Invoice e WHERE e.farmAccount=?1";
         invoiceList = crudApi.getEm().createQuery(qryInvoice, Invoice.class)
+                .setParameter(1, appSession.getCurrentUser())
+                .getResultList();
+        
+         String qryPurchase = "SELECT e FROM Purchase e WHERE e.farmAccount=?1";
+        purchaseList = crudApi.getEm().createQuery(qryPurchase, Purchase.class)
                 .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
         
@@ -153,6 +160,11 @@ public class CommonClass implements Serializable{
     public List<Category> getCategoryList()
     {
         return categoryList;
+    }
+
+    public List<Purchase> getPurchaseList()
+    {
+        return purchaseList;
     }
     
 }

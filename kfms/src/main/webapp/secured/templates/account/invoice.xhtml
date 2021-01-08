@@ -106,15 +106,12 @@
                                             <p:menuButton value="#{msg.manage}">
                                                 <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.edit}" action="#{invoiceController.editInvoice(invoice)}" immediate="true" update=":mainTabView:mainPanel"/>
                                                 <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Item" action="#{invoiceController.manageInvoiceItem(invoice)}" immediate="true" update=":mainTabView:mainPanel"/>
-                                                <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.payment}" action="#{invoiceController.addPyament(invoice)}" oncomplete="PF('paymentForm').show()" update=":mainTabView:mainPanel, :paymentDialog"/>
+                                                <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.payment}" action="#{invoiceController.addPyament(invoice)}" update=":mainTabView:mainPanel, :invoicePaymentDialog" oncomplete="PF('paymentForm').show()"/>
                                             </p:menuButton>
                                         </p:column>
-                                        <p:column>
-                                            <p:commandButton icon="fa fa-remove" 
-                                                             class="kbtn-danger text-white" value="#{msg.delete}" 
-                                                             action="#{invoiceController.deleteInvoice(invoice)}" 
-                                                             immediate="true" update=":mainTabView:mainPanel"
-                                                             onclick="return confirm('Deleting this record will remove it\'s corresponding invoice items? and payment information, proceed if you know what your\'re doing')"/>
+                                        <p:column headerText="#{msg.action}">
+                                            <p:commandButton icon="fa fa-remove" class="kbtn-danger text-white" value="#{msg.delete}" action="#{invoiceController.deleteInvoice(invoice)}" 
+                                                             immediate="true" update=":mainTabView:mainPanel" onclick="return confirm('Deleting this record will remove it\'s corresponding invoice items? and payment information, proceed if you know what your\'re doing')"/>
                                         </p:column>
                                     </p:dataTable>
                                 </h:form>
@@ -185,11 +182,9 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </h:panelGroup>
 
                             <h:panelGroup  rendered="#{invoiceController.formView.detailView}">
-
                                 <div class="row mb-5">
                                     <div class="col-md-10 mx-auto">
                                         <div class="display-box">
@@ -223,21 +218,20 @@
 
                             </h:panelGroup>
 
-
                         </h:panelGroup>
 
                     </p:tab>
 
                     <p:tab id="secondTabView" title="Fully Paid Invoices">
-                        <ui:include src="../includes/payment-info.xhtml"/>
+                        <ui:include src="includes/payment-info.xhtml"/>
                     </p:tab>
 
                 </p:tabView>
                 <p:dialog resizable="false" widgetVar="paymentInfo" closeOnEscape="true" modal="true" id="paymentModal" height="450"  width="960">
-                    <ui:include src="../includes/full-payment-list.xhtml"/>
+                    <ui:include src="includes/full-payment-list.xhtml"/>
                 </p:dialog>
-                <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="paymentDialog" height="410"  width="860">
-                    <ui:include src="../includes/invoice-payment.xhtml"/>
+                <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="invoicePaymentDialog" height="410"  width="860">
+                    <ui:include src="includes/invoice-payment.xhtml"/>
                 </p:dialog>
             </ui:define>
         </ui:composition>

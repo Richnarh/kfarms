@@ -126,7 +126,7 @@ public class PurchasePayment extends FarmChartRecord{
         }
         else
         {
-           setPaymentCode(SystemUtils.generateShortCode());
+           setPaymentCode(SystemUtils.generateCode());
         }
        
     }

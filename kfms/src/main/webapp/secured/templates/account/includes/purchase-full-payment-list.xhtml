@@ -8,11 +8,19 @@
     <h:body>
         <div class="col-md-12">
             <div class="card">
-                <h5 class="card-header display-box shadow-box text-white">Full Payment Invoice (Payment Structure)</h5>
+                <h5 class="card-header  shadow-box bg-gray">
+                    <span style="text-decoration: underline">Full Bill Payment (Payment Structure)</span>
+                    <div class="field-shade">
+                        <h:outputText class="text-right" style="font-size: 15px;" value="#{msg.total_amount}: #{appSession.currentUser.country.currencyCode} #{purchaseController.totalAmountPaid}">
+                            <f:convertNumber pattern="#{msg.money_pattern}"/>
+                        </h:outputText>
+                    <div style="font-size: 15px;" class="text-white">#{msg.payment_staus}: #{purchaseController.purchase.paymentStatus} </div>
+                    </div>
+                </h5>
 
                 <div class="card-body">
                     <h:form>
-                        <p:dataTable value="#{purchaseController.fullIPurchasePaymentList}" var="fullPayment" paginator="true" paginatorPosition="bottom" rows="5">
+                        <p:dataTable value="#{purchaseController.fullPurchasePaymentList}" var="fullPayment">
                             <p:column class="row-toggler">
                                 <p:rowToggler/>
                             </p:column>
@@ -54,15 +62,8 @@
                             </p:column>
 
                         </p:dataTable>
-                        <div class="display-box">
-                            <h:outputText class="text-right" style="font-size: 15px;" value="#{msg.total_amount}: #{appSession.currentUser.country.currencyCode} #{purchaseController.totalAmountPaid}">
-                                <f:convertNumber pattern="#{msg.money_pattern}"/>
-                            </h:outputText>
-                            <div style="font-size: 15px;" class="text-white">#{msg.payment_staus}: #{purchaseController.purchase.paymentStatus} </div>
-                        </div>
 
                         <center class="pt-3">
-
                             <p:commandButton class="kbtn-danger" value="#{msg.close}" action="#{purchaseController.closeFullPayment()}" ajax="false"/>
                         </center>
                     </h:form>

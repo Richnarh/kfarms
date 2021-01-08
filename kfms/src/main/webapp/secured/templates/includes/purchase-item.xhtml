@@ -44,9 +44,14 @@
                 <p:dataTable value="#{purchaseController.purchaseItemList}" var="purchaseItem" 
                              paginator="true" paginatorPosition="bottom" rows="5">
 
-                    <p:column headerText="#{msg.note}" >
-                        <h:outputText value="#{purchaseItem.note}"/>                              
+                    <p:column class="row-toggler">
+                        <p:rowToggler/>                               
                     </p:column>
+                    
+                    <p:rowExpansion>
+                        <span>#{msg.note}</span>
+                        <h:outputText value="#{purchaseItem.note}"/>
+                    </p:rowExpansion>
 
                     <p:column headerText="#{msg.quantity}" styleClass="text-right">
                         <h:outputText value="#{purchaseItem.quantity}"/>                                 

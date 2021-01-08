@@ -153,4 +153,12 @@ public class Purchase extends FarmChartRecord implements Serializable{
         }
         
     }
+
+    @Override
+    public String toString()
+    {
+        return receiptNo +"-"+ customer;
+    }
+    
+    
 }

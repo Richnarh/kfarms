@@ -40,14 +40,28 @@ public class AccountService {
                                 .setParameter(2, invoice);
                 return typedQuery.getResultList();
     }
+    
     public List<PurchasePayment> getPurchasePayments(Purchase purchase)
+    {
+        
+        String query = "SELECT e FROM PurchasePayment e WHERE e.farmAccount=?1 AND e.purchase=?2 ORDER BY e.paymentDate DESC";
+        
+        TypedQuery<PurchasePayment> typedQuery = crudApi.getEm().createQuery(query, PurchasePayment.class)
+                                .setParameter(1, appSession.getCurrentUser())
+                                .setParameter(2, purchase);
+                return typedQuery.getResultList();
+    }
+    
+    
+    public List<PurchasePayment> getFullPurchasePaymentList(Purchase purchase)
     {
         
         String query = "SELECT e FROM PurchasePayment e WHERE e.farmAccount=?1 AND e.purchase=?2 AND e.paymentStatus=?3 ORDER BY e.paymentDate ASC";
         
         TypedQuery<PurchasePayment> typedQuery = crudApi.getEm().createQuery(query, PurchasePayment.class)
                                 .setParameter(1, appSession.getCurrentUser())
-                                .setParameter(2, purchase);
+                                .setParameter(2, purchase)
+                                .setParameter(3, PaymentStatus.FULLY_PAID);
                 return typedQuery.getResultList();
     }
     
@@ -79,6 +93,7 @@ public class AccountService {
         }
         return Collections.emptyList();
     }
+    
     public List<Invoice> getFullyPaidInvoiceList(DateRangeUtil dateRange)
     {
         try {
@@ -194,37 +209,47 @@ public class AccountService {
         return Collections.emptyList();
     }
     
-    public List<PurchasePayment> getPurchasePayment(Purchase purchase)
+    public List<PurchasePayment> getPurchasePaymentList(Purchase purchase)
     {
         
-        String query = "SELECT e FROM PurchasePayment e WHERE e.farmAccount=?1 AND e.purchase=?2";
-        
-        TypedQuery<PurchasePayment> typedQuery = crudApi.getEm().createQuery(query, PurchasePayment.class)
-                                .setParameter(1, appSession.getCurrentUser())
-                                .setParameter(2, purchase);
-                return typedQuery.getResultList();
+        try
+        {
+            String query = "SELECT e FROM PurchasePayment e WHERE e.farmAccount=?1 AND e.purchase=?2";
+
+            TypedQuery<PurchasePayment> typedQuery = crudApi.getEm().createQuery(query, PurchasePayment.class)
+                    .setParameter(1, appSession.getCurrentUser())
+                    .setParameter(2, purchase);
+            return typedQuery.getResultList();
+            
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
     
     
-    public List<Purchase> getPurchaseListData(DateRangeUtil dateRange, Purchase purchase)
+    public List<Purchase> getOutStandingBills(DateRangeUtil dateRange, Purchase purchase)
     {
         try 
         {
             if(dateRange.getFromDate() == null || dateRange.getToDate() == null)
             {
-                  String  queryPurchase = "SELECT e FROM Purchase e WHERE e.farmAccount=?1";
+                  String  queryPurchase = "SELECT e FROM Purchase e WHERE e.farmAccount=?1 AND e.paymentStatus=?2";
                   TypedQuery<Purchase> typedQuery = crudApi.getEm().createQuery(queryPurchase, Purchase.class)
-                                .setParameter(1, appSession.getCurrentUser());
+                                .setParameter(1, appSession.getCurrentUser())
+                                .setParameter(2, PaymentStatus.PARTIALLY_PAID);
 
                 return typedQuery.getResultList();
             }
             
-            String qryPurchase = "SELECT e FROM Purchase e WHERE e.farmAccount=?1 AND e.issueDate BETWEEN ?2 AND ?3";
+            String qryPurchase = "SELECT e FROM Purchase e WHERE e.farmAccount=?1 AND e.issueDate BETWEEN ?2 AND ?3 AND e.paymentStatus=?4";
             
             TypedQuery<Purchase> typedQuery = crudApi.getEm().createQuery(qryPurchase, Purchase.class)
                     .setParameter(1, appSession.getCurrentUser())
                     .setParameter(2, dateRange.getFromDate())
-                    .setParameter(3, dateRange.getToDate());
+                    .setParameter(3, dateRange.getToDate())
+                    .setParameter(4, PaymentStatus.PARTIALLY_PAID);
             
            return typedQuery.getResultList();
             
@@ -268,7 +293,8 @@ public class AccountService {
         }
         return Collections.emptyList();
     }
-    public List<PurchaseItem> getPurchaseList(Purchase purchase)
+    
+    public List<PurchaseItem> getPurchasedItemList(Purchase purchase)
     {
         String query = "SELECT e FROM PurchaseItem e WHERE e.farmAccount=?1 AND e.purchase=?2";
         

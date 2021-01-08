@@ -12,7 +12,7 @@
                 #{msg.purchases}/Bill
             </ui:define>
             <ui:define name="pageContent">
-                <p:tabView id="mainTabView" activeIndex="#{purchaseController.switchTab.activeTab}" onTabShow="#{invoiceController.switchTab.switchTabView()}">
+                <p:tabView id="mainTabView">
                     <p:tab id="firstTabView" title="Out Standing Bills">
                         <h:panelGroup id="mainPanel">
                             <h:panelGroup rendered="#{purchaseController.formView.listView}">
@@ -32,7 +32,7 @@
                                                           monthNavigator="true" yearNavigator="true" />
 
                                             <p:commandButton class="ml-2 kbtn-primary" update=":mainTabView:mainPanel"
-                                                             action="#{purchaseController.filterByDate()}"
+                                                             action="#{purchaseController.outStandingBills()}"
                                                              value="#{msg.load} Data"/>
 
                                             <p:commandButton action="#{purchaseController.reset()}" class="kbtn-cancel" value="#{msg.reset}" update=":mainTabView:purchaseTable:purchaseTbl"/>
@@ -59,13 +59,16 @@
                                                 <h:outputText value="#{purchase.receivedDate}">
                                                     <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate" />
                                                 </h:outputText>
-                                                <span>#{msg.note}</span>
-                                                <h:outputText value="#{purchase.note}"/>
-
-
+                                                
+                                                <span>Payment Method</span>
+                                                <h:outputText value="#{purchase.paymentMethod}"/>
+                                                
                                                 <span>#{msg.account}</span>
                                                 <h:outputText value="#{purchase.account}"/>
-
+                                                
+                                                <span>#{msg.note}</span>
+                                                <h:outputText value="#{purchase.note}"/>
+                                                
                                                 <span>Id</span>
                                                 <h:outputText value="#{purchase.purchaseId}"/>
 
@@ -86,15 +89,6 @@
                                             #{purchase.customer.customerName}
                                         </p:column>
 
-                                        <p:column headerText="#{msg.payment_method}">
-                                            #{purchase.paymentMethod}
-                                        </p:column>
-
-                                        <p:column headerText="#{msg.total_amount}" styleClass="text-right">
-                                            <h:outputText value="#{purchase.totalAmount}">
-                                                <f:convertNumber pattern="#{msg.money_pattern}" />
-                                            </h:outputText>
-                                        </p:column>
                                         <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.country.currencyCode})" class="text-right text-white bg-gradient-info">
                                             <h:outputText value="#{purchase.totalAmount}">
                                                 <f:convertNumber pattern="#{msg.money_pattern}"/>
@@ -110,13 +104,13 @@
                                             <p:menuButton value="#{msg.manage}">
                                                 <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.edit}" action="#{purchaseController.editPurchase(purchase)}" immediate="true" update=":mainTabView:mainPanel"/>
                                                 <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Add Item" action="#{purchaseController.managePurchaseItem(purchase)}" immediate="true" update=":mainTabView:mainPanel"/>
-                                                <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.payment}" action="#{purchaseController.addPyament(purchase)}" oncomplete="PF('paymentForm').show()" update=":paymentDialog"/>
+                                                <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="#{msg.payment}" action="#{purchaseController.addPyament(purchase)}" update=":mainTabView:mainPanel, :purchasePaymentDialog" oncomplete="PF('paymentForm').show()"/>
                                             </p:menuButton>
                                         </p:column>
 
                                         <p:column>
                                             <p:commandButton icon="fa fa-remove"  class="kbtn-danger" value="#{msg.delete}" action="#{purchaseController.deletePurchase(purchase)}" 
-                                                             onclick="return confirm('#{msg.delete_message}')" update=":mainTabView:mainPanel"/>
+                                                             onclick="return confirm('Deleting this record will remove it\'s corresponding bill items? and payment information, proceed if you know what your\'re doing')" update=":mainTabView:mainPanel"/>
                                         </p:column>
                                     </p:dataTable>
                                 </h:form>
@@ -148,7 +142,13 @@
 
                                                         <span class="required_field">#{msg.receipt_no}</span>
                                                         <p:inputText value="#{purchaseController.purchase.receiptNo}" required="true"/>
-
+                                                        
+                                                        <span class="required_field">#{msg.payment_status}</span>
+                                                        <p:selectOneMenu value="#{purchaseController.purchase.paymentStatus}" required="true">
+                                                            <f:selectItem itemLabel="#{msg.choose}"/>
+                                                            <f:selectItems value="#{sharedClass.paymentStatusList}"/>
+                                                        </p:selectOneMenu>
+                                                        
                                                         <span>#{msg.account}</span>
                                                         <p:selectOneMenu value="#{purchaseController.purchase.account}">
                                                             <f:selectItem itemLabel="#{msg.choose}"/>
@@ -189,7 +189,6 @@
                             </h:panelGroup>
 
                             <h:panelGroup  rendered="#{purchaseController.formView.detailView}">
-
                                 <div class="row mb-5">
                                     <div class="col-md-10 mx-auto">
                                         <div class="display-box">
@@ -212,7 +211,6 @@
 
                                             </h:panelGrid>
                                         </div>
-
                                     </div>
                                 </div>
 
@@ -220,20 +218,19 @@
                                     <legend class="text-info">Please Add Items On Purchase</legend>
                                     <ui:include src="../includes/purchase-item.xhtml"/>
                                 </fieldset>
-
                             </h:panelGroup>
                         </h:panelGroup>
 
                     </p:tab>
                     <p:tab id="secondTabView" title="Fully Paid Bills">
-                        <ui:include src="includes/purchases_full_payment_info.xhtml"/>
+                        <ui:include src="includes/purchase-full-payment-info.xhtml"/>
                     </p:tab>
                 </p:tabView>
                 <p:dialog resizable="false" widgetVar="paymentInfo" closeOnEscape="true" modal="true" id="paymentModal" height="450"  width="960">
-                    <ui:include src="../includes/full-payment-list.xhtml"/>
+                    <ui:include src="includes/full-payment-list.xhtml"/>
                 </p:dialog>
-                <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="paymentDialog" height="410"  width="860">
-                    <ui:include src="../includes/purchase-payment.xhtml"/>
+                <p:dialog resizable="false" widgetVar="paymentForm" closeOnEscape="true" modal="true" id="purchasePaymentDialog" height="410"  width="860">
+                    <ui:include src="includes/purchase-payment.xhtml"/>
                 </p:dialog>
             </ui:define>
         </ui:composition>

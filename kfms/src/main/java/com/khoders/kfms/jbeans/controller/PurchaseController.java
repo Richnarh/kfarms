@@ -46,7 +46,7 @@ public class PurchaseController implements Serializable{
     private List<Purchase> purchaseList = new LinkedList<>();
     private List<Purchase> fullyPaidPurchaseList = new LinkedList<>();
     private List<PurchasePayment> purchasePaymentList = new LinkedList<>();
-    private List<PurchasePayment> fullIPurchasePaymentList = new LinkedList<>();
+    private List<PurchasePayment> fullPurchasePaymentList = new LinkedList<>();
     
     private List<PurchaseItem> purchaseItemList = new LinkedList<>();
     private List<PurchaseItem> purchaseItemInfoList = new LinkedList<>();
@@ -87,9 +87,9 @@ public class PurchaseController implements Serializable{
         formView.restToCreateView();
     }
     
-    public void filterByDate()
+    public void outStandingBills()
     {
-        purchaseList = accountService.getPurchaseListData(dateRange, purchase);
+        purchaseList = accountService.getOutStandingBills(dateRange, purchase);
     }
     
     public void reset()
@@ -102,6 +102,14 @@ public class PurchaseController implements Serializable{
     {
         try 
         {
+            if(purchase.getAmountRemaining() == 0.0)
+            {
+                purchase.setAmountRemaining(purchase.getTotalAmount());
+            }
+            else
+            {
+                purchase.setAmountRemaining(purchase.getAmountRemaining());
+            }
             purchase.genCode();
             if(crudApi.save(purchase) != null)
             {
@@ -134,7 +142,8 @@ public class PurchaseController implements Serializable{
     {
         try 
         {
-           purchaseItemList = accountService.getPurchaseList(purchase);
+           purchaseItemList = accountService.getPurchasedItemList(purchase);
+           purchasePaymentList = accountService.getPurchasePaymentList(purchase);
            
            if(!purchaseItemList.isEmpty())
            {
@@ -142,7 +151,7 @@ public class PurchaseController implements Serializable{
                     crudApi.delete(item); 
                });
                
-               purchaseItemList = accountService.getPurchaseList(purchase);
+               purchaseItemList = accountService.getPurchasedItemList(purchase);
                
                if(purchaseItemList.isEmpty())
                {
@@ -196,7 +205,7 @@ public class PurchaseController implements Serializable{
         
         clearPurchaseItem();
 
-        purchaseItemList = accountService.getPurchaseList(purchase);
+        purchaseItemList = accountService.getPurchasedItemList(purchase);
         
         for (PurchaseItem items : purchaseItemList) 
         {
@@ -326,22 +335,22 @@ public class PurchaseController implements Serializable{
         
         clearPurchasePayment();
 
-        purchasePaymentList = accountService.getPurchasePayment(purchase);
+        purchasePaymentList = accountService.getPurchasePaymentList(purchase);
     }
         
     public void savePurchasePayment()
     {
-       if(purchasePayment.getAmountPaid() > purchase.getAmountRemaining())
+        if (purchasePayment.getAmountPaid() > purchase.getAmountRemaining())
         {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please you're paying more than the remaining amount", null));
             return;
         }
 
-        if (purchasePayment.getAmountPaid() != purchase.getAmountRemaining()) {
+        if (purchasePayment.getAmountPaid() != purchase.getAmountRemaining())
+        {
             purchasePayment.setPaymentStatus(PaymentStatus.PARTIALLY_PAID);
-        } 
-        else 
+        } else
         {
             purchasePayment.setPaymentStatus(PaymentStatus.FULLY_PAID);
 
@@ -349,25 +358,24 @@ public class PurchaseController implements Serializable{
             purchase.setPaymentStatus(PaymentStatus.FULLY_PAID);
             crudApi.save(purchase);
         }
-        purchasePayment.genCode();
 
-        try 
+        try
         {
-        if(crudApi.save(purchasePayment) != null)
-        {
-            purchase.setAmountRemaining(purchase.getAmountRemaining() - purchasePayment.getAmountPaid());
-            crudApi.save(purchase);
+            purchasePayment.genCode();
+            if (crudApi.save(purchasePayment) != null)
+            {
+                purchase.setAmountRemaining(purchase.getAmountRemaining() - purchasePayment.getAmountPaid());
+                crudApi.save(purchase);
 
-           purchasePaymentList = CollectionList.washList(purchasePaymentList, purchasePayment);
+                purchasePaymentList = CollectionList.washList(purchasePaymentList, purchasePayment);
 
-           FacesContext.getCurrentInstance().addMessage(null, 
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-        }
-        else
-        {
-            FacesContext.getCurrentInstance().addMessage(null, 
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
-        }
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+            } else
+            {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.FAILED_MESSAGE, null));
+            }
         clearPurchasePayment();
     } catch (Exception e) {
         e.printStackTrace();
@@ -380,21 +388,29 @@ public class PurchaseController implements Serializable{
         optionText = "Update";
     }
     
-    public void deletePurchasePayment(PurchasePayment purchasePayment)
+    public void undoPurchasePayment(PurchasePayment purchasePayment)
     {
         try 
-        {
-          if(crudApi.delete(purchasePayment))
-          {
-              purchasePaymentList.remove(purchasePayment);
-               FacesContext.getCurrentInstance().addMessage(null, 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
-          }
-          else
-          {
-              FacesContext.getCurrentInstance().addMessage(null, 
+        {          
+            purchase = crudApi.getEm().find(Purchase.class, purchasePayment.getPurchase().getId());
+            
+            System.out.println("Amount Remaining -- "+purchase.getAmountRemaining());
+            System.out.println("Amount Paid -- "+purchasePayment.getAmountPaid());
+            
+            purchase.setAmountRemaining(purchase.getAmountRemaining() + purchasePayment.getAmountPaid());
+            System.out.println("Amount Remaining (Updated) -- "+purchase.getAmountRemaining());
+            crudApi.save(purchase);
+          
+            if (crudApi.delete(purchasePayment))
+            {
+                purchasePaymentList.remove(purchasePayment);
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.setMsg("Undo successfully!"), null));
+            } else
+            {
+                FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
-          }
+            }
         } 
         catch (Exception e) 
         {
@@ -409,9 +425,9 @@ public class PurchaseController implements Serializable{
        
        paymentView.restToCreateView();
         
-        fullIPurchasePaymentList = accountService.getPurchasePayments(purchase);
+        fullPurchasePaymentList = accountService.getPurchasePayments(purchase);
         
-        fullIPurchasePaymentList.forEach(payment -> {
+        fullPurchasePaymentList.forEach(payment -> {
             totalAmountPaid += payment.getAmountPaid();
         });
     }
@@ -428,10 +444,10 @@ public class PurchaseController implements Serializable{
             totalAmountPaid += items.getTotalAmount();
         }
     }
-   
+//   ddddd
     public void closeFullPayment()
     {
-       fullIPurchasePaymentList = new LinkedList<>();
+       fullPurchasePaymentList = new LinkedList<>();
        totalAmountPaid = 0;
        paymentView.restToListView();
     }
@@ -445,6 +461,7 @@ public class PurchaseController implements Serializable{
     {
         purchasePayment = new PurchasePayment();
         optionText = "Save Changes";
+        purchasePayment.setFarmAccount(appSession.getCurrentUser());
         purchasePayment.setPurchase(purchase);
         SystemUtils.resetJsfUI();
     }
@@ -541,10 +558,11 @@ public class PurchaseController implements Serializable{
         return fullyPaidPurchaseList;
     }
 
-    public List<PurchasePayment> getFullIPurchasePaymentList() {
-        return fullIPurchasePaymentList;
+    public List<PurchasePayment> getFullPurchasePaymentList()
+    {
+        return fullPurchasePaymentList;
     }
-
+    
     public List<PurchaseItem> getPurchaseItemInfoList() {
         return purchaseItemInfoList;
     }

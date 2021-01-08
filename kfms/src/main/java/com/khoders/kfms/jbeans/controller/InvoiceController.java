@@ -143,38 +143,52 @@ public class InvoiceController implements Serializable
     {
         try 
         {
-           invoiceItemList = accountService.getInvoiceList(invoice);
-           invoicePaymentList = accountService.getInvoicePayments(invoice);
-           
-           if(!invoiceItemList.isEmpty() || !invoicePaymentList.isEmpty())
-           {
-               invoiceItemList.forEach(item -> {
-                    crudApi.delete(item); 
-               });
-               
-               invoicePaymentList.forEach(payment -> {
-                   crudApi.delete(payment);
-               });
-               
-               invoiceItemList = accountService.getInvoiceList(invoice);
-               invoicePaymentList = accountService.getInvoicePayments(invoice);
-               
-               if(invoiceItemList.isEmpty() || invoicePaymentList.isEmpty())
-               {
-                   if(crudApi.delete(invoice))
-                   {
-                       invoiceList.remove(invoice);
-                       FacesContext.getCurrentInstance().addMessage(null, 
-                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
-                   }
-                   else
-                   {
-                       FacesContext.getCurrentInstance().addMessage(null, 
-                      new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
-                   }
-                   
-               }
-           }
+            invoiceItemList = accountService.getInvoiceList(invoice);
+            invoicePaymentList = accountService.getInvoicePayments(invoice);
+
+            if (!invoiceItemList.isEmpty() || !invoicePaymentList.isEmpty())
+            {
+                invoiceItemList.forEach(item ->
+                {
+                    crudApi.delete(item);
+                });
+
+                invoicePaymentList.forEach(payment ->
+                {
+                    crudApi.delete(payment);
+                });
+
+                invoiceItemList = accountService.getInvoiceList(invoice);
+                invoicePaymentList = accountService.getInvoicePayments(invoice);
+
+                if (invoiceItemList.isEmpty() || invoicePaymentList.isEmpty())
+                {
+                    if (crudApi.delete(invoice))
+                    {
+                        invoiceList.remove(invoice);
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                    } else
+                    {
+                        FacesContext.getCurrentInstance().addMessage(null,
+                                new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
+                    }
+
+                }
+            } 
+            else
+            {
+                if (crudApi.delete(invoice))
+                {
+                    invoiceList.remove(invoice);
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null));
+                } else
+                {
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.DELETE_MESSAGE, null));
+                }
+            }
            
         }
         catch (Exception e)
@@ -437,12 +451,9 @@ public class InvoiceController implements Serializable
         try 
         {          
             invoice = crudApi.getEm().find(Invoice.class, invoicePayment.getInvoice().getId());
-            
-            System.out.println("Amount Remaining -- "+invoice.getAmountRemaining());
-            System.out.println("Amount Paid -- "+invoicePayment.getAmountPaid());
-            
+                        
             invoice.setAmountRemaining(invoice.getAmountRemaining() + invoicePayment.getAmountPaid());
-            System.out.println("Amount Remaining (Updated) -- "+invoice.getAmountRemaining());
+            
             crudApi.save(invoice);
           
           if(crudApi.delete(invoicePayment))
