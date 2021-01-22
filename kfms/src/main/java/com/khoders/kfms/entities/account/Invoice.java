@@ -5,7 +5,7 @@
  */
 package com.khoders.kfms.entities.account;
 
-import com.khoders.kfms.entities.Customer;
+import com.khoders.kfms.entities.Client;
 import com.khoders.kfms.entities.FarmChartRecord;
 import com.khoders.kfms.entities.enums.PaymentStatus;
 import com.khoders.resource.enums.PaymentMethod;
@@ -37,9 +37,9 @@ public class Invoice extends FarmChartRecord implements Serializable{
     @Column(name = "due_date")
     private LocalDate dueDate;
 
-    @JoinColumn(name = "customer", referencedColumnName = "id")
+    @JoinColumn(name = "client", referencedColumnName = "id")
     @ManyToOne
-    private Customer customer;
+    private Client client;
     
     @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)
@@ -80,12 +80,12 @@ public class Invoice extends FarmChartRecord implements Serializable{
         this.issueDate = issueDate;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Client getClient() {
+        return client;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public PaymentMethod getPaymentMethod() {
@@ -146,6 +146,6 @@ public class Invoice extends FarmChartRecord implements Serializable{
 
     @Override
     public String toString() {
-        return refNo +"-"+customer;
+        return refNo +"-"+client;
     }
 }

@@ -35,10 +35,10 @@ public class Cart extends FarmAccountRecord implements Serializable{
     @ManyToOne
     private SalesCatalogue salesCatalogue;
     
-    public static final String _customer = "customer";
-    @JoinColumn(name = "customer", referencedColumnName = "id")
+    public static final String _client = "client";
+    @JoinColumn(name = "client", referencedColumnName = "id")
     @ManyToOne
-    private Customer customer;
+    private Client client;
 
     public static final String _quantity = "quantity";
     @Column(name = "quantity")
@@ -123,14 +123,14 @@ public class Cart extends FarmAccountRecord implements Serializable{
         this.cartId = cartId;
     }
 
-    public Customer getCustomer()
+    public Client getClient()
     {
-        return customer;
+        return client;
     }
 
-    public void setCustomer(Customer customer)
+    public void setClient(Client client)
     {
-        this.customer = customer;
+        this.client = client;
     }
      public void genCode()
     {

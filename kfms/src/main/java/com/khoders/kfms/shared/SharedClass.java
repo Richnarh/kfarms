@@ -8,6 +8,7 @@ package com.khoders.kfms.shared;
 import com.khoders.kfms.entities.enums.AgeRange;
 import com.khoders.kfms.entities.enums.BirdCategory;
 import com.khoders.kfms.entities.enums.BirdSource;
+import com.khoders.kfms.entities.enums.ClientType;
 import com.khoders.kfms.entities.enums.ConfigType;
 import com.khoders.kfms.entities.enums.CullingMortality;
 import com.khoders.kfms.entities.enums.EggColor;
@@ -94,6 +95,11 @@ public class SharedClass implements Serializable
     public List<ConfigType> getConfigTypeList()
     {
         return Arrays.asList(ConfigType.values());
+    }
+    
+    public List<ClientType> getClientTypeList()
+    {
+        return Arrays.asList(ClientType.values());
     }
     
 }

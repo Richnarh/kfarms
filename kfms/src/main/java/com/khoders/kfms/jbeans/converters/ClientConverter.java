@@ -5,7 +5,7 @@
  */
 package com.khoders.kfms.jbeans.converters;
 
-import com.khoders.kfms.entities.Customer;
+import com.khoders.kfms.entities.Client;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.FacesConverter;
@@ -15,8 +15,8 @@ import org.omnifaces.converter.SelectItemsConverter;
  *
  * @author khoders
  */
-@FacesConverter(forClass = Customer.class)
-public class CustomerConverter extends SelectItemsConverter{
+@FacesConverter(forClass = Client.class)
+public class ClientConverter extends SelectItemsConverter{
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value)
     {
@@ -24,6 +24,6 @@ public class CustomerConverter extends SelectItemsConverter{
         {
             return null;
         }
-        return ((Customer)value).getId();
+        return ((Client)value).getId();
     }
 }

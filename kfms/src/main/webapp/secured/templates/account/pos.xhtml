@@ -56,10 +56,10 @@
                                         <span class="field-label">#{msg.quantity}</span>
                                         <p:inputText  class="field-shade" value="#{posController.cart.quantity}" style="font-size: 2em; font-style: italic"/>
 
-                                        <span>Customer</span>
-                                        <p:selectOneMenu value="#{posController.cart.customer}" filter="true" filterMatchMode="contains">
+                                        <span>#{msg.client}</span>
+                                        <p:selectOneMenu value="#{posController.cart.client}" filter="true" filterMatchMode="contains">
                                             <f:selectItem itemLabel="#{msg.choose}"/>
-                                            <f:selectItems value="#{commonClass.customerList}"/>
+                                            <f:selectItems value="#{commonClass.clientList}"/>
                                         </p:selectOneMenu>
 
                                         <span>Short Note</span>
@@ -86,7 +86,7 @@
                                     <p:rowExpansion>
                                         <h:panelGrid columns="2">
                                             <span>Customer</span>
-                                            <h:outputText value="#{cart.customer.customerName}"/>
+                                            <h:outputText value="#{cart.client.customerName}"/>
                                             
                                             <span>Cart Id</span>
                                             <h:outputText value="#{cart.inventory.product.productCode}"/>

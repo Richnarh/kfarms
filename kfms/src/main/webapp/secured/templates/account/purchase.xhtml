@@ -12,7 +12,10 @@
                 #{msg.purchases}/Bill
             </ui:define>
             <ui:define name="pageContent">
-                <p:tabView id="mainTabView">
+                <p:tabView id="mainTabView" activeIndex="#{purchaseController.selectedTabIndex}">
+                    
+                    <p:ajax event="tabChange" listener="#{purchaseController.onTabChange}" />
+                    
                     <p:tab id="firstTabView" title="Out Standing Bills">
                         <h:panelGroup id="mainPanel">
                             <h:panelGroup rendered="#{purchaseController.formView.listView}">
@@ -85,8 +88,8 @@
                                             #{purchase.receiptNo}
                                         </p:column>
 
-                                        <p:column headerText="#{msg.customer}">
-                                            #{purchase.customer.customerName}
+                                        <p:column headerText="#{msg.client}">
+                                            #{purchase.client.clientName}
                                         </p:column>
 
                                         <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.country.currencyCode})" class="text-right text-white bg-gradient-info">
@@ -133,11 +136,11 @@
                                                         <p:datePicker value="#{purchaseController.purchase.dueDate}" pattern="#{msg.formatted_date}"
                                                                       yearNavigator="true" monthNavigator="true" required="true"/>
 
-                                                        <span>#{msg.customer}</span>
-                                                        <p:selectOneMenu value="#{purchaseController.purchase.customer}" 
+                                                        <span>#{msg.client}</span>
+                                                        <p:selectOneMenu value="#{purchaseController.purchase.client}" 
                                                                          filter="true" filterMatchMode="contains">
                                                             <f:selectItem itemLabel="#{msg.choose}"/>
-                                                            <f:selectItems value="#{commonClass.customerList}"/>
+                                                            <f:selectItems value="#{commonClass.clientList}"/>
                                                         </p:selectOneMenu>
 
                                                         <span class="required_field">#{msg.receipt_no}</span>
@@ -194,7 +197,7 @@
                                         <div class="display-box">
                                             <h:panelGrid columns="8" styleClass="spaced-table">
                                                 <span class="field-label">#{msg.supplier}</span>
-                                                <h:outputText value="#{purchaseController.purchase.customer.customerName}" styleClass="field-shade"/>
+                                                <h:outputText value="#{purchaseController.purchase.client.clientName}" styleClass="field-shade"/>
 
                                                 <span class="field-label">#{msg.due_date}</span>
                                                 <h:outputText value="#{purchaseController.purchase.dueDate}" styleClass="field-shade">

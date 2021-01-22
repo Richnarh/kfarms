@@ -31,8 +31,8 @@ public class DashboardController implements Serializable{
     
     private List<EggCollection> eggCollectionList=  new LinkedList<>();
     
-    private Long birdSize;
-    private Long eggSize;
+    private int birdSize;
+    private int eggSum;
     
     private int healthyEggs;
     private int damagedEggs;
@@ -47,12 +47,17 @@ public class DashboardController implements Serializable{
     
     private void totalBirds()
     {
-        birdSize = productionService.getBirdCount();
+//        birdSize = productionService.getBirdCount();
+        List<Bird> birdList = productionService.getBirdList();
+        for (Bird bird : birdList)
+        {
+             birdSize += bird.getCurrentStock();
+        }
     }
     
     private void birdTypes()
     {
-        eggSize = productionService.getEggCollectionCount();
+        eggCollectionList = productionService.getEggCollectionList();
     }
     
     public void loadEggs()
@@ -62,16 +67,20 @@ public class DashboardController implements Serializable{
              healthyEggs += eggs.getHealthyQty();
              damagedEggs += eggs.getDamagedQty();
          });
+         eggSum = healthyEggs + damagedEggs;
+         
     }
 
-    public Long getBirdSize() {
+    public int getBirdSize()
+    {
         return birdSize;
     }
 
-    public Long getEggSize() {
-        return eggSize;
+    public int getEggSum()
+    {
+        return eggSum;
     }
-
+    
     public int getHealthyEggs() {
         return healthyEggs;
     }
@@ -79,5 +88,5 @@ public class DashboardController implements Serializable{
     public int getDamagedEggs() {
         return damagedEggs;
     }
-    
+
 }

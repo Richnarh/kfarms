@@ -13,7 +13,10 @@
             </ui:define>
 
             <ui:define name="pageContent">
-                <p:tabView id="mainTabView">
+                <p:tabView id="mainTabView" activeIndex="#{invoiceController.selectedTabIndex}">
+                    
+                        <p:ajax event="tabChange" listener="#{invoiceController.onTabChange}"/>
+                    
                     <p:tab id="firstTabView" title="Out Standing Invoices">
                         <h:panelGroup id="mainPanel">
                             <h:panelGroup rendered="#{invoiceController.formView.listView}">
@@ -87,8 +90,8 @@
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="#{msg.customer}">
-                                            #{invoice.customer}
+                                        <p:column headerText="#{msg.client}">
+                                            #{invoice.client}
                                         </p:column>
 
                                         <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.country.currencyCode})" class="text-right text-white bg-gradient-info">
@@ -152,10 +155,10 @@
                                                             <f:selectItems value="#{sharedClass.paymentMethodList}"/>
                                                         </p:selectOneMenu>
 
-                                                        <span>#{msg.customer}</span>
-                                                        <p:selectOneMenu value="#{invoiceController.invoice.customer}" filter="true" filterMatchMode="contains">
+                                                        <span>#{msg.client}</span>
+                                                        <p:selectOneMenu value="#{invoiceController.invoice.client}" filter="true" filterMatchMode="contains">
                                                             <f:selectItem itemLabel="#{msg.choose}"/>
-                                                            <f:selectItems value="#{commonClass.customerList}"/>
+                                                            <f:selectItems value="#{commonClass.clientList}"/>
                                                         </p:selectOneMenu>
 
                                                         <span class="required_field">#{msg.total_amount}</span>
@@ -190,7 +193,7 @@
                                         <div class="display-box">
                                             <h:panelGrid columns="8" styleClass="spaced-table">
                                                 <span class="field-label">#{msg.supplier}</span>
-                                                <h:outputText value="#{invoiceController.invoice.customer.customerName}" styleClass="field-shade"/>
+                                                <h:outputText value="#{invoiceController.invoice.client.clientName}" styleClass="field-shade"/>
 
                                                 <span class="field-label">#{msg.due_date}</span>
                                                 <h:outputText value="#{invoiceController.invoice.dueDate}" styleClass="field-shade">

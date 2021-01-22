@@ -9,7 +9,6 @@ import com.khoders.kfms.entities.account.PurchasePayment;
 import com.khoders.kfms.entities.account.Purchase;
 import com.khoders.kfms.entities.account.PurchaseItem;
 import com.khoders.kfms.entities.enums.PaymentStatus;
-import com.khoders.kfms.jbeans.model.SwitchTab;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.kfms.services.AccountService;
 import com.khoders.resource.jpa.CrudApi;
@@ -28,6 +27,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.component.tabview.TabView;
+import org.primefaces.event.TabChangeEvent;
 
 /**
  *
@@ -55,7 +56,8 @@ public class PurchaseController implements Serializable{
     
     private FormView formView = FormView.listForm();
     private FormView paymentView = FormView.listForm();
-    private SwitchTab switchTab = SwitchTab.firstTab();
+    
+    private int selectedTabIndex;
     
     private String optionText;
     
@@ -73,11 +75,13 @@ public class PurchaseController implements Serializable{
     
     public void fetchFullyPaid()
     {
+        selectedTabIndex = 2;
         purchasePaymentList = accountService.getFullPurchasePayment();
     }
     
     public void fetchFullyPaidBill()
     {
+        selectedTabIndex = 2;
         fullyPaidPurchaseList = accountService.getFullyPaidPurchaseList(dateRange);
     }
     
@@ -89,6 +93,7 @@ public class PurchaseController implements Serializable{
     
     public void outStandingBills()
     {
+        selectedTabIndex = 1;
         purchaseList = accountService.getOutStandingBills(dateRange, purchase);
     }
     
@@ -189,6 +194,7 @@ public class PurchaseController implements Serializable{
     
     public void closePage()
     {
+       selectedTabIndex = 1;
        purchase = new Purchase();
        purchaseItemList = new LinkedList<>();
        totalAmount = 0;
@@ -444,7 +450,22 @@ public class PurchaseController implements Serializable{
             totalAmountPaid += items.getTotalAmount();
         }
     }
-//   ddddd
+
+        
+    public void onTabChange(TabChangeEvent event)
+    {
+        try
+        {
+            TabView tabView = (TabView) event.getComponent();
+            selectedTabIndex = tabView.getChildren().indexOf(event.getTab());
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    
     public void closeFullPayment()
     {
        fullPurchasePaymentList = new LinkedList<>();
@@ -537,15 +558,7 @@ public class PurchaseController implements Serializable{
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
-
-    public SwitchTab getSwitchTab() {
-        return switchTab;
-    }
-
-    public void setSwitchTab(SwitchTab switchTab) {
-        this.switchTab = switchTab;
-    }
-
+    
     public FormView getPaymentView() {
         return paymentView;
     }
@@ -570,5 +583,16 @@ public class PurchaseController implements Serializable{
     public double getTotalAmountPaid() {
         return totalAmountPaid;
     }
+
+    public int getSelectedTabIndex()
+    {
+        return selectedTabIndex;
+    }
+
+    public void setSelectedTabIndex(int selectedTabIndex)
+    {
+        this.selectedTabIndex = selectedTabIndex;
+    }
     
 }
+    

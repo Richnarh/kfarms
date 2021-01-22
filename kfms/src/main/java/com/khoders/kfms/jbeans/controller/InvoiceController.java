@@ -9,7 +9,6 @@ import com.khoders.kfms.entities.account.Invoice;
 import com.khoders.kfms.entities.account.InvoiceItem;
 import com.khoders.kfms.entities.account.InvoicePayment;
 import com.khoders.kfms.entities.enums.PaymentStatus;
-import com.khoders.kfms.jbeans.model.SwitchTab;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.kfms.services.AccountService;
 import com.khoders.resource.jpa.CrudApi;
@@ -28,6 +27,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.component.tabview.TabView;
+import org.primefaces.event.TabChangeEvent;
 
 /**
  *
@@ -57,7 +58,7 @@ public class InvoiceController implements Serializable
     private FormView formView = FormView.listForm();
     private FormView paymentView = FormView.listForm();
     
-    private SwitchTab switchTab = SwitchTab.firstTab();
+    private int selectedTabIndex;
     
     private String optionText;
     
@@ -74,6 +75,7 @@ public class InvoiceController implements Serializable
    
     public void fetchFullyPaid()
     {
+        selectedTabIndex = 2;
         fullyPaidInvoiceList = accountService.getFullyPaidInvoiceList(dateRange);
     }
     
@@ -85,6 +87,7 @@ public class InvoiceController implements Serializable
     
     public void filterOutStandingInvoice()
     {
+        selectedTabIndex = 1;
         invoiceList = accountService.getOutStandingInvoice(dateRange, invoice);   
     }
     
@@ -208,6 +211,7 @@ public class InvoiceController implements Serializable
     
     public void closePage()
     {
+        selectedTabIndex = 1;
        invoice = new Invoice();
        invoiceItemList = new LinkedList<>();
        totalAmount = 0;
@@ -482,6 +486,19 @@ public class InvoiceController implements Serializable
         SystemUtils.resetJsfUI();
     }
     
+    public void onTabChange(TabChangeEvent event)
+    {
+        try
+        {
+            TabView tabView = (TabView) event.getComponent();
+            selectedTabIndex = tabView.getChildren().indexOf(event.getTab());
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     public FormView getFormView() {
         return formView;
     }
@@ -578,12 +595,14 @@ public class InvoiceController implements Serializable
         return invoiceItemInfoList;
     }
 
-    public SwitchTab getSwitchTab() {
-        return switchTab;
+    public int getSelectedTabIndex()
+    {
+        return selectedTabIndex;
     }
 
-    public void setSwitchTab(SwitchTab switchTab) {
-        this.switchTab = switchTab;
+    public void setSelectedTabIndex(int selectedTabIndex)
+    {
+        this.selectedTabIndex = selectedTabIndex;
     }
-
+    
 }

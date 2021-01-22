@@ -75,8 +75,8 @@
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="#{msg.customer}">
-                            #{purchase.customer}
+                        <p:column headerText="#{msg.client}">
+                            #{purchase.client}
                         </p:column>
 
                         <p:column headerText="#{msg.total_amount} (#{appSession.currentUser.country.currencyCode})" class="text-right">
@@ -90,7 +90,7 @@
                                 <p:menuitem icon="fa fa-check" class="kbtn-info text-white" value="Item Info" action="#{purchaseController.purchaseItemInfo(purchase)}" update=":mainTabView:archivePanel"/>
                                 <p:menuitem icon="fa fa-remove" 
                                             class="kbtn-danger text-white" value="#{msg.delete}" 
-                                            action="#{purchaseController.deleteInvoice(purchase)}" 
+                                            action="#{purchaseController.deletePurchase(purchase)}" 
                                             immediate="true" update=":mainTabView:archivePanel" onclick="return confirm('#{msg.delete_message}')"/>
                             </p:menuButton>
                         </p:column>

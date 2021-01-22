@@ -6,9 +6,8 @@
 package com.khoders.kfms.shared;
 
 import com.khoders.kfms.entities.Bird;
-import com.khoders.kfms.entities.Customer;
+import com.khoders.kfms.entities.Client;
 import com.khoders.kfms.entities.Product;
-import com.khoders.kfms.entities.Supplier;
 import com.khoders.kfms.entities.account.ChartOfAccount;
 import com.khoders.kfms.entities.account.Invoice;
 import com.khoders.kfms.entities.account.Purchase;
@@ -48,9 +47,8 @@ public class CommonClass implements Serializable{
     private List<Bird> birdList = new LinkedList<>();
     private List<FeedType> feedTypeList = new LinkedList<>();
     private List<Medication> medicationList = new LinkedList<>();
-    private List<Customer> customerList = new LinkedList<>();
+    private List<Client> clientList = new LinkedList<>();
     private List<ChartOfAccount> accountList = new LinkedList<>();
-    private List<Supplier> supplierList = new LinkedList<>();
     private List<Product> productList = new LinkedList<>();
     private List<Country> countryList = new LinkedList<>();
     private List<Invoice> invoiceList = new LinkedList<>();
@@ -73,13 +71,8 @@ public class CommonClass implements Serializable{
         feedConfigList = feedFormulationService.getFeedConfigList();
         categoryList = productionService.getCategoryList();
         
-        String qryCustomer = "SELECT e FROM Customer e WHERE e.farmAccount = ?1";
-        customerList = crudApi.getEm().createQuery(qryCustomer, Customer.class)
-                .setParameter(1, appSession.getCurrentUser())
-                .getResultList();
-        
-        String qrySupplier = "SELECT e FROM Supplier e WHERE e.farmAccount = ?1";
-        supplierList = crudApi.getEm().createQuery(qrySupplier, Supplier.class)
+        String qryClient = "SELECT e FROM Client e WHERE e.farmAccount = ?1";
+        clientList = crudApi.getEm().createQuery(qryClient, Client.class)
                 .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
         
@@ -125,16 +118,13 @@ public class CommonClass implements Serializable{
         return medicationList;
     }
 
-    public List<Customer> getCustomerList() {
-        return customerList;
+    public List<Client> getClientList()
+    {
+        return clientList;
     }
-
+    
     public List<ChartOfAccount> getAccountList() {
         return accountList;
-    }
-
-    public List<Supplier> getSupplierList() {
-        return supplierList;
     }
 
     public List<Product> getProductList() {

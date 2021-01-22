@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:body>
+        <ui:composition template="../templatesUI.xhtml">
+            <ui:define name="pageTitle">
+               #{msg.client}s
+            </ui:define>
+
+             <ui:define name="pageContent">
+                <div class="col-md-12">
+                    <p:panel header="#{msg.add_new} #{msg.client}">
+                        <h:form id="clientForm">
+                            <h:panelGrid columns="6" styleClass="spaced-form">
+                                <span class="required_field">#{msg.client} Name</span>
+                                <p:inputText value="#{clientController.client.clientName}" required="true"/>
+                                
+                                <span>#{msg.client} Type</span>
+                                <p:selectOneMenu value="#{clientController.client.clientType}">
+                                    <f:selectItem itemLabel="#{msg.choose}"/>
+                                    <f:selectItems value="#{sharedClass.clientTypeList}"/>
+                                </p:selectOneMenu>
+
+                                <span>Email Address</span>
+                                <p:inputText value="#{clientController.client.emailAddress}"/>
+
+                                <span class="required_field">Phone</span>
+                                <p:inputText value="#{clientController.client.phone}" required="true"/>
+
+                                <span>#{msg.business_name}</span>
+                                <p:inputText value="#{clientController.client.businessName}"/>
+
+                                <span>Street Name</span>
+                                <p:inputText value="#{clientController.client.streetName}"/>
+
+                                <span>Zip Code</span>
+                                <p:inputText value="#{clientController.client.zipCode}"/>
+
+                                <span>#{msg.note}</span>
+                                <p:inputTextarea value="#{clientController.client.note}"/>
+
+                            </h:panelGrid>
+                            <center class="pt-3">
+                                <p:commandButton styleClass="kbtn-success mx-3" value="#{clientController.optionText}" action="#{clientController.saveClient()}" update=":clientTable, @form"/>
+                                <p:commandButton styleClass="kbtn-cancel" value="#{msg.clear}" action="#{clientController.clearClient()}" immediate="true" update="@form"/>
+                            </center>
+                        </h:form>
+                    </p:panel>
+                </div>
+
+                <div class="col-md-12 pt-3">
+                    <h:form id="clientTable">
+                        <p:dataTable value="#{clientController.clientList}" var="client" paginator="true" paginatorPosition="bottom" rows="10" resizableColumns="true">
+                            <p:column styleClass="row-toggler">
+                                <p:rowToggler/>
+                            </p:column>
+
+                            <p:rowExpansion>
+                                <p:panelGrid columns="2">
+                                    <span>#{msg.client_id}</span>
+                                    <h:outputText value="#{client.clientCode}"/>
+                                                                        
+                                    <span>#{msg.client} Type</span>
+                                    <h:outputText value="#{client.clientType}"/>
+                                    
+                                    <span>#{msg.email_ddress} Type</span>
+                                    <h:outputText value="#{client.emailAddress}"/>
+                                    
+                                    <span>#{msg.zip_code} Type</span>
+                                    <h:outputText value="#{client.zipCode}"/>
+                                    
+                                    <span>#{msg.street_name} Type</span>
+                                    <h:outputText value="#{client.streetName}"/>
+                                    
+                                    <span>#{msg.note}</span>
+                                    <h:outputText value="#{client.note}"/>
+                                    
+                                    <span>Created Date</span>
+                                    <h:outputText value="#{client.createdDate}">
+                                        <f:convertDateTime pattern="#{msg.formatted_date}" type="localDate"/>
+                                    </h:outputText>
+                                    
+                                </p:panelGrid>
+                            </p:rowExpansion>
+
+                            <p:column headerText="Name">
+                                #{client.clientName}
+                            </p:column>
+
+                            <p:column headerText="#{msg.business_name}">
+                                #{client.businessName}
+                            </p:column>
+                            
+                            <p:column headerText="#{msg.phone}" class="text-right">
+                                #{client.phone}
+                            </p:column>
+
+                            <p:column headerText="#{msg.action}" style="width: 80px">
+                                <p:commandButton action="#{clientController.editClient(client)}" styleClass="kbtn-info" value="#{msg.edit}" update=":clientForm"/>
+                            </p:column>
+
+                            <p:column headerText="#{msg.action}" style="width: 100px;">
+                                <p:commandButton action="#{clientController.deleteClient(client)}" styleClass="kbtn-danger" value="#{msg.delete}" update="@form"/>                                        
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

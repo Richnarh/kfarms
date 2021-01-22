@@ -5,7 +5,7 @@
  */
 package com.khoders.kfms.jbeans.controller;
 
-import com.khoders.kfms.entities.Customer;
+import com.khoders.kfms.entities.Client;
 import com.khoders.kfms.jpa.AppSession;
 import com.khoders.resource.jpa.CrudApi;
 import com.khoders.resource.utilities.CollectionList;
@@ -25,14 +25,14 @@ import javax.inject.Named;
  *
  * @author khoders
  */
-@Named(value = "customerController")
+@Named(value = "clientController")
 @SessionScoped
-public class CustomerController implements Serializable{
+public class ClientController implements Serializable{
     @Inject CrudApi crudApi;
     @Inject AppSession appSession;
     
-    private Customer customer = new Customer();
-    private List<Customer> customerList =  new LinkedList<>();
+    private Client client = new Client();
+    private List<Client> clientList =  new LinkedList<>();
     
     private String optionText;
     
@@ -40,22 +40,22 @@ public class CustomerController implements Serializable{
     private void init()
     {
         optionText = "Save Changes";
-        String qryString = "SELECT e FROM Customer e WHERE e.farmAccount = ?1";
-        customerList = crudApi.getEm().createQuery(qryString, Customer.class)
+        String qryString = "SELECT e FROM Client e WHERE e.farmAccount = ?1";
+        clientList = crudApi.getEm().createQuery(qryString, Client.class)
                 .setParameter(1, appSession.getCurrentUser())
                 .getResultList();
         
-        clearCustomer();
+        clearClient();
     }
     
-    public void saveCustomer()
+    public void saveClient()
     {
         try 
         {
-           customer.genCode();
-          if(crudApi.save(customer) != null)
+           client.genCode();
+          if(crudApi.save(client) != null)
           {
-              customerList = CollectionList.washList(customerList, customer);
+              clientList = CollectionList.washList(clientList, client);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -65,20 +65,20 @@ public class CustomerController implements Serializable{
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.FAILED_MESSAGE, null));
           }
-          clearCustomer();
+          clearClient();
         } catch (Exception e) 
         {
             e.printStackTrace();
         }
     }
     
-    public void deleteCustomer(Customer customer)
+    public void deleteClient(Client client)
     {
         try 
         {
-          if(crudApi.delete(customer))
+          if(crudApi.delete(client))
           {
-              customerList.remove(customer);
+              clientList.remove(client);
               
               FacesContext.getCurrentInstance().addMessage(null, 
                         new FacesMessage(FacesMessage.SEVERITY_INFO, Msg.SUCCESS_MESSAGE, null)); 
@@ -94,30 +94,30 @@ public class CustomerController implements Serializable{
         }
     }
     
-    public void editCustomer(Customer customer)
+    public void editClient(Client client)
     {
        optionText = "Update";
-       this.customer=customer;
+       this.client=client;
     }
     
-    public void clearCustomer() 
+    public void clearClient() 
     {
-        customer = new Customer();
-        customer.setFarmAccount(appSession.getCurrentUser());
+        client = new Client();
+        client.setFarmAccount(appSession.getCurrentUser());
         optionText = "Save Changes";
         SystemUtils.resetJsfUI();
     }
     
-    public List<Customer> getCustomerList() {
-        return customerList;
+    public List<Client> getClientList() {
+        return clientList;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Client getClient() {
+        return client;
     }
 
-    public void setCustomer(Customer bird) {
-        this.customer = bird;
+    public void setClient(Client bird) {
+        this.client = bird;
     }
 
     public String getOptionText() {
