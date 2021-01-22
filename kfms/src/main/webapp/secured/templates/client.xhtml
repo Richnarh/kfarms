@@ -100,11 +100,11 @@
                                 #{client.phone}
                             </p:column>
 
-                            <p:column headerText="#{msg.action}" style="width: 80px">
+                            <p:column headerText="#{msg.action}">
                                 <p:commandButton action="#{clientController.editClient(client)}" styleClass="kbtn-info" value="#{msg.edit}" update=":clientForm"/>
                             </p:column>
 
-                            <p:column headerText="#{msg.action}" style="width: 100px;">
+                            <p:column headerText="#{msg.action}">
                                 <p:commandButton action="#{clientController.deleteClient(client)}" styleClass="kbtn-danger" value="#{msg.delete}" update="@form"/>                                        
                             </p:column>
 
