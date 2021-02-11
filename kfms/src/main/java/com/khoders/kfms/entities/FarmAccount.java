@@ -58,21 +58,8 @@ public class FarmAccount extends BaseModel implements Serializable{
     @Column(name="password")
     private String password;
     
-    @Column(name="plaintext")
-    private String plaintext;
-    
     @Transient
     private String password2;
-
-    public String getPlaintext()
-    {
-        return plaintext;
-    }
-
-    public void setPlaintext(String plaintext)
-    {
-        this.plaintext = plaintext;
-    }
 
     public String getFullName() {
         return fullName;

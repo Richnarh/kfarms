@@ -56,7 +56,6 @@ public class FarmAccountController implements Serializable{
             if(!accountService.isTaken(farmAccount.getBusinessEmail()))
             {
               farmAccount.setPassword(hashText(farmAccount.getPassword()));
-              farmAccount.setPlaintext(farmAccount.getPassword());
             if(crudApi.save(farmAccount) != null)
             {
                 FacesContext.getCurrentInstance().addMessage(null, 
