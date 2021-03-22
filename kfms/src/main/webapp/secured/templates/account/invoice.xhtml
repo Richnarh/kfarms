@@ -207,10 +207,8 @@
                                                 <h:outputText value="#{appSession.currentUser.country.currencyCode} #{invoiceController.invoice.totalAmount}" styleClass="field-shade">
                                                     <f:convertNumber pattern="#{msg.money_pattern}"/>
                                                 </h:outputText>
-
                                             </h:panelGrid>
                                         </div>
-
                                     </div>
                                 </div>
 
@@ -218,7 +216,6 @@
                                     <legend class="text-info">Please Add Items On Invoice</legend>
                                     <ui:include src="../includes/invoice-item.xhtml"/>
                                 </fieldset>
-
                             </h:panelGroup>
 
                         </h:panelGroup>
