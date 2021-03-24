@@ -282,6 +282,7 @@ public class InvoiceController implements Serializable
                 totalAmount= invoiceItem.getQuantity() * invoiceItem.getUnitPrice();
                   
                 invoiceItem.setTotalAmount(totalAmount);
+                
                 invoiceItemList.add(invoiceItem);
                 invoiceItemList = CollectionList.washList(invoiceItemList, invoiceItem);
                 
